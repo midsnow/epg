@@ -1,0 +1,106 @@
+{
+  "name": "epg",
+  "version": "0.0.0",
+  "description": "schedules direct epg data management",
+  "main": "lib/epg.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inquisive/epg"
+  },
+  "keywords": [
+    "epg",
+    "schedules",
+    "direct",
+    "episode",
+    "guide",
+    "data",
+    "programme",
+    "program"
+  ],
+  "author": "snowkeeper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inquisive/epg/issues"
+  },
+  "homepage": "https://github.com/inquisive/epg",
+  "dependencies": {
+    "async": "^1.5.0",
+    "bone.io": "~0.8.9",
+    "caminte": "^0.2.0",
+    "connect-mongo": "0.4.x",
+    "debug": "^2.2.0",
+    "dotenv": "0.4.0",
+    "express": "^4.13.3",
+    "express-less": "0.0.8",
+    "hat": "~0.0.3",
+    "jsonfile": "^2.2.1",
+    "jspm": "^0.16.19",
+    "keystone": "~0.3.x",
+    "lodash": "^3.10.0",
+    "moment": "~2.4.0",
+    "mongodb": "^2.1.2",
+    "mongoose": "^4.3.4",
+    "node-localstorage": "^0.5.0",
+    "react": "^0.13.1",
+    "react-router": "^0.13.2",
+    "sanitizer": "~0.1.1",
+    "superagent": "^1.2.0"
+  },
+  "devDependencies": {
+    "browserify": "^12.0.1",
+    "gulp": "^3.8.11",
+    "gulp-browserify": "^0.5.1",
+    "gulp-concat": "^2.5.2",
+    "gulp-react": "^3.0.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^1.1.0",
+    "gulp-util": "^3.0.4",
+    "literalify": "^0.4.0",
+    "pm2": "^0.15.10",
+    "reactify": "^1.1.0",
+    "system-live-reload": "^1.4.0",
+    "system-trace": "^0.1.7",
+    "systemjs-builder": "^0.14.15",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "jspm": {
+    "directories": {
+      "baseURL": "app"
+    },
+    "dependencies": {
+      "async": "npm:async@^1.5.0",
+      "classnames": "npm:classnames@^2.2.1",
+      "debug": "npm:debug@^2.2.0",
+      "elemental": "npm:elemental@^0.5.10",
+      "events": "github:jspm/nodelibs-events@^0.1.1",
+      "fixed-data-table": "npm:fixed-data-table@^0.6.0",
+      "fs": "github:jspm/nodelibs-fs@^0.1.2",
+      "hat": "npm:hat@^0.0.3",
+      "history": "npm:history@^1.17.0",
+      "jquery": "github:components/jquery@^2.1.4",
+      "lodash": "npm:lodash@^3.10.1",
+      "material-ui": "npm:material-ui@^0.14.0",
+      "path": "github:jspm/nodelibs-path@^0.1.0",
+      "react": "npm:react@^0.14.3",
+      "react-bootstrap": "npm:react-bootstrap@^0.28.1",
+      "react-datatable": "npm:react-datatable@^0.0.31",
+      "react-dom": "npm:react-dom@^0.14.3",
+      "react-fontawesome": "npm:react-fontawesome@^0.3.3",
+      "react-progress-button": "npm:react-progress-button@^3.0.0",
+      "react-router": "npm:react-router@^1.0.3",
+      "react-select": "npm:react-select@^1.0.0-beta8",
+      "react-swipeable-views": "npm:react-swipeable-views@^0.3.5",
+      "react-tap-event-plugin": "npm:react-tap-event-plugin@^0.2.1",
+      "socket.io-client": "npm:socket.io-client@^1.3.7",
+      "superagent": "npm:superagent@^1.6.1",
+      "util": "github:jspm/nodelibs-util@^0.1.0"
+    },
+    "devDependencies": {
+      "babel": "npm:babel-core@^5.8.24",
+      "babel-runtime": "npm:babel-runtime@^5.8.24",
+      "core-js": "npm:core-js@^1.1.4"
+    }
+  }
+}
