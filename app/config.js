@@ -31,6 +31,8 @@ System.config({
     "jquery": "github:components/jquery@2.1.4",
     "lodash": "npm:lodash@3.10.1",
     "material-ui": "npm:material-ui@0.14.0",
+    "moment": "npm:moment@2.11.1",
+    "object-property-natural-sort": "npm:object-property-natural-sort@0.0.4",
     "path": "github:jspm/nodelibs-path@0.1.0",
     "react": "npm:react@0.14.5",
     "react-bootstrap": "npm:react-bootstrap@0.28.1",
@@ -632,8 +634,15 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
+    "npm:moment@2.11.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
     "npm:nan@1.6.2": {
       "path": "github:jspm/nodelibs-path@0.1.0"
+    },
+    "npm:object-property-natural-sort@0.0.4": {
+      "deep-access": "npm:deep-access@0.0.1",
+      "javascript-natural-sort": "npm:javascript-natural-sort@0.7.1"
     },
     "npm:options@0.0.6": {
       "fs": "github:jspm/nodelibs-fs@0.1.2"

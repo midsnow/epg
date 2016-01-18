@@ -10,6 +10,7 @@ import Alert from '../../common/alert';
 import Select from 'react-select';
 import { Col } from 'react-bootstrap';
 import Icons from '../../assets/icons';
+import { sortBy } from 'lodash';
 
 let debug = Debug('epg:app:pages:settings:index');
 		
@@ -81,7 +82,7 @@ export default class Settings extends React.Component {
 				let headendsMap = {};
 				data.forEach(v => headendsMap[v.uri] = v)
 				this.setState({
-					headends: data,
+					headends: sortBy(data, 'name'),
 					headendsMap: headendsMap,
 					step: 2,
 				});
@@ -112,13 +113,11 @@ export default class Settings extends React.Component {
 		
 		if(this.state.step === 1) {
 			this.headends();
-		} else if(this.state.step === 2) {
-			this.lineupAdd();
 		} else {
 			this.props.assets({
 				newalert: {
 					style: 'danger',
-					html: data.error.message,
+					html: 'error',
 					show: true
 				}
 			});
@@ -161,20 +160,14 @@ export default class Settings extends React.Component {
 			case 1:
 				btnText = 'Search';
 				break;
-			case 2:
-				btnText = 'Add Lineup';
-				btnText2 = 'View Channels';
-				break;
-			case 3:
-				btnText = 'Save Channels';
-				break;
+			
 			default:
 				btnText = 'Submit';
 				break;
 		}
 		
 		let thebutton = this.state.step === 8 ? <Col xs={6} /> : <Col xs={6} >
-				<div className="pull-left" ><Button className={" "} ref="manage"  onClick={this.submit} durationSuccess={this.state.durationSuccess} durationError={this.state.durationError} >{btnText}</Button></div>
+				<div className="pull-left" ><Button className={" "} ref="manage"  onClick={this.submit} durationSuccess={this.state.durationSuccess} durationError={this.state.durationError} >Search</Button></div>
 			</Col>;
 				
 		let buttons = (<div className="no-gutter" style={{marginTop:20,marginBottom:20}}>
@@ -216,7 +209,7 @@ export default class Settings extends React.Component {
 			<Card>
 				<CardTitle 
 					title="Add a new lineup"
-					subtitle="You can have up to 4 lineups at one time."
+					subtitle={this.props.status.account.maxLineups - this.props.status.lineups.length + " of " + this.props.status.account.maxLineups + " lineups available."}
 					titleColor={Styles.Colors.blue400}
 					subtitleColor={Styles.Colors.grey500}
 				/>

@@ -35,13 +35,19 @@ export default (Component) => {
 				prev: clean,
 				paths,
 				sockets: Sockets,
-				history: history,
+				history,
+				location,
 				page: paths[1] || 'home',
-				child: paths[2] || '',
-				lineup: paths[3] || '',
+				child: paths[1] === 'lineup' ? '' : paths[2] || '',
+				lineup: paths[1] === 'lineup' ? paths[2] || '' : '',
+				guideRefresh: {
+					download: false,
+					who: []
+				}
 			}
 			this._update = false;
 			this._limiters = {};
+			Gab.guideUpdates = [];
 			
 			this.getLineups = this.getLineups.bind(this);
 			this.lineupListener = this.lineupListener.bind(this);
@@ -51,6 +57,7 @@ export default (Component) => {
 		
 		// add static listeners here
 		initiate() {
+			debug('INITIATE SOCKERT LISTENERS')
 			let thisComponent = this;
 			
 			// Listen for changes to the current location. The 
@@ -128,6 +135,38 @@ export default (Component) => {
 						}
 					});
 				});	
+				// listen for a server error event
+				Sockets.io.on('globalUpdate', (data) => {
+					debug('received socket global update event', data);
+					if(data.stderr) data.message = data.stderr;
+					this.setState({
+						newalert: {
+							show: true,
+							style: data.style,
+							html: data.message,
+							duration: 0
+						}
+					});
+				});	
+				
+				//guide refresh updata data
+				Sockets.io.on('guideRefreshDownload', (data) => {
+					debug('received guide download state event', data);
+					let guideRefresh = this.state.guideRefresh;
+					if(data.lineup) {
+						if(!data.downloading) {
+							_.pull(guideRefresh.who, data.lineup);
+						} else {
+							guideRefresh.who.push(data.lineup);
+						}
+					}
+					guideRefresh.download = guideRefresh.who.length === 0 && !data.downloading ? false : true;
+					this.setState({guideRefresh});
+				});	
+				Sockets.io.on('guideRefreshUpdate', (data) => {
+					//debug('received guide refresh update event', data);
+					Gab.guideUpdates.push(data.message);
+				});	
 				
 				//listen for new lineups
 				Sockets.io.on('lineups', this.lineupListener);
@@ -137,6 +176,10 @@ export default (Component) => {
 					debug('updateChannel on event', data);
 					Gab.emit('updateChannel', data);
 				});
+				
+				//listen for schedule updates
+				Sockets.io.on('schedules', this.scheduleListener);
+				
 			});
 			
 			
@@ -162,8 +205,9 @@ export default (Component) => {
 				this.onUpdate();
 			}
 		}
-		componentWillMount() {
-			
+		componentWillUnmount() {
+			debug('remove all socket listeners');
+			Sockets.removeAllListeners();
 		}
 		componentDidMount() {
 			//this.onMount();
@@ -178,8 +222,27 @@ export default (Component) => {
 			 		
 		} // end onUpdate
 		
-		
-		
+		schedulesListener(data) {
+			debug('got lineups data', data.lineups);
+			let headends = {};
+			if(data.error) {
+				this.setState({
+					newalert: {
+						style: 'danger',
+						html: data.error.message,
+						show: true
+					}
+				});
+			} else {
+				this.setState({
+					newalert: {
+						style: 'success',
+						html: data,
+						show: true
+					}
+				});
+			}
+		}
 		lineupListener(data) {
 			debug('got lineups data', data.lineups);
 			let headends = {};
@@ -206,7 +269,7 @@ export default (Component) => {
 					this.setState({
 						newalert: {
 							style: 'danger',
-							component: <div>You do not have any lineups... <a href="#" onClick={(e)=>{e.preventDefault();this.goTo('settings', 'add')}}> Add One</a></div>,
+							component: <div>You do not have any lineups... <a href="#" onClick={(e)=>{e.preventDefault();this.goTo('add')}}> Add One</a></div>,
 							show: true
 						},
 						lineups: {

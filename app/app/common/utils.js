@@ -13,13 +13,35 @@ export const pickIcon = function pickIcon(text) {
 	if(text.toLowerCase() === 'cable') {
 		return 'tv';
 	} else if(text.toLowerCase() === 'satellite') {
-		return 'router';
+		return 'satellite';
 	} else if(text.toLowerCase() === 'antenna') {
 		return 'settings_input_antenna';
 	} else  {
 		return 'tv';
 	} 
 }
+
+export const setChannelKey = function(v) {
+	if(!v || typeof v !== 'object') {
+		return 'undefined';
+	}
+	if(v.atscMajor) {
+		return v.atscMajor + '-' + v.atscMinor;
+	} 
+	if(v.channel) {
+		return v.channel;
+	}
+	if(v.frequencyHz && v.serviceID) {
+		return v.serviceID;
+	}
+	if(v.uhfVhf) {
+		return v.uhfVhf;
+	}
+	
+	debug('no channel', v)
+	return false;
+}
+
 
 export const DateCell = ({rowIndex, data, col, ...props}) => {
 	let val = data[rowIndex][col];
@@ -44,7 +66,14 @@ export const LinkCell = ({rowIndex, data, col, ...props}) => {
 }
 export const TextCell = ({rowIndex, data, col, ...props}) => {
 			
-	let val = data[rowIndex][col];
+	let val;
+
+	if(col === 'hd') {
+		let search = data[rowIndex].name ? data[rowIndex].name : data[rowIndex].callsign ? data[rowIndex].callsign : 'sd';
+		val = search.toLowerCase().search('hd') > -1  ? 'HD': search.toLowerCase().search('dt') > -1  ? 'HD' :'SD';
+	} else {
+		val = data[rowIndex][col];
+	}
 				
 	return (<Cell {...props}>
 		{val}

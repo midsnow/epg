@@ -53,8 +53,8 @@ export default class Home extends React.Component {
 						e.preventDefault(e);
 						this.props.goTo({
 							current: v,
-							page: 'settings',
-							child: 'lineup',
+							page: 'lineup',
+							child: '',
 							lineup: v.lineup,
 							newalert: {
 								show: true,
@@ -70,13 +70,14 @@ export default class Home extends React.Component {
 			);
 		});
 		
+		
 		let content = (<div>
 			<List>
-				<ListItem  primaryText="Add Lineup" secondaryText={4 - this.props.lineups.lineups.length + " of 4 lineups available."} leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue500} hoverColor={Styles.Colors.greenA200} >plus_one</FontIcon>} onTouchTap={(e) => {
+				<ListItem  primaryText="Add Lineup" secondaryText={this.props.status.account.maxLineups - this.props.status.lineups.length + " of " + this.props.status.account.maxLineups + " lineups available."} leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue500} hoverColor={Styles.Colors.greenA200} >plus_one</FontIcon>} onTouchTap={(e) => {
 					e.preventDefault(e);
 					this.props.goTo({
-						page: 'settings',
-						child: 'index'
+						page: 'add-lineup',
+						child: ''
 					
 					});
 				}} />

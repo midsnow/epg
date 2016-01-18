@@ -437,32 +437,6 @@ System.registerDynamic("github:jspm/nodelibs-path@0.1.0", ["github:jspm/nodelibs
   return module.exports;
 });
 
-System.registerDynamic("npm:core-js@1.2.6/library/fn/object/define-property", ["npm:core-js@1.2.6/library/modules/$"], true, function($__require, exports, module) {
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  var $ = $__require('npm:core-js@1.2.6/library/modules/$');
-  module.exports = function defineProperty(it, key, desc) {
-    return $.setDesc(it, key, desc);
-  };
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:babel-runtime@5.8.34/core-js/object/define-property", ["npm:core-js@1.2.6/library/fn/object/define-property"], true, function($__require, exports, module) {
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  module.exports = {
-    "default": $__require('npm:core-js@1.2.6/library/fn/object/define-property'),
-    __esModule: true
-  };
-  global.define = __define;
-  return module.exports;
-});
-
 System.registerDynamic("npm:babel-runtime@5.8.34/helpers/create-class", ["npm:babel-runtime@5.8.34/core-js/object/define-property"], true, function($__require, exports, module) {
   "use strict";
   ;
@@ -489,6 +463,57 @@ System.registerDynamic("npm:babel-runtime@5.8.34/helpers/create-class", ["npm:ba
       return Constructor;
     };
   })();
+  exports.__esModule = true;
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:core-js@1.2.6/library/fn/object/define-property", ["npm:core-js@1.2.6/library/modules/$"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  var $ = $__require('npm:core-js@1.2.6/library/modules/$');
+  module.exports = function defineProperty(it, key, desc) {
+    return $.setDesc(it, key, desc);
+  };
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:babel-runtime@5.8.34/core-js/object/define-property", ["npm:core-js@1.2.6/library/fn/object/define-property"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = {
+    "default": $__require('npm:core-js@1.2.6/library/fn/object/define-property'),
+    __esModule: true
+  };
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:babel-runtime@5.8.34/helpers/define-property", ["npm:babel-runtime@5.8.34/core-js/object/define-property"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  var _Object$defineProperty = $__require('npm:babel-runtime@5.8.34/core-js/object/define-property')["default"];
+  exports["default"] = function(obj, key, value) {
+    if (key in obj) {
+      _Object$defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+    return obj;
+  };
   exports.__esModule = true;
   global.define = __define;
   return module.exports;
@@ -21812,6 +21837,453 @@ System.registerDynamic("npm:material-ui@0.14.0/lib/snackbar", ["npm:react@0.14.5
   return module.exports;
 });
 
+System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/tab", ["npm:react@0.14.5", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, '__esModule', {value: true});
+  var _extends = Object.assign || function(target) {
+    for (var i = 1; i < arguments.length; i++) {
+      var source = arguments[i];
+      for (var key in source) {
+        if (Object.prototype.hasOwnProperty.call(source, key)) {
+          target[key] = source[key];
+        }
+      }
+    }
+    return target;
+  };
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {'default': obj};
+  }
+  function _objectWithoutProperties(obj, keys) {
+    var target = {};
+    for (var i in obj) {
+      if (keys.indexOf(i) >= 0)
+        continue;
+      if (!Object.prototype.hasOwnProperty.call(obj, i))
+        continue;
+      target[i] = obj[i];
+    }
+    return target;
+  }
+  var _react = $__require('npm:react@0.14.5');
+  var _react2 = _interopRequireDefault(_react);
+  var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
+  var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
+  var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
+  var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
+  var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
+  var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
+  var Tab = _react2['default'].createClass({
+    displayName: 'Tab',
+    mixins: [_mixinsStylePropable2['default']],
+    contextTypes: {muiTheme: _react2['default'].PropTypes.object},
+    propTypes: {
+      className: _react2['default'].PropTypes.string,
+      label: _react2['default'].PropTypes.node,
+      onActive: _react2['default'].PropTypes.func,
+      onTouchTap: _react2['default'].PropTypes.func,
+      selected: _react2['default'].PropTypes.bool,
+      style: _react2['default'].PropTypes.object,
+      value: _react2['default'].PropTypes.any,
+      width: _react2['default'].PropTypes.string
+    },
+    childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
+    getChildContext: function getChildContext() {
+      return {muiTheme: this.state.muiTheme};
+    },
+    getInitialState: function getInitialState() {
+      return {muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])};
+    },
+    componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+      var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+      this.setState({muiTheme: newMuiTheme});
+    },
+    render: function render() {
+      var _props = this.props;
+      var label = _props.label;
+      var onActive = _props.onActive;
+      var onTouchTap = _props.onTouchTap;
+      var selected = _props.selected;
+      var style = _props.style;
+      var value = _props.value;
+      var width = _props.width;
+      var other = _objectWithoutProperties(_props, ['label', 'onActive', 'onTouchTap', 'selected', 'style', 'value', 'width']);
+      var styles = this.prepareStyles({
+        display: 'table-cell',
+        cursor: 'pointer',
+        textAlign: 'center',
+        verticalAlign: 'middle',
+        height: 48,
+        color: selected ? this.state.muiTheme.tabs.selectedTextColor : this.state.muiTheme.tabs.textColor,
+        outline: 'none',
+        fontSize: 14,
+        fontWeight: 500,
+        whiteSpace: 'initial',
+        fontFamily: this.state.muiTheme.rawTheme.fontFamily,
+        boxSizing: 'border-box',
+        width: width
+      }, style);
+      return _react2['default'].createElement('div', _extends({}, other, {
+        style: styles,
+        onTouchTap: this._handleTouchTap
+      }), label);
+    },
+    _handleTouchTap: function _handleTouchTap(event) {
+      if (this.props.onTouchTap) {
+        this.props.onTouchTap(this.props.value, event, this);
+      }
+    }
+  });
+  exports['default'] = Tab;
+  module.exports = exports['default'];
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:material-ui@0.14.0/lib/ink-bar", ["npm:react@0.14.5", "npm:material-ui@0.14.0/lib/styles/transitions", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, '__esModule', {value: true});
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {'default': obj};
+  }
+  function _objectWithoutProperties(obj, keys) {
+    var target = {};
+    for (var i in obj) {
+      if (keys.indexOf(i) >= 0)
+        continue;
+      if (!Object.prototype.hasOwnProperty.call(obj, i))
+        continue;
+      target[i] = obj[i];
+    }
+    return target;
+  }
+  var _react = $__require('npm:react@0.14.5');
+  var _react2 = _interopRequireDefault(_react);
+  var _stylesTransitions = $__require('npm:material-ui@0.14.0/lib/styles/transitions');
+  var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
+  var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
+  var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
+  var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
+  var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
+  var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
+  var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
+  var InkBar = _react2['default'].createClass({
+    displayName: 'InkBar',
+    contextTypes: {muiTheme: _react2['default'].PropTypes.object},
+    childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
+    getChildContext: function getChildContext() {
+      return {muiTheme: this.state.muiTheme};
+    },
+    propTypes: {
+      color: _react2['default'].PropTypes.string,
+      left: _react2['default'].PropTypes.string.isRequired,
+      style: _react2['default'].PropTypes.object,
+      width: _react2['default'].PropTypes.string.isRequired
+    },
+    getInitialState: function getInitialState() {
+      return {muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])};
+    },
+    componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+      var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+      this.setState({muiTheme: newMuiTheme});
+    },
+    mixins: [_mixinsStylePropable2['default']],
+    render: function render() {
+      var _props = this.props;
+      var color = _props.color;
+      var left = _props.left;
+      var width = _props.width;
+      var style = _props.style;
+      var other = _objectWithoutProperties(_props, ['color', 'left', 'width', 'style']);
+      var colorStyle = color ? {backgroundColor: color} : undefined;
+      var styles = this.prepareStyles({
+        left: left,
+        width: width,
+        bottom: 0,
+        display: 'block',
+        backgroundColor: this.state.muiTheme.inkBar.backgroundColor,
+        height: 2,
+        marginTop: -2,
+        position: 'relative',
+        transition: _stylesTransitions2['default'].easeOut('1s', 'left')
+      }, this.props.style, colorStyle);
+      return _react2['default'].createElement('div', {style: styles}, ' ');
+    }
+  });
+  exports['default'] = InkBar;
+  module.exports = exports['default'];
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:material-ui@0.14.0/lib/mixins/controllable", ["npm:react@0.14.5"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, '__esModule', {value: true});
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {'default': obj};
+  }
+  var _react = $__require('npm:react@0.14.5');
+  var _react2 = _interopRequireDefault(_react);
+  exports['default'] = {
+    propTypes: {
+      onChange: _react2['default'].PropTypes.func,
+      value: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.array]),
+      valueLink: _react2['default'].PropTypes.shape({
+        value: _react2['default'].PropTypes.string.isRequired,
+        requestChange: _react2['default'].PropTypes.func.isRequired
+      })
+    },
+    getDefaultProps: function getDefaultProps() {
+      return {onChange: function onChange() {}};
+    },
+    getValueLink: function getValueLink(props) {
+      return props.valueLink || {
+        value: props.value,
+        requestChange: props.onChange
+      };
+    }
+  };
+  module.exports = exports['default'];
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/tabTemplate", ["npm:react@0.14.5"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, '__esModule', {value: true});
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {'default': obj};
+  }
+  var _react = $__require('npm:react@0.14.5');
+  var _react2 = _interopRequireDefault(_react);
+  var TabTemplate = _react2['default'].createClass({
+    displayName: 'TabTemplate',
+    propTypes: {
+      children: _react2['default'].PropTypes.node,
+      selected: _react2['default'].PropTypes.bool
+    },
+    render: function render() {
+      var styles = {
+        height: 0,
+        overflow: 'hidden',
+        width: '100%',
+        position: 'relative',
+        textAlign: 'initial'
+      };
+      if (this.props.selected) {
+        delete styles.height;
+        delete styles.overflow;
+      }
+      return _react2['default'].createElement('div', {style: styles}, this.props.children);
+    }
+  });
+  exports['default'] = TabTemplate;
+  module.exports = exports['default'];
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/tabs", ["npm:react@0.14.5", "npm:react-dom@0.14.5", "npm:material-ui@0.14.0/lib/ink-bar", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/mixins/controllable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager", "npm:warning@2.1.0", "npm:material-ui@0.14.0/lib/tabs/tabTemplate", "github:jspm/nodelibs-process@0.1.2"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  (function(process) {
+    'use strict';
+    Object.defineProperty(exports, '__esModule', {value: true});
+    var _extends = Object.assign || function(target) {
+      for (var i = 1; i < arguments.length; i++) {
+        var source = arguments[i];
+        for (var key in source) {
+          if (Object.prototype.hasOwnProperty.call(source, key)) {
+            target[key] = source[key];
+          }
+        }
+      }
+      return target;
+    };
+    function _interopRequireDefault(obj) {
+      return obj && obj.__esModule ? obj : {'default': obj};
+    }
+    function _objectWithoutProperties(obj, keys) {
+      var target = {};
+      for (var i in obj) {
+        if (keys.indexOf(i) >= 0)
+          continue;
+        if (!Object.prototype.hasOwnProperty.call(obj, i))
+          continue;
+        target[i] = obj[i];
+      }
+      return target;
+    }
+    var _react = $__require('npm:react@0.14.5');
+    var _react2 = _interopRequireDefault(_react);
+    var _reactDom = $__require('npm:react-dom@0.14.5');
+    var _reactDom2 = _interopRequireDefault(_reactDom);
+    var _inkBar = $__require('npm:material-ui@0.14.0/lib/ink-bar');
+    var _inkBar2 = _interopRequireDefault(_inkBar);
+    var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
+    var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
+    var _mixinsControllable = $__require('npm:material-ui@0.14.0/lib/mixins/controllable');
+    var _mixinsControllable2 = _interopRequireDefault(_mixinsControllable);
+    var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
+    var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
+    var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
+    var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
+    var _warning = $__require('npm:warning@2.1.0');
+    var _warning2 = _interopRequireDefault(_warning);
+    var TabTemplate = $__require('npm:material-ui@0.14.0/lib/tabs/tabTemplate');
+    var Tabs = _react2['default'].createClass({
+      displayName: 'Tabs',
+      mixins: [_mixinsStylePropable2['default'], _mixinsControllable2['default']],
+      contextTypes: {muiTheme: _react2['default'].PropTypes.object},
+      propTypes: {
+        children: _react2['default'].PropTypes.node,
+        className: _react2['default'].PropTypes.string,
+        contentContainerClassName: _react2['default'].PropTypes.string,
+        contentContainerStyle: _react2['default'].PropTypes.object,
+        initialSelectedIndex: _react2['default'].PropTypes.number,
+        inkBarStyle: _react2['default'].PropTypes.object,
+        onChange: _react2['default'].PropTypes.func,
+        style: _react2['default'].PropTypes.object,
+        tabItemContainerStyle: _react2['default'].PropTypes.object,
+        tabTemplate: _react2['default'].PropTypes.func,
+        value: _react2['default'].PropTypes.any
+      },
+      childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
+      getChildContext: function getChildContext() {
+        return {muiTheme: this.state.muiTheme};
+      },
+      getDefaultProps: function getDefaultProps() {
+        return {
+          initialSelectedIndex: 0,
+          tabTemplate: TabTemplate
+        };
+      },
+      getInitialState: function getInitialState() {
+        var valueLink = this.getValueLink(this.props);
+        var initialIndex = this.props.initialSelectedIndex;
+        return {
+          selectedIndex: valueLink.value !== undefined ? this._getSelectedIndex(this.props) : initialIndex < this.getTabCount() ? initialIndex : 0,
+          muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
+        };
+      },
+      getEvenWidth: function getEvenWidth() {
+        return parseInt(window.getComputedStyle(_reactDom2['default'].findDOMNode(this)).getPropertyValue('width'), 10);
+      },
+      getTabCount: function getTabCount() {
+        return _react2['default'].Children.count(this.props.children);
+      },
+      componentWillReceiveProps: function componentWillReceiveProps(newProps, nextContext) {
+        var valueLink = this.getValueLink(newProps);
+        var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+        if (valueLink.value !== undefined) {
+          this.setState({selectedIndex: this._getSelectedIndex(newProps)});
+        }
+        this.setState({muiTheme: newMuiTheme});
+      },
+      render: function render() {
+        var _this = this;
+        var _props = this.props;
+        var children = _props.children;
+        var contentContainerClassName = _props.contentContainerClassName;
+        var contentContainerStyle = _props.contentContainerStyle;
+        var initialSelectedIndex = _props.initialSelectedIndex;
+        var inkBarStyle = _props.inkBarStyle;
+        var style = _props.style;
+        var tabItemContainerStyle = _props.tabItemContainerStyle;
+        var tabTemplate = _props.tabTemplate;
+        var other = _objectWithoutProperties(_props, ['children', 'contentContainerClassName', 'contentContainerStyle', 'initialSelectedIndex', 'inkBarStyle', 'style', 'tabItemContainerStyle', 'tabTemplate']);
+        var themeVariables = this.state.muiTheme.tabs;
+        var styles = {tabItemContainer: {
+            margin: 0,
+            padding: 0,
+            width: '100%',
+            height: 48,
+            backgroundColor: themeVariables.backgroundColor,
+            whiteSpace: 'nowrap',
+            display: 'table'
+          }};
+        var valueLink = this.getValueLink(this.props);
+        var tabValue = valueLink.value;
+        var tabContent = [];
+        var width = 100 / this.getTabCount() + '%';
+        var left = 'calc(' + width + '*' + this.state.selectedIndex + ')';
+        var tabs = _react2['default'].Children.map(children, function(tab, index) {
+          process.env.NODE_ENV !== 'production' ? (0, _warning2['default'])(tab.type && tab.type.displayName === 'Tab', 'Tabs only accepts Tab Components as children.\n        Found ' + (tab.type.displayName || tab.type) + ' as child number ' + (index + 1) + ' of Tabs') : undefined;
+          process.env.NODE_ENV !== 'production' ? (0, _warning2['default'])(!tabValue || tab.props.value !== undefined, 'Tabs value prop has been passed, but Tab ' + index + '\n        does not have a value prop. Needs value if Tabs is going\n        to be a controlled component.') : undefined;
+          tabContent.push(tab.props.children ? _react2['default'].createElement(tabTemplate, {
+            key: index,
+            selected: _this._getSelected(tab, index)
+          }, tab.props.children) : undefined);
+          return _react2['default'].cloneElement(tab, {
+            key: index,
+            selected: _this._getSelected(tab, index),
+            tabIndex: index,
+            width: width,
+            onTouchTap: _this._handleTabTouchTap
+          });
+        });
+        var inkBar = this.state.selectedIndex !== -1 ? _react2['default'].createElement(_inkBar2['default'], {
+          left: left,
+          width: width,
+          style: inkBarStyle
+        }) : null;
+        var inkBarContainerWidth = tabItemContainerStyle ? tabItemContainerStyle.width : '100%';
+        return _react2['default'].createElement('div', _extends({}, other, {style: this.prepareStyles(style)}), _react2['default'].createElement('div', {style: this.prepareStyles(styles.tabItemContainer, tabItemContainerStyle)}, tabs), _react2['default'].createElement('div', {style: {width: inkBarContainerWidth}}, inkBar), _react2['default'].createElement('div', {
+          style: this.prepareStyles(contentContainerStyle),
+          className: contentContainerClassName
+        }, tabContent));
+      },
+      _getSelectedIndex: function _getSelectedIndex(props) {
+        var valueLink = this.getValueLink(props);
+        var selectedIndex = -1;
+        _react2['default'].Children.forEach(props.children, function(tab, index) {
+          if (valueLink.value === tab.props.value) {
+            selectedIndex = index;
+          }
+        });
+        return selectedIndex;
+      },
+      _handleTabTouchTap: function _handleTabTouchTap(value, e, tab) {
+        var valueLink = this.getValueLink(this.props);
+        var tabIndex = tab.props.tabIndex;
+        if (valueLink.value && valueLink.value !== value || this.state.selectedIndex !== tabIndex) {
+          valueLink.requestChange(value, e, tab);
+        }
+        this.setState({selectedIndex: tabIndex});
+        if (tab.props.onActive) {
+          tab.props.onActive(tab);
+        }
+      },
+      _getSelected: function _getSelected(tab, index) {
+        var valueLink = this.getValueLink(this.props);
+        return valueLink.value ? valueLink.value === tab.props.value : this.state.selectedIndex === index;
+      }
+    });
+    exports['default'] = Tabs;
+    module.exports = exports['default'];
+  })($__require('github:jspm/nodelibs-process@0.1.2'));
+  global.define = __define;
+  return module.exports;
+});
+
 System.registerDynamic("npm:material-ui@0.14.0/lib/table/table", ["npm:react@0.14.5", "npm:react-dom@0.14.5", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager"], true, function($__require, exports, module) {
   "use strict";
   ;
@@ -31240,6 +31712,43 @@ System.registerDynamic("npm:material-ui@0.14.0/lib/font-icon", ["npm:react@0.14.
   return module.exports;
 });
 
+System.registerDynamic("npm:material-ui@0.14.0/lib/styles/transitions", [], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, '__esModule', {value: true});
+  exports['default'] = {
+    easeOutFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
+    easeInOutFunction: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)',
+    easeOut: function easeOut(duration, property, delay, easeFunction) {
+      easeFunction = easeFunction || this.easeOutFunction;
+      if (property && Object.prototype.toString.call(property) === '[object Array]') {
+        var transitions = '';
+        for (var i = 0; i < property.length; i++) {
+          if (transitions)
+            transitions += ',';
+          transitions += this.create(duration, property[i], delay, easeFunction);
+        }
+        return transitions;
+      } else {
+        return this.create(duration, property, delay, easeFunction);
+      }
+    },
+    create: function create(duration, property, delay, easeFunction) {
+      duration = duration || '450ms';
+      property = property || 'all';
+      delay = delay || '0ms';
+      easeFunction = easeFunction || 'linear';
+      return property + ' ' + duration + ' ' + easeFunction + ' ' + delay;
+    }
+  };
+  module.exports = exports['default'];
+  global.define = __define;
+  return module.exports;
+});
+
 System.registerDynamic("npm:material-ui@0.14.0/lib/tooltip", ["npm:react@0.14.5", "npm:react-dom@0.14.5", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/transitions", "npm:material-ui@0.14.0/lib/styles/colors", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager"], true, function($__require, exports, module) {
   "use strict";
   ;
@@ -31755,451 +32264,6 @@ System.registerDynamic("npm:material-ui@0.14.0/lib/icon-button", ["npm:react@0.1
     }
   });
   exports['default'] = IconButton;
-  module.exports = exports['default'];
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/utils/shallow-equal", [], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  exports['default'] = shallowEqual;
-  function shallowEqual(objA, objB) {
-    if (objA === objB) {
-      return true;
-    }
-    if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
-      return false;
-    }
-    var keysA = Object.keys(objA);
-    var keysB = Object.keys(objB);
-    if (keysA.length !== keysB.length) {
-      return false;
-    }
-    var bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB);
-    for (var i = 0; i < keysA.length; i++) {
-      if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
-        return false;
-      }
-    }
-    return true;
-  }
-  module.exports = exports['default'];
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/mixins/context-pure", ["npm:material-ui@0.14.0/lib/utils/shallow-equal"], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {'default': obj};
-  }
-  var _utilsShallowEqual = $__require('npm:material-ui@0.14.0/lib/utils/shallow-equal');
-  var _utilsShallowEqual2 = _interopRequireDefault(_utilsShallowEqual);
-  function relevantContextKeysEqual(classObject, currentContext, nextContext) {
-    if (classObject.getRelevantContextKeys) {
-      var currentContextKeys = classObject.getRelevantContextKeys(currentContext);
-      var nextContextKeys = classObject.getRelevantContextKeys(nextContext);
-      if (!(0, _utilsShallowEqual2['default'])(currentContextKeys, nextContextKeys)) {
-        return false;
-      }
-    }
-    if (classObject.getChildrenClasses) {
-      var childrenArray = classObject.getChildrenClasses();
-      for (var i = 0; i < childrenArray.length; i++) {
-        if (!relevantContextKeysEqual(childrenArray[i], currentContext, nextContext)) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-  exports['default'] = {shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState, nextContext) {
-      if (!(0, _utilsShallowEqual2['default'])(this.props, nextProps) || !(0, _utilsShallowEqual2['default'])(this.state, nextState)) {
-        return true;
-      }
-      if (!this.context.muiTheme && !nextContext.muiTheme) {
-        return false;
-      }
-      if (this.context.muiTheme && nextContext.muiTheme) {
-        return !this.context.muiTheme['static'] && !relevantContextKeysEqual(this.constructor, this.context.muiTheme, nextContext.muiTheme);
-      }
-      return true;
-    }};
-  module.exports = exports['default'];
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/card/card-expandable", ["npm:react@0.14.5", "npm:material-ui@0.14.0/lib/utils/extend", "npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-up", "npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-down", "npm:material-ui@0.14.0/lib/icon-button", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager", "npm:material-ui@0.14.0/lib/mixins/context-pure"], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {'default': obj};
-  }
-  var _react = $__require('npm:react@0.14.5');
-  var _react2 = _interopRequireDefault(_react);
-  var _utilsExtend = $__require('npm:material-ui@0.14.0/lib/utils/extend');
-  var _utilsExtend2 = _interopRequireDefault(_utilsExtend);
-  var _svgIconsHardwareKeyboardArrowUp = $__require('npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-up');
-  var _svgIconsHardwareKeyboardArrowUp2 = _interopRequireDefault(_svgIconsHardwareKeyboardArrowUp);
-  var _svgIconsHardwareKeyboardArrowDown = $__require('npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-down');
-  var _svgIconsHardwareKeyboardArrowDown2 = _interopRequireDefault(_svgIconsHardwareKeyboardArrowDown);
-  var _iconButton = $__require('npm:material-ui@0.14.0/lib/icon-button');
-  var _iconButton2 = _interopRequireDefault(_iconButton);
-  var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
-  var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-  var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
-  var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-  var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
-  var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-  var _mixinsContextPure = $__require('npm:material-ui@0.14.0/lib/mixins/context-pure');
-  var _mixinsContextPure2 = _interopRequireDefault(_mixinsContextPure);
-  var CardExpandable = _react2['default'].createClass({
-    displayName: 'CardExpandable',
-    mixins: [_mixinsStylePropable2['default'], _mixinsContextPure2['default']],
-    getStyles: function getStyles() {
-      var contextKeys = this.constructor.getRelevantContextKeys(this.state.muiTheme);
-      var directionStyle = contextKeys.isRtl ? {left: 4} : {right: 4};
-      return {root: (0, _utilsExtend2['default'])({
-          top: 0,
-          bottom: 0,
-          margin: 'auto',
-          position: 'absolute'
-        }, directionStyle)};
-    },
-    contextTypes: {muiTheme: _react2['default'].PropTypes.object},
-    propTypes: {
-      expanded: _react2['default'].PropTypes.bool,
-      onExpanding: _react2['default'].PropTypes.func.isRequired,
-      style: _react2['default'].PropTypes.object
-    },
-    childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
-    getChildContext: function getChildContext() {
-      return {muiTheme: this.state.muiTheme};
-    },
-    statics: {
-      getRelevantContextKeys: function getRelevantContextKeys(muiTheme) {
-        return {isRtl: muiTheme.isRtl};
-      },
-      getChildrenClasses: function getChildrenClasses() {
-        return [_iconButton2['default']];
-      }
-    },
-    getInitialState: function getInitialState() {
-      return {muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])};
-    },
-    componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-      var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-      this.setState({muiTheme: newMuiTheme});
-    },
-    render: function render() {
-      var styles = this.getStyles();
-      var expandable = undefined;
-      if (this.props.expanded === true)
-        expandable = _react2['default'].createElement(_svgIconsHardwareKeyboardArrowUp2['default'], null);
-      else
-        expandable = _react2['default'].createElement(_svgIconsHardwareKeyboardArrowDown2['default'], null);
-      var mergedStyles = this.mergeStyles(styles.root, this.props.style);
-      var expandableBtn = _react2['default'].createElement(_iconButton2['default'], {
-        style: mergedStyles,
-        onTouchTap: this.props.onExpanding
-      }, expandable);
-      return expandableBtn;
-    }
-  });
-  exports['default'] = CardExpandable;
-  module.exports = exports['default'];
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/card/index", ["npm:material-ui@0.14.0/lib/card/card", "npm:material-ui@0.14.0/lib/card/card-header", "npm:material-ui@0.14.0/lib/card/card-title", "npm:material-ui@0.14.0/lib/card/card-media", "npm:material-ui@0.14.0/lib/card/card-text", "npm:material-ui@0.14.0/lib/card/card-actions", "npm:material-ui@0.14.0/lib/card/card-expandable"], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {'default': obj};
-  }
-  var _card = $__require('npm:material-ui@0.14.0/lib/card/card');
-  var _card2 = _interopRequireDefault(_card);
-  var _cardHeader = $__require('npm:material-ui@0.14.0/lib/card/card-header');
-  var _cardHeader2 = _interopRequireDefault(_cardHeader);
-  var _cardTitle = $__require('npm:material-ui@0.14.0/lib/card/card-title');
-  var _cardTitle2 = _interopRequireDefault(_cardTitle);
-  var _cardMedia = $__require('npm:material-ui@0.14.0/lib/card/card-media');
-  var _cardMedia2 = _interopRequireDefault(_cardMedia);
-  var _cardText = $__require('npm:material-ui@0.14.0/lib/card/card-text');
-  var _cardText2 = _interopRequireDefault(_cardText);
-  var _cardActions = $__require('npm:material-ui@0.14.0/lib/card/card-actions');
-  var _cardActions2 = _interopRequireDefault(_cardActions);
-  var _cardExpandable = $__require('npm:material-ui@0.14.0/lib/card/card-expandable');
-  var _cardExpandable2 = _interopRequireDefault(_cardExpandable);
-  exports.Card = _card2['default'];
-  exports.CardHeader = _cardHeader2['default'];
-  exports.CardTitle = _cardTitle2['default'];
-  exports.CardMedia = _cardMedia2['default'];
-  exports.CardText = _cardText2['default'];
-  exports.CardActions = _cardActions2['default'];
-  exports.CardExpandable = _cardExpandable2['default'];
-  exports['default'] = {
-    Card: _card2['default'],
-    CardHeader: _cardHeader2['default'],
-    CardTitle: _cardTitle2['default'],
-    CardMedia: _cardMedia2['default'],
-    CardText: _cardText2['default'],
-    CardActions: _cardActions2['default'],
-    CardExpandable: _cardExpandable2['default']
-  };
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/card", ["npm:material-ui@0.14.0/lib/card/index"], true, function($__require, exports, module) {
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  module.exports = $__require('npm:material-ui@0.14.0/lib/card/index');
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/tab", ["npm:react@0.14.5", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager"], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  var _extends = Object.assign || function(target) {
-    for (var i = 1; i < arguments.length; i++) {
-      var source = arguments[i];
-      for (var key in source) {
-        if (Object.prototype.hasOwnProperty.call(source, key)) {
-          target[key] = source[key];
-        }
-      }
-    }
-    return target;
-  };
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {'default': obj};
-  }
-  function _objectWithoutProperties(obj, keys) {
-    var target = {};
-    for (var i in obj) {
-      if (keys.indexOf(i) >= 0)
-        continue;
-      if (!Object.prototype.hasOwnProperty.call(obj, i))
-        continue;
-      target[i] = obj[i];
-    }
-    return target;
-  }
-  var _react = $__require('npm:react@0.14.5');
-  var _react2 = _interopRequireDefault(_react);
-  var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
-  var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-  var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
-  var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-  var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
-  var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-  var Tab = _react2['default'].createClass({
-    displayName: 'Tab',
-    mixins: [_mixinsStylePropable2['default']],
-    contextTypes: {muiTheme: _react2['default'].PropTypes.object},
-    propTypes: {
-      className: _react2['default'].PropTypes.string,
-      label: _react2['default'].PropTypes.node,
-      onActive: _react2['default'].PropTypes.func,
-      onTouchTap: _react2['default'].PropTypes.func,
-      selected: _react2['default'].PropTypes.bool,
-      style: _react2['default'].PropTypes.object,
-      value: _react2['default'].PropTypes.any,
-      width: _react2['default'].PropTypes.string
-    },
-    childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
-    getChildContext: function getChildContext() {
-      return {muiTheme: this.state.muiTheme};
-    },
-    getInitialState: function getInitialState() {
-      return {muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])};
-    },
-    componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-      var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-      this.setState({muiTheme: newMuiTheme});
-    },
-    render: function render() {
-      var _props = this.props;
-      var label = _props.label;
-      var onActive = _props.onActive;
-      var onTouchTap = _props.onTouchTap;
-      var selected = _props.selected;
-      var style = _props.style;
-      var value = _props.value;
-      var width = _props.width;
-      var other = _objectWithoutProperties(_props, ['label', 'onActive', 'onTouchTap', 'selected', 'style', 'value', 'width']);
-      var styles = this.prepareStyles({
-        display: 'table-cell',
-        cursor: 'pointer',
-        textAlign: 'center',
-        verticalAlign: 'middle',
-        height: 48,
-        color: selected ? this.state.muiTheme.tabs.selectedTextColor : this.state.muiTheme.tabs.textColor,
-        outline: 'none',
-        fontSize: 14,
-        fontWeight: 500,
-        whiteSpace: 'initial',
-        fontFamily: this.state.muiTheme.rawTheme.fontFamily,
-        boxSizing: 'border-box',
-        width: width
-      }, style);
-      return _react2['default'].createElement('div', _extends({}, other, {
-        style: styles,
-        onTouchTap: this._handleTouchTap
-      }), label);
-    },
-    _handleTouchTap: function _handleTouchTap(event) {
-      if (this.props.onTouchTap) {
-        this.props.onTouchTap(this.props.value, event, this);
-      }
-    }
-  });
-  exports['default'] = Tab;
-  module.exports = exports['default'];
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/styles/transitions", [], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  exports['default'] = {
-    easeOutFunction: 'cubic-bezier(0.23, 1, 0.32, 1)',
-    easeInOutFunction: 'cubic-bezier(0.445, 0.05, 0.55, 0.95)',
-    easeOut: function easeOut(duration, property, delay, easeFunction) {
-      easeFunction = easeFunction || this.easeOutFunction;
-      if (property && Object.prototype.toString.call(property) === '[object Array]') {
-        var transitions = '';
-        for (var i = 0; i < property.length; i++) {
-          if (transitions)
-            transitions += ',';
-          transitions += this.create(duration, property[i], delay, easeFunction);
-        }
-        return transitions;
-      } else {
-        return this.create(duration, property, delay, easeFunction);
-      }
-    },
-    create: function create(duration, property, delay, easeFunction) {
-      duration = duration || '450ms';
-      property = property || 'all';
-      delay = delay || '0ms';
-      easeFunction = easeFunction || 'linear';
-      return property + ' ' + duration + ' ' + easeFunction + ' ' + delay;
-    }
-  };
-  module.exports = exports['default'];
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/ink-bar", ["npm:react@0.14.5", "npm:material-ui@0.14.0/lib/styles/transitions", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager"], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {'default': obj};
-  }
-  function _objectWithoutProperties(obj, keys) {
-    var target = {};
-    for (var i in obj) {
-      if (keys.indexOf(i) >= 0)
-        continue;
-      if (!Object.prototype.hasOwnProperty.call(obj, i))
-        continue;
-      target[i] = obj[i];
-    }
-    return target;
-  }
-  var _react = $__require('npm:react@0.14.5');
-  var _react2 = _interopRequireDefault(_react);
-  var _stylesTransitions = $__require('npm:material-ui@0.14.0/lib/styles/transitions');
-  var _stylesTransitions2 = _interopRequireDefault(_stylesTransitions);
-  var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
-  var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-  var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
-  var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-  var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
-  var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-  var InkBar = _react2['default'].createClass({
-    displayName: 'InkBar',
-    contextTypes: {muiTheme: _react2['default'].PropTypes.object},
-    childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
-    getChildContext: function getChildContext() {
-      return {muiTheme: this.state.muiTheme};
-    },
-    propTypes: {
-      color: _react2['default'].PropTypes.string,
-      left: _react2['default'].PropTypes.string.isRequired,
-      style: _react2['default'].PropTypes.object,
-      width: _react2['default'].PropTypes.string.isRequired
-    },
-    getInitialState: function getInitialState() {
-      return {muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])};
-    },
-    componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
-      var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-      this.setState({muiTheme: newMuiTheme});
-    },
-    mixins: [_mixinsStylePropable2['default']],
-    render: function render() {
-      var _props = this.props;
-      var color = _props.color;
-      var left = _props.left;
-      var width = _props.width;
-      var style = _props.style;
-      var other = _objectWithoutProperties(_props, ['color', 'left', 'width', 'style']);
-      var colorStyle = color ? {backgroundColor: color} : undefined;
-      var styles = this.prepareStyles({
-        left: left,
-        width: width,
-        bottom: 0,
-        display: 'block',
-        backgroundColor: this.state.muiTheme.inkBar.backgroundColor,
-        height: 2,
-        marginTop: -2,
-        position: 'relative',
-        transition: _stylesTransitions2['default'].easeOut('1s', 'left')
-      }, this.props.style, colorStyle);
-      return _react2['default'].createElement('div', {style: styles}, ' ');
-    }
-  });
-  exports['default'] = InkBar;
   module.exports = exports['default'];
   global.define = __define;
   return module.exports;
@@ -33957,42 +34021,6 @@ System.registerDynamic("npm:material-ui@0.14.0/lib/mixins/style-propable", ["npm
     },
     prepareStyles: function prepareStyles() {
       return _utilsStyles2['default'].prepareStyles.apply(_utilsStyles2['default'], [this.state && this.state.muiTheme || this.context.muiTheme].concat([].slice.apply(arguments)));
-    }
-  };
-  module.exports = exports['default'];
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/mixins/controllable", ["npm:react@0.14.5"], true, function($__require, exports, module) {
-  "use strict";
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  Object.defineProperty(exports, '__esModule', {value: true});
-  function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {'default': obj};
-  }
-  var _react = $__require('npm:react@0.14.5');
-  var _react2 = _interopRequireDefault(_react);
-  exports['default'] = {
-    propTypes: {
-      onChange: _react2['default'].PropTypes.func,
-      value: _react2['default'].PropTypes.oneOfType([_react2['default'].PropTypes.string, _react2['default'].PropTypes.array]),
-      valueLink: _react2['default'].PropTypes.shape({
-        value: _react2['default'].PropTypes.string.isRequired,
-        requestChange: _react2['default'].PropTypes.func.isRequired
-      })
-    },
-    getDefaultProps: function getDefaultProps() {
-      return {onChange: function onChange() {}};
-    },
-    getValueLink: function getValueLink(props) {
-      return props.valueLink || {
-        value: props.value,
-        requestChange: props.onChange
-      };
     }
   };
   module.exports = exports['default'];
@@ -35806,7 +35834,87 @@ System.registerDynamic("npm:material-ui@0.14.0/lib/styles/theme-manager", ["npm:
   return module.exports;
 });
 
-System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/tabTemplate", ["npm:react@0.14.5"], true, function($__require, exports, module) {
+System.registerDynamic("npm:material-ui@0.14.0/lib/utils/shallow-equal", [], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, '__esModule', {value: true});
+  exports['default'] = shallowEqual;
+  function shallowEqual(objA, objB) {
+    if (objA === objB) {
+      return true;
+    }
+    if (typeof objA !== 'object' || objA === null || typeof objB !== 'object' || objB === null) {
+      return false;
+    }
+    var keysA = Object.keys(objA);
+    var keysB = Object.keys(objB);
+    if (keysA.length !== keysB.length) {
+      return false;
+    }
+    var bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB);
+    for (var i = 0; i < keysA.length; i++) {
+      if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+        return false;
+      }
+    }
+    return true;
+  }
+  module.exports = exports['default'];
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:material-ui@0.14.0/lib/mixins/context-pure", ["npm:material-ui@0.14.0/lib/utils/shallow-equal"], true, function($__require, exports, module) {
+  "use strict";
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  Object.defineProperty(exports, '__esModule', {value: true});
+  function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : {'default': obj};
+  }
+  var _utilsShallowEqual = $__require('npm:material-ui@0.14.0/lib/utils/shallow-equal');
+  var _utilsShallowEqual2 = _interopRequireDefault(_utilsShallowEqual);
+  function relevantContextKeysEqual(classObject, currentContext, nextContext) {
+    if (classObject.getRelevantContextKeys) {
+      var currentContextKeys = classObject.getRelevantContextKeys(currentContext);
+      var nextContextKeys = classObject.getRelevantContextKeys(nextContext);
+      if (!(0, _utilsShallowEqual2['default'])(currentContextKeys, nextContextKeys)) {
+        return false;
+      }
+    }
+    if (classObject.getChildrenClasses) {
+      var childrenArray = classObject.getChildrenClasses();
+      for (var i = 0; i < childrenArray.length; i++) {
+        if (!relevantContextKeysEqual(childrenArray[i], currentContext, nextContext)) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+  exports['default'] = {shouldComponentUpdate: function shouldComponentUpdate(nextProps, nextState, nextContext) {
+      if (!(0, _utilsShallowEqual2['default'])(this.props, nextProps) || !(0, _utilsShallowEqual2['default'])(this.state, nextState)) {
+        return true;
+      }
+      if (!this.context.muiTheme && !nextContext.muiTheme) {
+        return false;
+      }
+      if (this.context.muiTheme && nextContext.muiTheme) {
+        return !this.context.muiTheme['static'] && !relevantContextKeysEqual(this.constructor, this.context.muiTheme, nextContext.muiTheme);
+      }
+      return true;
+    }};
+  module.exports = exports['default'];
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:material-ui@0.14.0/lib/card/card-expandable", ["npm:react@0.14.5", "npm:material-ui@0.14.0/lib/utils/extend", "npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-up", "npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-down", "npm:material-ui@0.14.0/lib/icon-button", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager", "npm:material-ui@0.14.0/lib/mixins/context-pure"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -35818,219 +35926,82 @@ System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/tabTemplate", ["npm:reac
   }
   var _react = $__require('npm:react@0.14.5');
   var _react2 = _interopRequireDefault(_react);
-  var TabTemplate = _react2['default'].createClass({
-    displayName: 'TabTemplate',
+  var _utilsExtend = $__require('npm:material-ui@0.14.0/lib/utils/extend');
+  var _utilsExtend2 = _interopRequireDefault(_utilsExtend);
+  var _svgIconsHardwareKeyboardArrowUp = $__require('npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-up');
+  var _svgIconsHardwareKeyboardArrowUp2 = _interopRequireDefault(_svgIconsHardwareKeyboardArrowUp);
+  var _svgIconsHardwareKeyboardArrowDown = $__require('npm:material-ui@0.14.0/lib/svg-icons/hardware/keyboard-arrow-down');
+  var _svgIconsHardwareKeyboardArrowDown2 = _interopRequireDefault(_svgIconsHardwareKeyboardArrowDown);
+  var _iconButton = $__require('npm:material-ui@0.14.0/lib/icon-button');
+  var _iconButton2 = _interopRequireDefault(_iconButton);
+  var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
+  var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
+  var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
+  var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
+  var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
+  var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
+  var _mixinsContextPure = $__require('npm:material-ui@0.14.0/lib/mixins/context-pure');
+  var _mixinsContextPure2 = _interopRequireDefault(_mixinsContextPure);
+  var CardExpandable = _react2['default'].createClass({
+    displayName: 'CardExpandable',
+    mixins: [_mixinsStylePropable2['default'], _mixinsContextPure2['default']],
+    getStyles: function getStyles() {
+      var contextKeys = this.constructor.getRelevantContextKeys(this.state.muiTheme);
+      var directionStyle = contextKeys.isRtl ? {left: 4} : {right: 4};
+      return {root: (0, _utilsExtend2['default'])({
+          top: 0,
+          bottom: 0,
+          margin: 'auto',
+          position: 'absolute'
+        }, directionStyle)};
+    },
+    contextTypes: {muiTheme: _react2['default'].PropTypes.object},
     propTypes: {
-      children: _react2['default'].PropTypes.node,
-      selected: _react2['default'].PropTypes.bool
+      expanded: _react2['default'].PropTypes.bool,
+      onExpanding: _react2['default'].PropTypes.func.isRequired,
+      style: _react2['default'].PropTypes.object
+    },
+    childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
+    getChildContext: function getChildContext() {
+      return {muiTheme: this.state.muiTheme};
+    },
+    statics: {
+      getRelevantContextKeys: function getRelevantContextKeys(muiTheme) {
+        return {isRtl: muiTheme.isRtl};
+      },
+      getChildrenClasses: function getChildrenClasses() {
+        return [_iconButton2['default']];
+      }
+    },
+    getInitialState: function getInitialState() {
+      return {muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])};
+    },
+    componentWillReceiveProps: function componentWillReceiveProps(nextProps, nextContext) {
+      var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
+      this.setState({muiTheme: newMuiTheme});
     },
     render: function render() {
-      var styles = {
-        height: 0,
-        overflow: 'hidden',
-        width: '100%',
-        position: 'relative',
-        textAlign: 'initial'
-      };
-      if (this.props.selected) {
-        delete styles.height;
-        delete styles.overflow;
-      }
-      return _react2['default'].createElement('div', {style: styles}, this.props.children);
+      var styles = this.getStyles();
+      var expandable = undefined;
+      if (this.props.expanded === true)
+        expandable = _react2['default'].createElement(_svgIconsHardwareKeyboardArrowUp2['default'], null);
+      else
+        expandable = _react2['default'].createElement(_svgIconsHardwareKeyboardArrowDown2['default'], null);
+      var mergedStyles = this.mergeStyles(styles.root, this.props.style);
+      var expandableBtn = _react2['default'].createElement(_iconButton2['default'], {
+        style: mergedStyles,
+        onTouchTap: this.props.onExpanding
+      }, expandable);
+      return expandableBtn;
     }
   });
-  exports['default'] = TabTemplate;
+  exports['default'] = CardExpandable;
   module.exports = exports['default'];
   global.define = __define;
   return module.exports;
 });
 
-System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/tabs", ["npm:react@0.14.5", "npm:react-dom@0.14.5", "npm:material-ui@0.14.0/lib/ink-bar", "npm:material-ui@0.14.0/lib/mixins/style-propable", "npm:material-ui@0.14.0/lib/mixins/controllable", "npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme", "npm:material-ui@0.14.0/lib/styles/theme-manager", "npm:warning@2.1.0", "npm:material-ui@0.14.0/lib/tabs/tabTemplate", "github:jspm/nodelibs-process@0.1.2"], true, function($__require, exports, module) {
-  ;
-  var global = this,
-      __define = global.define;
-  global.define = undefined;
-  (function(process) {
-    'use strict';
-    Object.defineProperty(exports, '__esModule', {value: true});
-    var _extends = Object.assign || function(target) {
-      for (var i = 1; i < arguments.length; i++) {
-        var source = arguments[i];
-        for (var key in source) {
-          if (Object.prototype.hasOwnProperty.call(source, key)) {
-            target[key] = source[key];
-          }
-        }
-      }
-      return target;
-    };
-    function _interopRequireDefault(obj) {
-      return obj && obj.__esModule ? obj : {'default': obj};
-    }
-    function _objectWithoutProperties(obj, keys) {
-      var target = {};
-      for (var i in obj) {
-        if (keys.indexOf(i) >= 0)
-          continue;
-        if (!Object.prototype.hasOwnProperty.call(obj, i))
-          continue;
-        target[i] = obj[i];
-      }
-      return target;
-    }
-    var _react = $__require('npm:react@0.14.5');
-    var _react2 = _interopRequireDefault(_react);
-    var _reactDom = $__require('npm:react-dom@0.14.5');
-    var _reactDom2 = _interopRequireDefault(_reactDom);
-    var _inkBar = $__require('npm:material-ui@0.14.0/lib/ink-bar');
-    var _inkBar2 = _interopRequireDefault(_inkBar);
-    var _mixinsStylePropable = $__require('npm:material-ui@0.14.0/lib/mixins/style-propable');
-    var _mixinsStylePropable2 = _interopRequireDefault(_mixinsStylePropable);
-    var _mixinsControllable = $__require('npm:material-ui@0.14.0/lib/mixins/controllable');
-    var _mixinsControllable2 = _interopRequireDefault(_mixinsControllable);
-    var _stylesRawThemesLightRawTheme = $__require('npm:material-ui@0.14.0/lib/styles/raw-themes/light-raw-theme');
-    var _stylesRawThemesLightRawTheme2 = _interopRequireDefault(_stylesRawThemesLightRawTheme);
-    var _stylesThemeManager = $__require('npm:material-ui@0.14.0/lib/styles/theme-manager');
-    var _stylesThemeManager2 = _interopRequireDefault(_stylesThemeManager);
-    var _warning = $__require('npm:warning@2.1.0');
-    var _warning2 = _interopRequireDefault(_warning);
-    var TabTemplate = $__require('npm:material-ui@0.14.0/lib/tabs/tabTemplate');
-    var Tabs = _react2['default'].createClass({
-      displayName: 'Tabs',
-      mixins: [_mixinsStylePropable2['default'], _mixinsControllable2['default']],
-      contextTypes: {muiTheme: _react2['default'].PropTypes.object},
-      propTypes: {
-        children: _react2['default'].PropTypes.node,
-        className: _react2['default'].PropTypes.string,
-        contentContainerClassName: _react2['default'].PropTypes.string,
-        contentContainerStyle: _react2['default'].PropTypes.object,
-        initialSelectedIndex: _react2['default'].PropTypes.number,
-        inkBarStyle: _react2['default'].PropTypes.object,
-        onChange: _react2['default'].PropTypes.func,
-        style: _react2['default'].PropTypes.object,
-        tabItemContainerStyle: _react2['default'].PropTypes.object,
-        tabTemplate: _react2['default'].PropTypes.func,
-        value: _react2['default'].PropTypes.any
-      },
-      childContextTypes: {muiTheme: _react2['default'].PropTypes.object},
-      getChildContext: function getChildContext() {
-        return {muiTheme: this.state.muiTheme};
-      },
-      getDefaultProps: function getDefaultProps() {
-        return {
-          initialSelectedIndex: 0,
-          tabTemplate: TabTemplate
-        };
-      },
-      getInitialState: function getInitialState() {
-        var valueLink = this.getValueLink(this.props);
-        var initialIndex = this.props.initialSelectedIndex;
-        return {
-          selectedIndex: valueLink.value !== undefined ? this._getSelectedIndex(this.props) : initialIndex < this.getTabCount() ? initialIndex : 0,
-          muiTheme: this.context.muiTheme ? this.context.muiTheme : _stylesThemeManager2['default'].getMuiTheme(_stylesRawThemesLightRawTheme2['default'])
-        };
-      },
-      getEvenWidth: function getEvenWidth() {
-        return parseInt(window.getComputedStyle(_reactDom2['default'].findDOMNode(this)).getPropertyValue('width'), 10);
-      },
-      getTabCount: function getTabCount() {
-        return _react2['default'].Children.count(this.props.children);
-      },
-      componentWillReceiveProps: function componentWillReceiveProps(newProps, nextContext) {
-        var valueLink = this.getValueLink(newProps);
-        var newMuiTheme = nextContext.muiTheme ? nextContext.muiTheme : this.state.muiTheme;
-        if (valueLink.value !== undefined) {
-          this.setState({selectedIndex: this._getSelectedIndex(newProps)});
-        }
-        this.setState({muiTheme: newMuiTheme});
-      },
-      render: function render() {
-        var _this = this;
-        var _props = this.props;
-        var children = _props.children;
-        var contentContainerClassName = _props.contentContainerClassName;
-        var contentContainerStyle = _props.contentContainerStyle;
-        var initialSelectedIndex = _props.initialSelectedIndex;
-        var inkBarStyle = _props.inkBarStyle;
-        var style = _props.style;
-        var tabItemContainerStyle = _props.tabItemContainerStyle;
-        var tabTemplate = _props.tabTemplate;
-        var other = _objectWithoutProperties(_props, ['children', 'contentContainerClassName', 'contentContainerStyle', 'initialSelectedIndex', 'inkBarStyle', 'style', 'tabItemContainerStyle', 'tabTemplate']);
-        var themeVariables = this.state.muiTheme.tabs;
-        var styles = {tabItemContainer: {
-            margin: 0,
-            padding: 0,
-            width: '100%',
-            height: 48,
-            backgroundColor: themeVariables.backgroundColor,
-            whiteSpace: 'nowrap',
-            display: 'table'
-          }};
-        var valueLink = this.getValueLink(this.props);
-        var tabValue = valueLink.value;
-        var tabContent = [];
-        var width = 100 / this.getTabCount() + '%';
-        var left = 'calc(' + width + '*' + this.state.selectedIndex + ')';
-        var tabs = _react2['default'].Children.map(children, function(tab, index) {
-          process.env.NODE_ENV !== 'production' ? (0, _warning2['default'])(tab.type && tab.type.displayName === 'Tab', 'Tabs only accepts Tab Components as children.\n        Found ' + (tab.type.displayName || tab.type) + ' as child number ' + (index + 1) + ' of Tabs') : undefined;
-          process.env.NODE_ENV !== 'production' ? (0, _warning2['default'])(!tabValue || tab.props.value !== undefined, 'Tabs value prop has been passed, but Tab ' + index + '\n        does not have a value prop. Needs value if Tabs is going\n        to be a controlled component.') : undefined;
-          tabContent.push(tab.props.children ? _react2['default'].createElement(tabTemplate, {
-            key: index,
-            selected: _this._getSelected(tab, index)
-          }, tab.props.children) : undefined);
-          return _react2['default'].cloneElement(tab, {
-            key: index,
-            selected: _this._getSelected(tab, index),
-            tabIndex: index,
-            width: width,
-            onTouchTap: _this._handleTabTouchTap
-          });
-        });
-        var inkBar = this.state.selectedIndex !== -1 ? _react2['default'].createElement(_inkBar2['default'], {
-          left: left,
-          width: width,
-          style: inkBarStyle
-        }) : null;
-        var inkBarContainerWidth = tabItemContainerStyle ? tabItemContainerStyle.width : '100%';
-        return _react2['default'].createElement('div', _extends({}, other, {style: this.prepareStyles(style)}), _react2['default'].createElement('div', {style: this.prepareStyles(styles.tabItemContainer, tabItemContainerStyle)}, tabs), _react2['default'].createElement('div', {style: {width: inkBarContainerWidth}}, inkBar), _react2['default'].createElement('div', {
-          style: this.prepareStyles(contentContainerStyle),
-          className: contentContainerClassName
-        }, tabContent));
-      },
-      _getSelectedIndex: function _getSelectedIndex(props) {
-        var valueLink = this.getValueLink(props);
-        var selectedIndex = -1;
-        _react2['default'].Children.forEach(props.children, function(tab, index) {
-          if (valueLink.value === tab.props.value) {
-            selectedIndex = index;
-          }
-        });
-        return selectedIndex;
-      },
-      _handleTabTouchTap: function _handleTabTouchTap(value, e, tab) {
-        var valueLink = this.getValueLink(this.props);
-        var tabIndex = tab.props.tabIndex;
-        if (valueLink.value && valueLink.value !== value || this.state.selectedIndex !== tabIndex) {
-          valueLink.requestChange(value, e, tab);
-        }
-        this.setState({selectedIndex: tabIndex});
-        if (tab.props.onActive) {
-          tab.props.onActive(tab);
-        }
-      },
-      _getSelected: function _getSelected(tab, index) {
-        var valueLink = this.getValueLink(this.props);
-        return valueLink.value ? valueLink.value === tab.props.value : this.state.selectedIndex === index;
-      }
-    });
-    exports['default'] = Tabs;
-    module.exports = exports['default'];
-  })($__require('github:jspm/nodelibs-process@0.1.2'));
-  global.define = __define;
-  return module.exports;
-});
-
-System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/index", ["npm:material-ui@0.14.0/lib/tabs/tab", "npm:material-ui@0.14.0/lib/tabs/tabs"], true, function($__require, exports, module) {
+System.registerDynamic("npm:material-ui@0.14.0/lib/card/index", ["npm:material-ui@0.14.0/lib/card/card", "npm:material-ui@0.14.0/lib/card/card-header", "npm:material-ui@0.14.0/lib/card/card-title", "npm:material-ui@0.14.0/lib/card/card-media", "npm:material-ui@0.14.0/lib/card/card-text", "npm:material-ui@0.14.0/lib/card/card-actions", "npm:material-ui@0.14.0/lib/card/card-expandable"], true, function($__require, exports, module) {
   "use strict";
   ;
   var global = this,
@@ -36040,26 +36011,163 @@ System.registerDynamic("npm:material-ui@0.14.0/lib/tabs/index", ["npm:material-u
   function _interopRequireDefault(obj) {
     return obj && obj.__esModule ? obj : {'default': obj};
   }
-  var _tab = $__require('npm:material-ui@0.14.0/lib/tabs/tab');
-  var _tab2 = _interopRequireDefault(_tab);
-  var _tabs = $__require('npm:material-ui@0.14.0/lib/tabs/tabs');
-  var _tabs2 = _interopRequireDefault(_tabs);
-  exports.Tab = _tab2['default'];
-  exports.Tabs = _tabs2['default'];
+  var _card = $__require('npm:material-ui@0.14.0/lib/card/card');
+  var _card2 = _interopRequireDefault(_card);
+  var _cardHeader = $__require('npm:material-ui@0.14.0/lib/card/card-header');
+  var _cardHeader2 = _interopRequireDefault(_cardHeader);
+  var _cardTitle = $__require('npm:material-ui@0.14.0/lib/card/card-title');
+  var _cardTitle2 = _interopRequireDefault(_cardTitle);
+  var _cardMedia = $__require('npm:material-ui@0.14.0/lib/card/card-media');
+  var _cardMedia2 = _interopRequireDefault(_cardMedia);
+  var _cardText = $__require('npm:material-ui@0.14.0/lib/card/card-text');
+  var _cardText2 = _interopRequireDefault(_cardText);
+  var _cardActions = $__require('npm:material-ui@0.14.0/lib/card/card-actions');
+  var _cardActions2 = _interopRequireDefault(_cardActions);
+  var _cardExpandable = $__require('npm:material-ui@0.14.0/lib/card/card-expandable');
+  var _cardExpandable2 = _interopRequireDefault(_cardExpandable);
+  exports.Card = _card2['default'];
+  exports.CardHeader = _cardHeader2['default'];
+  exports.CardTitle = _cardTitle2['default'];
+  exports.CardMedia = _cardMedia2['default'];
+  exports.CardText = _cardText2['default'];
+  exports.CardActions = _cardActions2['default'];
+  exports.CardExpandable = _cardExpandable2['default'];
   exports['default'] = {
-    Tab: _tab2['default'],
-    Tabs: _tabs2['default']
+    Card: _card2['default'],
+    CardHeader: _cardHeader2['default'],
+    CardTitle: _cardTitle2['default'],
+    CardMedia: _cardMedia2['default'],
+    CardText: _cardText2['default'],
+    CardActions: _cardActions2['default'],
+    CardExpandable: _cardExpandable2['default']
   };
   global.define = __define;
   return module.exports;
 });
 
-System.registerDynamic("npm:material-ui@0.14.0/lib/tabs", ["npm:material-ui@0.14.0/lib/tabs/index"], true, function($__require, exports, module) {
+System.registerDynamic("npm:material-ui@0.14.0/lib/card", ["npm:material-ui@0.14.0/lib/card/index"], true, function($__require, exports, module) {
   ;
   var global = this,
       __define = global.define;
   global.define = undefined;
-  module.exports = $__require('npm:material-ui@0.14.0/lib/tabs/index');
+  module.exports = $__require('npm:material-ui@0.14.0/lib/card/index');
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:javascript-natural-sort@0.7.1/naturalSort", [], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = function naturalSort(a, b) {
+    "use strict";
+    var re = /(^([+\-]?(?:0|[1-9]\d*)(?:\.\d*)?(?:[eE][+\-]?\d+)?)?$|^0x[0-9a-f]+$|\d+)/gi,
+        sre = /(^[ ]*|[ ]*$)/g,
+        dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/,
+        hre = /^0x[0-9a-f]+$/i,
+        ore = /^0/,
+        i = function(s) {
+          return naturalSort.insensitive && ('' + s).toLowerCase() || '' + s;
+        },
+        x = i(a).replace(sre, '') || '',
+        y = i(b).replace(sre, '') || '',
+        xN = x.replace(re, '\0$1\0').replace(/\0$/, '').replace(/^\0/, '').split('\0'),
+        yN = y.replace(re, '\0$1\0').replace(/\0$/, '').replace(/^\0/, '').split('\0'),
+        xD = parseInt(x.match(hre), 16) || (xN.length !== 1 && x.match(dre) && Date.parse(x)),
+        yD = parseInt(y.match(hre), 16) || xD && y.match(dre) && Date.parse(y) || null,
+        oFxNcL,
+        oFyNcL;
+    if (yD) {
+      if (xD < yD) {
+        return -1;
+      } else if (xD > yD) {
+        return 1;
+      }
+    }
+    for (var cLoc = 0,
+        numS = Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
+      oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
+      oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+      if (isNaN(oFxNcL) !== isNaN(oFyNcL)) {
+        return (isNaN(oFxNcL)) ? 1 : -1;
+      } else if (typeof oFxNcL !== typeof oFyNcL) {
+        oFxNcL += '';
+        oFyNcL += '';
+      }
+      if (oFxNcL < oFyNcL) {
+        return -1;
+      }
+      if (oFxNcL > oFyNcL) {
+        return 1;
+      }
+    }
+    return 0;
+  };
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:javascript-natural-sort@0.7.1", ["npm:javascript-natural-sort@0.7.1/naturalSort"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = $__require('npm:javascript-natural-sort@0.7.1/naturalSort');
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:deep-access@0.0.1/index", [], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = deep;
+  function deep(obj, prop) {
+    var segs = prop.split('.');
+    while (segs.length) {
+      obj = obj[segs.shift()];
+    }
+    return obj;
+  }
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:deep-access@0.0.1", ["npm:deep-access@0.0.1/index"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = $__require('npm:deep-access@0.0.1/index');
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:object-property-natural-sort@0.0.4/property-sort", ["npm:javascript-natural-sort@0.7.1", "npm:deep-access@0.0.1"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = function(path) {
+    var naturalSort = $__require('npm:javascript-natural-sort@0.7.1'),
+        deep = $__require('npm:deep-access@0.0.1');
+    naturalSort.insensitive = true;
+    return function(a, b) {
+      return naturalSort(deep(a, path), deep(b, path));
+    };
+  };
+  global.define = __define;
+  return module.exports;
+});
+
+System.registerDynamic("npm:object-property-natural-sort@0.0.4", ["npm:object-property-natural-sort@0.0.4/property-sort"], true, function($__require, exports, module) {
+  ;
+  var global = this,
+      __define = global.define;
+  global.define = undefined;
+  module.exports = $__require('npm:object-property-natural-sort@0.0.4/property-sort');
   global.define = __define;
   return module.exports;
 });

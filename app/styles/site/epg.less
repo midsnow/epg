@@ -1,0 +1,106 @@
+.epg__container {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	overflow: auto;
+	top: 0;
+	left: 0;
+	padding-top: 65px;
+	.col1 {
+		float: left;
+		width: 20%;
+		height: 100%;
+		position: relative;
+		overflow: hidden;
+		padding: 0;
+	}
+	.col2 {
+		float: left;
+		width: 80%;
+		height: 100%;
+		position: relative;
+		overflow: auto;
+		padding: 0;
+		
+	}
+}
+
+.epg__menuBar {
+	width: 100%;
+	height:10%;
+	background: #666;
+}
+
+.epg__box {
+	width: 3600px;
+	height: 100%;
+	position: relative;
+	
+}
+
+.epg__row {
+	clear: both;
+	width: 100%;
+	position: relative;
+}
+
+.epg__base {
+	width: 100%;
+	height: 90%;
+	background: #fff;
+	z-index: 10;
+	overflow-y: auto;
+}
+
+.epg__channelSlot {
+	width: 100%;
+	height: 10%;
+	clear:both;
+	background: #ffffff;
+	z-index: 9;
+	border: 1px dashed #eee;
+	position:relative;
+	.text {
+		width: 50px;
+		height:25px;
+		position: absolute;
+		top: 0;
+		left: 0;
+		background: #151518;
+		z-index:2;
+		font-size:18px;
+		font-weight: bold;
+		text-align: center;
+		color: #fff
+	}
+	.logo {
+		background-position: center;
+		background-size: cover;
+		width: 85%;
+		height: 85%;
+		top: 7.5%;
+		left: 7.5%;
+		position: absolute;
+		z-index:1;
+	}
+}
+.epg__headerTime {
+	width: 150px;
+	height: 10%;
+	float: left;
+	background: #555;
+	z-index: 9;
+	color: #fff;
+	font-weight: bold;
+	font-size: 18px;
+	
+}
+
+.epg__timeSlot {
+	float: left;
+	width: 300px;
+	height: 10%;
+	background: #2C1D3A;
+	z-index: 9;
+	border: 1px dashed #555;
+}

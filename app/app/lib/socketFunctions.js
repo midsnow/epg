@@ -2,6 +2,7 @@ import React from 'react';
 import path from 'path';
 import _ from 'lodash';
 import randomNumber from 'hat';
+import Gab from '../common/gab'
 
 import debugging from 'debug';
 let	debug = debugging('epg:app:lib:socketFunctions');
@@ -32,6 +33,11 @@ function options() {
 	exports.lineupMap = function(headend, callback) {
 		headend.iden = this.trap(this.io, callback);
 		this.io.emit('lineupMap', headend);
+	};
+	
+	exports.grabLineupMap = function(headend, callback) {
+		headend.iden = this.trap(this.io, callback);
+		this.io.emit('grabLineupMap', headend);
 	};
 	
 	exports.updateChannel = function(channel, update, callback) {
@@ -68,6 +74,15 @@ function options() {
 		});
 	};
 	
+	exports.guide = function(guideData, callback) {
+		if(!callback) {
+			callback = ()=>{}
+		}
+		this.io.emit('guide',Object.assign(guideData, {
+			iden: this.trap(this.io, callback)
+		}));
+	};
+	
 	exports.lineupRemove = function(lineup, callback) {
 		// lineup should be a string and the access uri
 		this.io.emit('lineupRemove',{ 
@@ -79,6 +94,23 @@ function options() {
 	exports.lineupAdd = function(lineup, callback) {
 		lineup.iden = this.trap(this.io, callback);
 		this.io.emit('lineupAdd', lineup);
+	};
+	
+	exports.refreshGuide = function(lineup, callback) {
+		Gab.reset();
+		lineup.iden = this.trap(this.io, ()=>{});
+		this.io.emit('refreshGuide', lineup);
+		var readData = (data) => {
+			
+			debug('guide refresh updates', data);
+			callback(data);
+			if(data.end) {
+				this.io.removeListener('refreshGuide', readData);
+			}
+		}
+		
+		this.io.on('refreshGuide', readData);
+		
 	};
 	
 	exports.status = function(callback) {

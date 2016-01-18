@@ -64,13 +64,17 @@ class Main extends Component {
 				open: false
 			},
 			status: {
-				lineups: []
+				lineups: [],
+				account: {
+					maxLineups: 4,
+				},
+				notifications: [],
 			},
 			lineups: {
 				lineups: []
 			},
 			headends: {}
-		},props);
+		}, props);
 		
 		debug('fresh state', this.state);
 		
@@ -273,8 +277,7 @@ class Main extends Component {
 						show: true
 					},
 					lineup: lineup.lineup,
-					page: 'settings',
-					child: 'lineup'
+					page: 'lineup',
 				});
 			}
 		});
@@ -290,28 +293,37 @@ class Main extends Component {
 					title="Settings"
 					break;
 				case "index":
-				case "add":
-				default:
+				case "add-lineup":
 					title = 'Add Lineup';
 					break;
+				default:
+					title = this.state.child;
 			};
 		}
 		if(this.state.lineup && this.state.headends[this.state.lineup]) {
 			title = this.state.headends[this.state.lineup].name;
 		}
 		
-		let isConnected = this.state.sockets.io.connected !== false ? <span />
-			: <span><IconButton onClick={(e)=>{e.preventDefault();this.goTo('disconnected');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.amber100} hoverColor={Styles.Colors.red900} title="Connection to server lost">cloud_off</FontIcon></IconButton> <span style={{color:Styles.Colors.amber100,fontSize:'20px'}}>Connection Lost </span></span>
+		let isConnected = this.state.sockets.io.connected !== false ? 
+			this.state.guideRefresh.download ?
+				<IconButton onClick={(e)=>{e.preventDefault();this.goTo('status');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.deepPurple200} hoverColor={Styles.Colors.deepPurple200} title={"Downloading guide data for " + this.state.guideRefresh.who.join(', ')}>cloud_download</FontIcon></IconButton>
+			:	
+				<IconButton onClick={(e)=>{e.preventDefault();this.goTo('status');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.green600} hoverColor={Styles.Colors.lightBlue300} title="Connection established. View status">cloud_done</FontIcon></IconButton>
+		:
+			<span><IconButton onClick={(e)=>{e.preventDefault();this.goTo('disconnected');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.amber100} hoverColor={Styles.Colors.red900} title="Connection to server lost">cloud_off</FontIcon></IconButton> <span style={{color:Styles.Colors.amber100,fontSize:'20px'}}>Connection Lost </span></span>
+		
 		let eRight = (<span>
+			
+			<IconButton onClick={(e)=>{e.preventDefault();this.goTo('home');}} ><FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >home</FontIcon></IconButton>
+			<IconButton onClick={(e)=>{e.preventDefault();this.goTo('add-lineup');}} ><FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >add_to_queue</FontIcon></IconButton>
 			{isConnected}
-			<IconButton onClick={(e)=>{e.preventDefault();this.goTo('home');}} ><FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon></IconButton>
 		</span>);
 		
 		let appbar = <AppBar
 			title={title}
 			onLeftIconButtonTouchTap={this.handleLeftNav} 
 			iconElementRight={eRight}
-			style={{boxShadow: 'none',position: 'fixed',background: this.state.sockets.io.connected ? 'initial' : '#FF6F00'}}
+			style={{boxShadow: 'none',position: 'fixed',background: this.state.sockets.io.connected ? '#26282D' : '#FF6F00'}}
 		/>;
 		
 		let mylineups = this.state.lineups.lineups.map((v) => {
@@ -325,8 +337,7 @@ class Main extends Component {
 					onClick={(e) => {
 						e.preventDefault(e);
 						this.goTo({
-							page: 'settings',
-							child: 'lineup',
+							page: 'lineup',
 							lineup: v.lineup,
 							current: v,
 							newalert: {
@@ -354,8 +365,9 @@ class Main extends Component {
 					>
 						
 						<List>
-							<ListItem  onTouchTap={()=>{this.goTo('home')}} primaryText="Home" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon>} />
-							<ListItem onTouchTap={()=>{this.goTo('settings', 'index')}} primaryText="Add A Lineup" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >plus_one</FontIcon>} />
+							<ListItem  onTouchTap={()=>{this.goTo('guide')}} primaryText="Guide" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon>} />
+							<ListItem  onTouchTap={()=>{this.goTo('settings')}} primaryText="Settings" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon>} />
+							<ListItem onTouchTap={()=>{this.goTo('add-lineup')}} primaryText="Add A Lineup" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >plus_one</FontIcon>} />
 							<ListItem
 								primaryText="My Lineups"
 								primaryTogglesNestedList={true}
@@ -418,7 +430,7 @@ class Main extends Component {
 					data={this.state.newalert.data}
 					component={this.state.newalert.component}
 					open={this.state.newalert.show}
-					autoHideDuration={this.state.newalert.duration || 5000}
+					autoHideDuration={this.state.newalert.duration >= 0 ? this.state.newalert.duration : 5000}
 					onRequestClose={() => {this.setState({ newalert: { show: false }});}}
 				/> 
 			: 
@@ -427,6 +439,8 @@ class Main extends Component {
         </div>);
 
 	}
+	
+	
 }
 
 Main.childContextTypes = {
