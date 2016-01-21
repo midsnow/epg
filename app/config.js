@@ -29,6 +29,7 @@ System.config({
     "hat": "npm:hat@0.0.3",
     "history": "npm:history@1.17.0",
     "jquery": "github:components/jquery@2.1.4",
+    "localforage": "npm:localforage@1.3.2",
     "lodash": "npm:lodash@3.10.1",
     "material-ui": "npm:material-ui@0.14.0",
     "moment": "npm:moment@2.11.1",
@@ -42,6 +43,7 @@ System.config({
     "react-progress-button": "npm:react-progress-button@3.0.0",
     "react-router": "npm:react-router@1.0.3",
     "react-select": "npm:react-select@1.0.0-beta8",
+    "react-swipeable": "npm:react-swipeable@3.1.0",
     "react-swipeable-views": "npm:react-swipeable-views@0.3.5",
     "react-tap-event-plugin": "npm:react-tap-event-plugin@0.2.1",
     "socket.io-client": "npm:socket.io-client@1.3.7",
@@ -132,6 +134,9 @@ System.config({
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "module": "github:jspm/nodelibs-module@0.1.0",
       "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:asap@1.0.0": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:asap@2.0.3": {
@@ -507,6 +512,11 @@ System.config({
       "process": "github:jspm/nodelibs-process@0.1.2",
       "source-map": "npm:source-map@0.1.31"
     },
+    "npm:localforage@1.3.2": {
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
+      "promise": "npm:promise@5.0.0"
+    },
     "npm:lodash-compat@3.10.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
@@ -692,6 +702,9 @@ System.config({
     },
     "npm:process@0.11.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
+    },
+    "npm:promise@5.0.0": {
+      "asap": "npm:asap@1.0.0"
     },
     "npm:promise@7.1.1": {
       "asap": "npm:asap@2.0.3",

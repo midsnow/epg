@@ -2,12 +2,26 @@ import ProgressButton from 'react-progress-button';
 import React from 'react';
 import { Cell } from 'fixed-data-table';
 import { Styles, Checkbox } from 'material-ui/lib';
-import { FontIcon } from 'material-ui/lib';
+import { FontIcon, IconButton } from 'material-ui/lib';
 
 import debugging from 'debug';
 let	debug = debugging('epg:client:common:utils');
 
 export const Button = ProgressButton;
+
+export class iButton extends React.Component {
+	constructor(props){
+		super(props);
+	}
+	render() {
+		debug('render iconButton');
+		return <IconButton onClick={this.props.clickOn} ><FontIcon { ...this.props } >{this.props.dataIcon}</FontIcon></IconButton>;
+	}
+}
+
+export const clickButton = function(onClick, opts) {
+	return <FontIcon  onClick={onClick} { ...opts } >{opts.dataIcon}</FontIcon>;
+}
 
 export const pickIcon = function pickIcon(text) {
 	if(text.toLowerCase() === 'cable') {

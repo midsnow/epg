@@ -4,11 +4,9 @@ import SF from  './socketFunctions';
 import io from 'socket.io-client';
 import Gab from '../common/gab';
 
-
-
 let	debug = debugging('epg:app:lib:sockets');
-let port = window.socketPort;
-let host = window.socketHost;
+let port;
+let host;
 
 let Sockets = function() {
 	
@@ -17,16 +15,13 @@ let Sockets = function() {
 		io: false,
 		open: false
 	}
-	this.io = io('//' + host + ':' + port + '/epg');
-	debug('new sockets', '//' + host + ':' + port + '/epg');
-	
+		
 	this.proxy = 'proxy';
-	
-	
 }
 
+
 Sockets.prototype.connectAuth = function(callback) {
-	this.io = io('//' + host + ':' + port + '/epg', { 'force new connection': true });
+	this.io = io('//' + this.host + ':' + this.port + '/epg', { 'force new connection': true });
 	this.auth = this.io;
 	debug('reconnect auth', this.auth);
 	
@@ -48,10 +43,32 @@ Sockets.prototype.connectAuth = function(callback) {
 	}
 }
 
-Sockets.prototype.init = function(callback) {
+Sockets.prototype.init = function(opts, callback) {
+	let _opts = {
+		host: '@',
+		port: '11000'
+	};
+	if(_.isFunction(opts)) {
+		callback = opts;
+		opts = _opts;
+	}
 	
+	if(!_.isObject(opts)) {
+		opts = _opts;
+	}
+	
+	if(typeof window !== 'undefined') {
+		this.port = window.socketPort;
+		this.host = window.socketHost;
+	} else {
+		this.port = opts.port;
+		this.host = opts.host;
+	}
 	
 	let _this = this;
+	
+	// connection
+	this.io = io('//' + this.host + ':' + this.port + '/epg', { 'force new connection': true });
 	
 	this.io.on('connect',(data) => {
 		debug('io connected', 'epg');

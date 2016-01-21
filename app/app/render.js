@@ -120,7 +120,10 @@ class Main extends Component {
 		};
 	}
 	
-	handleLeftNav() {
+	handleLeftNav(e) {
+		if(e && typeof e.preventDefault === 'function') {
+			e.preventDefault();
+		}
 		this.setState({leftNav: !this.state.leftNav});
 	}
 	
@@ -319,12 +322,12 @@ class Main extends Component {
 			{isConnected}
 		</span>);
 		
-		let appbar = <AppBar
+		let appbar = this.state.page === 'guide' ? <span /> : <div><AppBar
 			title={title}
 			onLeftIconButtonTouchTap={this.handleLeftNav} 
 			iconElementRight={eRight}
 			style={{boxShadow: 'none',position: 'fixed',background: this.state.sockets.io.connected ? '#26282D' : '#FF6F00'}}
-		/>;
+		/><div style={{height:65,width:'100%'}} /></div>;
 		
 		let mylineups = this.state.lineups.lineups.map((v) => {
 			return (
@@ -337,7 +340,7 @@ class Main extends Component {
 					onClick={(e) => {
 						e.preventDefault(e);
 						this.goTo({
-							page: 'lineup',
+							page: 'guide',
 							lineup: v.lineup,
 							current: v,
 							newalert: {
@@ -365,16 +368,16 @@ class Main extends Component {
 					>
 						
 						<List>
-							<ListItem  onTouchTap={()=>{this.goTo('guide')}} primaryText="Guide" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon>} />
-							<ListItem  onTouchTap={()=>{this.goTo('settings')}} primaryText="Settings" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon>} />
-							<ListItem onTouchTap={()=>{this.goTo('add-lineup')}} primaryText="Add A Lineup" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >plus_one</FontIcon>} />
 							<ListItem
-								primaryText="My Lineups"
+								primaryText="My Guides"
 								primaryTogglesNestedList={true}
 								leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >tv</FontIcon>}
 								initiallyOpen={true}
 								nestedItems={mylineups}
 							/>
+							<ListItem  onTouchTap={()=>{this.goTo('settings')}} primaryText="Settings" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon>} />
+							<ListItem onTouchTap={()=>{this.goTo('add-lineup')}} primaryText="Add A Lineup" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >plus_one</FontIcon>} />
+							
 						</List>
 						
 					</LeftNav>;
@@ -405,13 +408,13 @@ class Main extends Component {
 		
         return (<div>
 			{appbar}
-			<div style={{height:65,width:'100%'}} />
+			
 			{menu}
 			
 			<div className="clearfix" />
 			<div className="epg-container" >
 				<div >
-					<Page { ...this.state } assets={this.setAsset} showAlert={this.showAlert} goTo={this.goTo} getLineups={this.getLineups} lineupAdd={this.lineupAdd} lineupRemove={this.lineupRemove} />
+					<Page { ...this.state } assets={this.setAsset} showAlert={this.showAlert} goTo={this.goTo} getLineups={this.getLineups} handleLeftNav={this.handleLeftNav} lineupAdd={this.lineupAdd} lineupRemove={this.lineupRemove} />
 				</div>
 			</div>
 			<Confirm 
