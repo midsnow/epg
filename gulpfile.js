@@ -18,6 +18,22 @@ var gutil = require('gulp-util');
 /**
  * Build Tasks
  */
+
+// bundle all dependencies
+// see app/app/app.js to use
+gulp.task('bundle',  function (cb) {
+	var builder = new Builder('./app', './app/config.js');
+	builder.bundle('app/app - [app/**/*]', './app/bundles/dependencies.js', { minify: false, sourceMaps: true })
+	.then(function() {
+		gutil.log('wrote /bundles/dependencies.js');
+		builder.reset()
+		cb()
+	})
+	.catch(function(err) {
+		gutil.log('FAILED dep bundle ',err)
+		cb()
+	});
+});
  
 // bundle all dependencies
 // see public/app.js to use
@@ -99,10 +115,25 @@ gulp.task('pm2', function(cb) {
 })
 
 
+gulp.task('less', function () {
+  return gulp.src('./epg-app/styles/site.less')
+    .pipe(less({
+      
+    }))
+    .pipe(gulp.dest('./epg-app/css'))
+    .src([
+		'./epg-app/css/site.css', 
+		'./epg-app/styles/fixed-data-table.css',
+    ])
+    .pipe(concat('styles.css'))
+    .pipe(gulp.dest('./epg-app/css/'))
+});
+
+
 // Watch
 gulp.task('watch', function() {
   gulp.watch('client/**', ['scripts'])
   gulp.watch(['snowstreams.js', 'lib/**/*.js', 'routes/**/*.js', 'models/**/*.js'], ['pm2'])
 })
 
-gulp.task('default', [ 'scripts', 'vendor'])
+gulp.task('default', [ 'bundle-dependencies'])
