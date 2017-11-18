@@ -45,6 +45,7 @@
     "node-localstorage": "^0.5.0",
     "promise-mysql": "^3.1.3",
     "socket.io-client": "^1.3.7",
+    "sqlite3": "^3.1.13",
     "superagent": "^1.2.0",
     "systemjs-builder": "0.15.36"
   },
@@ -56,6 +57,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "browserify": "^12.0.1",
     "chokidar-socket-emitter": "snowkeeper/chokidar-socket-emitter",
+    "electron-builder": "^19.45.5",
     "electron-prebuilt-compile": "^1.7.9",
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",

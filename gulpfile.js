@@ -13,7 +13,7 @@ var _ = require('lodash');
 var pm2 = require('pm2');
 var Builder = require('systemjs-builder');
 var gutil = require('gulp-util');
-
+var less = require('gulp-less');
 
 /**
  * Build Tasks
@@ -116,14 +116,16 @@ gulp.task('pm2', function(cb) {
 
 
 gulp.task('less', function () {
-  return gulp.src('./epg-app/styles/site.less')
+  gulp.src('./epg-app/styles/site.less')
     .pipe(less({
       
     }))
-    .pipe(gulp.dest('./epg-app/css'))
-    .src([
-		'./epg-app/css/site.css', 
+    .pipe(gulp.dest('/tmp'))
+   return gulp.src([
 		'./epg-app/styles/fixed-data-table.css',
+		'./epg-app/styles/font-awesome.min.css',
+		'./epg-app/styles/material-icon.css',
+		'/tmp/site.css',
     ])
     .pipe(concat('styles.css'))
     .pipe(gulp.dest('./epg-app/css/'))
