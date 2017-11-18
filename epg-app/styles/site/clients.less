@@ -1,0 +1,731 @@
+.clearfix {
+	clear: both;
+}
+h2 { color: @background-step2; }
+h3 { color: @background-step4; }
+.ftc-li-p-pad ul li p{
+	padding-left:20px;
+}
+.home-content  {
+	ul { list-style-type: none; }
+	li {
+		margin-bottom:10px;
+		color: @background-step8;
+		font-size: 16px;
+		font-weight : 400;
+		line-height: 1.5;
+	}
+	a {
+		color:@background-step7;
+		&:hover {
+			color:@background-step10;
+		}
+	}
+}
+.btn-ftc {
+	padding: 5px 0px;
+	font-size: 28px;
+	line-height: 1.33;
+	border-radius: 6px;
+	min-width: 70%;
+	text-align:center;
+	&.lg {
+		height:95%;
+		width:95%;
+	}
+}
+
+#body {
+	height: 100%;
+	width:100%;
+	padding:0;
+	margin:0;
+	position:absolute;
+	top:0;
+	left:0;
+	
+	
+}
+.input-group-addon {
+	background: @background-step2;
+	border-color: @background-step3;
+	color: @ftc-white;
+}
+.form-control[disabled], .form-control[readonly], fieldset[disabled], .form-control {
+	background: @background-step2;
+	border-color: @background-step3;
+	color: @ftc-white;
+	&:focus {
+		background: @background-step4;
+		color: @ftc-white;
+	}
+}
+.btn-default {
+	background-color: @background-step2;
+	border-color: @background-step25;
+	color: @background-step5;
+	&:hover {
+		background-color: @background-step2;
+		border-color: @background-step25;
+		color: @ftc-white;
+	}
+}
+
+.modal-title  {
+	font-size:13px;
+	font-weight:700;
+	color:#bbb;
+	text-transform:uppercase;
+	letter-spacing:1px
+}
+.modal-header {
+	border-bottom:0px;
+}
+.modal-footer {
+	text-align:left;
+	padding:15px 15px 0px;
+	border-color:mix(white, @ftc-black, 7%);
+	border-width:0px;
+}
+.modal-body {
+	padding:10px 20px 0px;
+	h3 { margin-top:0; }
+}
+.modal-content {
+	background: @ftc-black;
+}
+.modal.fade {
+  top: 200%;
+  -webkit-transition: opacity 0.3s linear, top 0.3s ease-out;
+     -moz-transition: opacity 0.3s linear, top 0.3s ease-out;
+       -o-transition: opacity 0.3s linear, top 0.3s ease-out;
+          transition: opacity 0.3s linear, top 0.3s ease-out;
+}
+
+.modal.fade.in {
+	top: 25%;
+	@media (max-width: @screen-xs-max) {
+	
+		top: 1%;
+	}
+}​
+
+
+.ftc-hold {
+	background-color: @ftc-orange;
+	color: @ftc-black;
+}
+.ftc-red {
+	background-color: @ftc-red;
+	color: @ftc-white;
+}
+.ftc-blue {
+	background-color: @ftc-blue;
+	color: @ftc-white;
+}
+.ftc-challenge {
+	background-color: @ftc-challenge;
+	color: @ftc-white;
+}
+.ftc-yellow {
+	background-color: @ftc-yellow;
+	color: @ftc-challenge;
+}
+.ftc-green {
+	background-color: @ftc-green;
+	color: @ftc-white;
+}
+.ftc-black {
+	background-color: @ftc-black;
+	color: @ftc-white;
+}
+.ftc-replay {
+	background-color: @ftc-challenge;
+	color: @mlb-white;
+}
+.mlb-blue {
+	background-color: @mlb-blue;
+	color: @mlb-white;
+}
+.mlb-red {
+	background-color: @mlb-red;
+	color: @mlb-white;
+}
+.mlb-white {
+	background-color: @mlb-white;
+	color: @ftc-black;
+}
+.mlb-team {
+	position:relative;
+	height: 11.5%;
+	min-height: 50px;
+	margin-bottom:.5%;
+	border:10px solid transparent;
+	border-width:  5px 10px;
+	overflow:hidden;
+}
+.mlb-team-name {
+	width:25%;
+	height:100%;
+	position:relative;
+	float:left;
+	font-weight: bold;
+	font-size: 55px;
+	text-align:center;
+	overflow:hidden;
+	@media (max-width: @screen-sm-max) {
+		font-size: 28px;
+		
+		
+	}
+}
+.mlb-team-display {
+	width:75%;
+	height:100%;
+	
+	float:left;
+	left:25%;
+	font-size: 55px;
+	text-align:center;
+}
+.mlb-atl {
+	color: #fff;
+	background:  #112155;
+}
+.mlb-sf {
+	color: #fff;
+	background: #FEAD13;
+}
+.mlb-nyy {
+	color: #fff;
+	background:  #FF7700;
+}
+.mlb-nym {
+	color: #fff;
+	background: #1A1C22;
+}
+.mlb-bal {
+	
+	color: #000;
+	background: #FD7500;
+}
+.mlb-sea {
+	
+	color: #fff;
+	background:  #0B525A;
+	
+}
+.mlb-was {
+	
+	color: #fff;
+	background: #D40805;
+	
+}
+.mlb-fla {
+	
+	color: #fff;
+	background:  #0680D0;
+	
+}
+.mlb-tex {
+	
+	color: #fff;
+	background:  #004488;
+	
+}
+.mlb-col {
+	
+	color: #fff;
+	background: #1F0E3B;
+	
+}
+.mlb-sd {
+	
+	color: #fff;
+	background:  #122257;
+	
+}
+.mlb-bos {
+	
+	color: #fff;
+	background: #A61035;
+	
+}
+.mlb-ari {
+	
+	color: #fff;
+	background: #A61035;
+	
+}
+.mlb-ari2 {
+	
+	color: #fff;
+	background: url(/images/teams/ari.png)no-repeat center #A61035;
+	span { visibility:hidden; }
+}
+.mlb-kc {
+	
+	color: #fff;
+	background: #004488;
+	
+}
+.mlb-chc {
+	
+	color: #fff;
+	background: #213FDC;
+	
+}
+.mlb-lad {
+	background: #004488;
+	color: #fff;
+}
+.mlb-oak {
+	
+	color: #EFB11E;
+	background:  #004231;
+}
+.mlb-espn {
+	background: url(/images/ESPN.png)no-repeat center;
+	background-size: contain;
+	color: #FAFAFA;
+	span { visibility:hidden; }
+}
+.mlb-mlb {
+	background: url(/images/mlb-logo.png)no-repeat center;
+	background-size: contain;
+	color: #FAFAFA;
+	span { visibility:hidden; }
+}
+.mlb-Field {
+	
+	color: #FAFAFA;
+	span,p { visibility:hidden; }
+}
+.mlb-flag {
+	background: url(/images/flag.gif)no-repeat center;
+	background-size: 100% 100%;
+	color: @ftc-white;
+	.truck-timer { p,span { visibility:hidden; } }
+	a { background-color: transparent; }
+	.hold ,.release ,.replay{
+			 background-color: transparent; 
+		}
+}
+
+.full-height {
+	height:100%;
+}
+.ftc-settings {
+	height:32px;
+	width: 45px;
+	position:fixed;
+	bottom: 0px;
+	right: 3px;
+	z-index: 1051;
+	cursor:pointer;
+	text-align:center;
+
+	.gly { font-size: 24px };
+	
+}
+.ftc-connect {
+	height:35px;
+	width: 110px;
+	position:fixed;
+	bottom: 0px;
+	left: 3px;
+	z-index: 1051;
+	cursor:pointer;
+	text-align:left;
+	font-size: 24px;
+	.gly { font-size: 20px; color:#29F624 ;margin-right:5px;};
+	.glyoff { font-size: 20px; color:#F62429 ;margin-right:5px;};
+}
+.truck-connect {
+	height:50px;
+	width: 150px;
+	position:fixed;
+	bottom: 2px;
+	right: 3px;
+	z-index: 1051;
+	cursor:pointer;
+	text-align:right;
+	font-size: 46px;
+	.gly { font-size: 36px; color:#64FF12 ;margin-left:5px;};
+	.glyoff { font-size: 36px; color:#F62429 ;margin-left:5px;};
+	@media (max-width: @screen-sm-max) {
+		font-size: 24px;
+		height: 25px;
+		.gly { font-size: 18px; };
+		.glyoff { font-size: 18px;};	
+	}
+	@media (max-width: @screen-xs-min) {
+		font-size: 12px;
+		height: 12px;
+		.gly { font-size: 10px; };
+		.glyoff { font-size: 10px;};	
+	}
+}
+.truck {
+	height:100%;
+	width:100%;
+	position:absolute;
+}
+.trucks {
+	position: absolute;
+	overflow: hidden;
+	top: 0;
+	height: 1%;
+	display:none;
+	color: @trucks;
+	text-align:center;
+	
+	font-size: 96px;
+	@media (max-width: @screen-md-max) {
+		font-size: 96px;
+		p { margin: -35px 0 0 0; }
+		
+	}
+	
+	@media (max-width: @screen-sm-max) {
+		font-size: 48px;
+		p { margin: 5px 0 0 0; }
+		
+	}
+	@media (max-width: @screen-xs-max) {
+		font-size: 24px;
+		p { margin: 0px 0 0 0; }
+		
+	}
+	div {
+		border-right: 0px solid @ftc-black;
+		&:last-child {
+			border:none;
+		}
+	}
+}
+.timer {
+	position: absolute;
+	top: 0%;
+	height: 10%;
+	
+	.countdown {
+		height: 100%;
+		text-align: center;
+		font-size: 300px;
+		
+		@media (min-width: @screen-md-max) and (max-height:20%) {
+			font-size: 220px;
+			
+			
+		}
+		@media (max-width: @screen-md-max) {
+			font-size: 220px;
+			
+			
+		}
+		
+		@media (max-width: @screen-sm-max) {
+			font-size: 160px;
+			
+			
+		}
+		@media (max-width: @screen-xs-max) {
+			font-size: 125px;
+			
+			
+		}
+		
+		.time {
+			color: @ftc-white;
+			text-align: center;
+		}
+		
+	}
+	@media (min-width: @screen-md-max)  {
+		.countdown.ftc-green {
+			font-size: 25px;
+			p { margin: 5px 0 0 0; }
+		}	
+	}
+	@media (max-width: @screen-md-max) {
+		.ftc-replay,.ftc-green {
+			font-size:25px!important;
+		}
+	}
+	
+	@media (max-width: @screen-sm-max) {
+		.ftc-replay,.ftc-green {
+			font-size:25px!important;
+		}
+	}
+	@media (max-width: @screen-xs-max) {
+		.ftc-replay,.ftc-green {
+			font-size:25px!important;
+		}
+	}
+	&.grow-enter {
+		/* Set our transitions up. */
+		-webkit-transition: height 0.8s;
+		-moz-transition: height 0.8s;
+		transition: height 0.8s;
+		height: 74%;
+		p { margin: 25px 0 0 0; }
+	}
+	&.grow-leave {
+		/* Set our transitions up. */
+		-webkit-transition: height 0.8s;
+		-moz-transition: height 0.8s;
+		transition: height 0.8s;
+		height: 10%;
+		p { margin: -5px 0 0 0; }
+	}
+}
+
+.trucktimer {
+	position: absolute;
+	top: 0%;
+	height: 90%;
+	
+	.countdown {
+		padding-top:75px;
+		height: 100%;
+		text-align: center;
+		font-size: 250px;
+		&.ftc-replay,&.ftc-green,&.mlb-flag {
+			font-size:120px!important;
+			
+		}
+		&.mlb-flag { 
+			padding-top:0px;
+			p { margin: -30px 0 10px 0 }
+		}
+		@media (max-width: @screen-md-max) {
+			font-size: 250px;
+			&.ftc-replay,&.ftc-green,&.mlb-flag {
+				font-size:80px!important;
+				
+			}
+			&.mlb-flag { 
+				padding-top:0px;
+				p { margin: -30px 0 10px 0 }
+			}
+		}
+		
+		@media (max-width: @screen-sm-max) {
+			font-size: 100px;
+			padding-top:0px;
+			margin-top:-20px;
+			&.ftc-replay,&.ftc-green,&.mlb-flag {
+				font-size:65px!important;
+				margin-top:0px;
+				
+			}
+			
+			
+		}
+		@media (max-width: @screen-xs-min) {
+			font-size: 55px;
+			font-weight:normal;
+			padding-top:0px;
+			margin-top:0px;
+			&.ftc-replay,&.ftc-green,&.mlb-flag {
+				font-size:50px!important;
+				margin-top:0px;
+			}
+			
+			
+		}
+		@media (max-width: @screen-xxs-min) {
+			font-size: 24px;
+			font-weight:normal;
+			padding-top:0px;
+			margin-top:0px;
+			&.ftc-replay,&.ftc-green,&.mlb-flag {
+				font-size:24px!important;
+				margin-top:0px;
+			}
+			
+			
+		}
+		.time {
+			color: @ftc-white;
+			text-align: center;
+		}
+		
+	}
+}
+
+
+.after-timer {
+	position: absolute;
+	top: 10%;
+	height: 90%;
+	padding: 0px 0 0 0;
+	
+	@media (min-width: @screen-sm-min) {
+		
+	}
+	&.grow-enter {
+		/* Set our transitions up. */
+		-webkit-transition: top 0.2s;
+		-moz-transition: top 0.2s;
+		transition: top 0.2s;
+		height: 25%;
+		top: 75%;
+		padding-top: 5px;
+	}
+	&.grow-leave {
+		/* Set our transitions up. */
+		-webkit-transition: top 0.8s;
+		-moz-transition: top 0.8s;
+		transition: top 0.8s;
+		height:90%;
+		top: 10%
+	}
+}
+.after-trucktimer {
+	position: absolute;
+	top: 90%;
+	height: 10%;
+	padding-top: 15px;
+	
+}
+
+.release {
+	text-align: center;
+	height: 60%;
+	background: @ftc-red;
+	padding: 1%;
+	&.fullHeight {
+		height:75%;
+		background: transparent;
+		
+	}
+}
+.hold {
+	text-align: center;
+	height: 30%;
+	background: @ftc-hold;
+	padding: 1%;
+	&.fullHeight {
+		height:75%;
+		background: transparent;
+		
+	}
+}
+.replay {
+	text-align: center;
+	height: 30%;
+	background: @ftc-challenge;
+	padding: 1%;
+	&.fullHeight {
+		height:75%;
+		background: transparent;
+		
+	}
+}
+.communicate {
+	text-align: center;
+	
+}
+
+.flash {
+
+  -moz-animation: flash 2s ease-in;
+  -moz-animation-iteration-count: infinite;
+
+  -webkit-animation: flash 2s ease-in;
+  -webkit-animation-iteration-count: infinite;
+  
+  -ms-animation: flash 2s ease-in;
+  -ms-animation-iteration-count: infinite;
+
+}
+
+@kmix : mix(@ftc-red,@ftc-hold,35%);
+
+@-webkit-keyframes flash {
+    0% { background-color:@ftc-hold;color:@kmix;}
+    50% { background-color:@kmix;color:@ftc-hold;}        
+    100% {background-color:@ftc-hold;color:@kmix;}
+}
+
+@-moz-keyframes flash {
+    0% { background-color:@ftc-hold;color:@ftc-black;}
+    50% { background-color:@ftc-black;color:@ftc-hold;}        
+    100% {background-color:@ftc-hold;color:@ftc-black;}
+}
+
+@-ms-keyframes flash {
+    0% { background-color:@ftc-hold;color:@ftc-black;}
+    50% { background-color:@ftc-black;color:@ftc-hold;}        
+    100% {background-color:@ftc-hold;color:@ftc-black;}
+}
+
+
+.flash-red-to-blue{
+
+  -moz-animation: flash-blue 1s ease-in;
+  -moz-animation-iteration-count: infinite;
+
+  -webkit-animation: flash-blue 1s ease-in;
+  -webkit-animation-iteration-count: infinite;
+  
+  -ms-animation: flash-blue 1s ease-in;
+  -ms-animation-iteration-count: infinite;
+
+}
+@bmix : mix(@ftc-blue,@ftc-red,60%);
+
+@-webkit-keyframes flash-blue {
+    100% { background-color:@ftc-red;color:@ftc-white;}
+    50% { background-color:@bmix;color:@ftc-white;}        
+    0% {background-color:@ftc-red;color:@ftc-white;}
+}
+
+@-moz-keyframes flash-blue {
+    100% { background-color:@ftc-blue;color:@ftc-white;}
+    50% { background-color:@bmix;color:@ftc-white;}        
+    0% {background-color:@ftc-blue;color:@ftc-white;}
+}
+
+@-ms-keyframes flash-blue {
+    100% { background-color:@ftc-blue;color:@ftc-white;}
+    50% { background-color:@bmix;color:@ftc-white;}        
+    0% {background-color:@ftc-blue;color:@ftc-white;}
+}
+
+
+
+.flash-blue-to-yellow {
+
+  -moz-animation: flash-yellow 1s ease-in;
+  -moz-animation-iteration-count: infinite;
+
+  -webkit-animation: flash-yellow 1s ease-in;
+  -webkit-animation-iteration-count: infinite;
+  
+  -ms-animation: flash-yellow 1s ease-in;
+  -ms-animation-iteration-count: infinite;
+
+}
+@ymix : mix(@ftc-blue,@ftc-yellow,30%);
+
+@-webkit-keyframes flash-yellow {
+    0% { background-color:@ftc-blue;color:@ftc-white;}
+    50% { background-color:@ymix;color:@ftc-white;}        
+    100% {background-color:@ftc-blue;color:@ftc-white;}
+}
+
+@-moz-keyframes flash-yellow {
+ 0% { background-color:@ftc-yellow;color:@ftc-blue;}
+    50% { background-color:@ymix;color:@ftc-blue;}        
+    100% {background-color:@ftc-yellow;color:@ftc-blue;}
+}
+
+@-ms-keyframes flash-yellow {
+     0% { background-color:@ftc-yellow;color:@ftc-blue;}
+    50% { background-color:@ymix;color:@ftc-blue;}        
+    100% {background-color:@ftc-yellow;color:@ftc-blue;}
+}

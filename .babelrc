@@ -1,0 +1,9 @@
+{
+  "presets": ["stage-0", "electron", "react"],
+  "ignore": [
+	"epg-app/**/*.js"
+  ],
+  "plugins": [
+    
+  ]
+}

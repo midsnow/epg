@@ -1,0 +1,23 @@
+{
+  "name": "epg",
+  "database": {
+    "driver": "mysql",
+    "host": "sam",
+    "port": "3306",
+    "username": "epg",
+    "password": "epgthegoodelephant",
+    "database": "ismEpg"
+  },
+  "auth": {
+    "username": "snowstreams",
+    "password": "ab6ba9f6c6acd6926819214f8c63f531d4e753e8",
+    "token": "873294289792374"
+  },
+  "moduleRoot": "/home/snow/projects/github/ism-epg-sd",
+  "route": [
+    "/epg*",
+    "/tv*"
+  ],
+  "port": 3888,
+  "host": "10.2.2.12"
+}
