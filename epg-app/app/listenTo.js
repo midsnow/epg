@@ -5,24 +5,24 @@ export default function () {
 	debug('set heartbeat');
 	let Sockets = this.state.Sockets;
 	// setup a 15 sec heartbeat for socket connection loss
-	clearInterval(window.heartbeat);
-	window.heartbeat = setInterval(() => {
+	clearInterval(window.heartbeat2);
+	window.heartbeat2 = setInterval(() => {
 		//debug('heartbeat', Sockets.io.connected);
-		if(!Sockets.io.connected && this.state.connected) {
+		if(!Sockets.connected.io && this.state.connected) {
 			debug('io connect-error');
 			this.setState({
 				connected: false,
 				newalert: {},
 			});
 		}
-		if(Sockets.io.connected && !this.state.connected) {
+		if(Sockets.connected.io && !this.state.connected) {
 			debug('io connect', this.state);
 			this.setState({
 				connected: true,
 				newalert: {},
 			});
 		}
-	},30000);
+	},5000);
 	
 	// receive page from server
 	Sockets.io.on('json', (data) => {

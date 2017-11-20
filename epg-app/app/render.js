@@ -111,12 +111,14 @@ class Main extends Component {
 		};
 	}
 	
-	handleLeftNav(e) {
+	handleLeftNav(e , stated) {
 		if(e && typeof e.preventDefault === 'function') {
 			e.preventDefault();
 		}
-		this.setState({leftNav: !this.state.leftNav});
-	}
+		debug('handleLeftNav', this.state, state);
+		let state = stated === true || stated === false ? stated : !this.state.leftNav;
+		this.appState({leftNav: state});
+	} 
 	
 	LeftNavClose () {
 		this.setState({ leftNav: false });
@@ -445,7 +447,7 @@ class Main extends Component {
 		</ToolbarGroup>);
 		
 		let appbar = this.state.page === 'guide' ? <span /> : ( <div><div >
-			<Toolbar style={ { zIndex: 1501, boxShadow: 'none',position: 'fixed',background: this.state.sockets.io.connected && !this.state.status.error ? '#26282D' : '#FF6F00', height:65, width:'100%' } } >
+			<Toolbar style={ { zIndex: 999, boxShadow: 'none',position: 'fixed',background: this.state.sockets.io.connected && !this.state.status.error ? '#26282D' : '#FF6F00', height:65, width:'100%' } } >
 				{ eRight }
 				<ToolbarGroup>
 					<ToolbarTitle text={ title } />

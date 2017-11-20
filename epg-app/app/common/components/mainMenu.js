@@ -76,7 +76,7 @@ export default class mainMenu extends React.Component {
 		});
 		
 		let menu = 	(<div id="MENU" >
-			<div style={{ height: 65, width: 5 }} />
+			<div style={{ height: 25, width: 5 }} />
 			<List>
 				<ListItem
 					primaryText="My Guides"
@@ -102,8 +102,8 @@ export default class mainMenu extends React.Component {
 				zDepth={5}
 				docked={false}
 				open={this.state.leftNav}
-				style={{ zIndex: 1200 }}
-				containerStyle={{ zIndex: 1200 }}
+				style={{ zIndex: 1300 }}
+				containerStyle={{ zIndex: 1300 }}
 				openSecondary={false}
 				width={225}
 				onRequestChange={open => {

@@ -1,9 +1,8 @@
-importScripts('/epg-files/jspm_packages/system.js');
+importScripts('/epg-app/jspm_packages/system.js');
 
 System
-	.import('/epg-files/config.js')
+	.import('/epg-app/config.js')
 	.then(function() {
-		//System.import('live-reload').catch(console.error.bind(console));
 		System.import('dependencies').catch(console.error.bind(console));
 		System.import('app/common/workers/guideData').catch(console.error.bind(console));	
 

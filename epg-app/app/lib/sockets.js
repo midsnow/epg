@@ -18,19 +18,20 @@ let Sockets = function() {
 
 
 Sockets.prototype.connect = function( callback ) {
-	this.io = io(this.host + ':' + this.port + '/epg', { 'force new connection': true, reconnection: false });
-	debug('reconnect',);
+	this.io = io(this.host + ':' + this.port + '/epg', { 'force new connection': true, reconnection: true });
+	debug('reconnect'); 
 	
 	this.io.on('connect',(data) => {
 		debug('connected', 'epg');
-		this.connected.io = true;
+		this.connected.io = true; 
+		this.status();
 		this._count = 0;
 	});
 	this.io.on('connect-error',(err) => {
 		debug('auth connect-error',err);
 		this.connected.io =  false;
-		if ( this.count < 30 ) {
-			setTimeout(this.connect, 15000);
+		if ( this._count < 30 ) {
+			setTimeout(this.connect, 10000);
 			this._count++;
 		}
 		//Gab.emit('error', err)
@@ -41,8 +42,8 @@ Sockets.prototype.connect = function( callback ) {
 	this.io.on('disconnect',(err) => {
 		debug('io disconnect... wait for 15 secs',err);
 		this.connected.io =  false;
-		if ( this.count < 30 ) {
-			setTimeout(this.connect, 15000);
+		if ( this._count < 30 ) {
+			setTimeout(this.connect, 10000);
 			this._count++;
 		}
 	});
@@ -78,7 +79,7 @@ Sockets.prototype.init = function(opts, callback) {
 	
 	// connection
 	debug('io connect', '' + this.host + ':' + this.port + '/epg');
-	this.io = io(this.host + ':' + this.port + '/epg', { reconnection: false });
+	this.io = io(this.host + ':' + this.port + '/epg', { reconnection: true });
 	
 	this.io.on('connect',(data) => {
 		debug('io connected', 'epg');
@@ -94,8 +95,8 @@ Sockets.prototype.init = function(opts, callback) {
 		// Gab.emit('error', err);
 		//location.href = '/client/signin';
 		this.connected.io =  false;
-		if ( this.count < 30 ) {
-			setTimeout(this.connect, 15000);
+		if ( this._count < 30 ) {
+			//setTimeout(this.connect, 10000);
 			this._count++;
 		}
 	});
@@ -103,8 +104,8 @@ Sockets.prototype.init = function(opts, callback) {
 	this.io.on('disconnect',(err) => {
 		debug('io disconnect... wait for 1 minute',err);
 		this.connected.io =  false;
-		if ( this.count < 30 ) {
-			setTimeout(this.connect, 15000);
+		if ( this._count < 30 ) {
+			//setTimeout(this.connect, 10000);
 			this._count++;
 		}
 	});

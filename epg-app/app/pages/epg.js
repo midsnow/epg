@@ -191,14 +191,14 @@ export default class EPG extends React.Component {
 		this.props.Request({
 			action: 'getGuideData',
 			id,
-			start,
+			start, 
 			end
 		})
 		.then(data => {
-			debug('### getGuideData ###', data);
+			debug('### getGuideData ###', data); 
 			this._update = true;
 			this.setState({
-				entries: data.entries.groups,
+				entries: data.entries.groups, 
 				guideLoaded: true,
 			});
 		})

@@ -21,7 +21,7 @@ export default class EPGChannel extends PureComponent {
 		this.displayName = 'EPGChannel';
 						
 		this.state = {
-			programId: Number(props.params.episode),
+			programID: Number(props.params.episode), 
 			program: {},
 			guide: [],
 			boxHeight: props.desktop === 'xs' || props.desktop === 'sm' ? 'auto': props.window.height - 172,
@@ -54,8 +54,13 @@ export default class EPGChannel extends PureComponent {
 	}
 	
 	componentDidMount ( ) {
-		if ( this.state.programId ) this.getGuideProgram( );
-		this.getGuideData( this.props.renderChannel );
+		if ( this.state.programID ) this.getGuideProgram( );
+		if ( this.props.renderChannel ) this.getGuideData( this.props.renderChannel );
+	}
+	
+	componentWillUnmount ( ) {
+		delete this.state;
+		delete this.guideData;
 	}
 	
 	componentWillReceiveProps ( props ) {
@@ -63,11 +68,11 @@ export default class EPGChannel extends PureComponent {
 			boxHeight: props.desktop === 'xs' || props.desktop === 'sm' ? 'auto' : props.window.height - 172,
 			wrapperHeight: props.desktop === 'xs' || props.desktop === 'sm' ? 'auto' : props.window.height - 122,
 		}
-		if ( props.params.episode && ( props.params.episode !== this.state.programId ) ) {
-			state.programId = Number(props.params.episode);
+		if ( props.params.episode && ( props.params.episode !== this.state.programID ) ) {
+			state.programID = Number(props.params.episode);
 			//state.show = 'plot';
 		}
-		if ( this.state.guide.length === 0 || this.props.params.channel != props.params.channel ) {
+		if ( props.renderChannel && ( this.state.guide.length === 0 || this.props.params.channel != props.params.channel ) ) {
 			this.getGuideData( props.renderChannel ); 
 		}
 		debug( 'componentWillReceiveProps', state);
@@ -75,16 +80,16 @@ export default class EPGChannel extends PureComponent {
 	}
 	
 	getGuideData ( channel ) {
-		debug( 'getGuideData', channel.epgId );
+		debug( 'getGuideData', channel.stationID );
 		this.props.Request({
 			action: 'getGuideData',
-			id: channel.epgId
+			id: channel.stationID
 		})
 		.then(data => {
 			debug('### got getGuideData ###', data);
 			this._update = true;
 			this.setState({
-				guide: Filter( data.entries.groups[channel.channel], v => ( Number(v.startTime) > moment().subtract(1, 'h').unix() ) ),
+				guide: Filter( data.entries.groups[channel.stationID], v => ( Number(v.startTime) > moment().subtract(1, 'h').unix() ) ),
 			});
 		})
 		.catch(error => {
@@ -92,12 +97,12 @@ export default class EPGChannel extends PureComponent {
 		});
 	}
 	
-	getGuideProgram ( programId ) {
-		programId = programId || this.state.programId;
-		debug(programId);
+	getGuideProgram ( programID ) {
+		programID = programID || this.state.programID;
+		debug(programID);
 		this.props.Request({
 			action: 'getGuideProgram',
-			search: programId,
+			search: programID,
 		})
 		.then(data => {
 			debug('### getGuideProgram ###', data);
@@ -135,8 +140,8 @@ export default class EPGChannel extends PureComponent {
 	changeFutureEpisode ( rowId ) {
 		let program = this.state.futureEpisodes[rowId];
 		debug('changeFutureEpisode', this.state, program);
-		let programId = program.programId;
-		this.props.goTo({ path: '/tv/channel/' + program.channel + '/' + programId, page: 'Program Info' } );
+		let programID = program.id;
+		this.props.goTo({ path: '/tv/channel/' + program.channel + '/' + programID, page: 'Program Info' } );
 		window.scrollTo(0, 0);
 	}
 	
@@ -157,8 +162,8 @@ export default class EPGChannel extends PureComponent {
 			
 			let timer = <span />;
 			let recordings = <span />;
-			const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programId == s.programId  ) ) );
-			const isRecorded = isObject( Find( this.props.recordings, [ 'programId', s.programId]  ) );
+			const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programID == s.programID  ) ) );
+			const isRecorded = isObject( Find( this.props.recordings, [ 'programID', s.programID]  ) );
 			if ( isTimer ) {
 				timer = (
 					<div style={{ marginTop: 2, width: 12, height: 12, textAlign: 'left'}}>
@@ -196,7 +201,7 @@ export default class EPGChannel extends PureComponent {
 			);
 			
 			const tow = (<div 
-					key={s.programId}
+					key={s.programID}
 					onClick={( ) =>  {  
 						this.changeFutureEpisode(k);
 					}} 
@@ -211,120 +216,11 @@ export default class EPGChannel extends PureComponent {
 		return (<div style={{ height: this.state.boxHeight - 50, overflow: 'auto' }} >{rows}</div>);
 	}
 	
-	renderFutureEpisodesOld ( program ) {
-		let fields = [
-			{ 
-				field: 'startTime', 
-				style: { width: 115, fontSize: 11  } , 
-				headerProps: {
-					style: { width: 115, height: 20, fontSize: 11, textAlign: 'left' }
-				},
-				label: 'Time' , 
-				print: (v, props, obj) => { 
-					let div = (<div style={{ position: 'relative', width: '100%', height: 18,  marginTop: -15, marginLeft: -23, padding: '2px 0px 0px 5px'}}>{moment.unix(v).format('ddd MMM Do')}</div>);
-					return <div>{div}{moment.unix(v).format('h:mm a')}</div> 
-				} 
-			},
-			{ 
-				field: 'title',  
-				label: 'Program',
-				headerProps: {
-					style: { height: 20, fontSize: 11, textAlign: 'left' }
-				},
-				style: { fontSize: 11 },  
-				print: (v, props, obj) => { 
-					//debug(obj)
-					let timer = <span />;
-					let series = <span />;
-					let recordings = <span />;
-					const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programId == obj.programId  ) ) );
-					if ( isTimer ) {
-						timer = (
-							<div style={{ marginBottom: 2, width: 15, height: 15, textAlign: 'left'}}>
-								<FontIcon className="material-icons"  color={Styles.Colors.red800} style={{cursor:'pointer', fontSize: 15}}  title="This episode will be recorded">radio_button_checked</FontIcon>
-							</div>
-						);
-					}
-				
-					let icons = <div style={{ float: 'left', width: 5, height: 50 }} />;
-					if (isTimer ) {
-						icons = (
-							<div style={{ marginRight: 5,  float: 'left', width: 15, height: 50, textAlign: 'center'}}>
-								{timer}
-							</div>
-						);
-					}
-					const isNew = (obj.repeat);
-					return (
-						<div style={{ position: 'relative', height: '100%' }}>
-							{ obj.iconPath ? <img src={obj.iconPath}  style={{ maxWidth: 48, float: 'left', margin: '0 5 0 0' }} /> : <span /> }
-							{icons}
-							{v}
-							<br /> 
-							{ obj.episode }  
-							
-						</div> 
-					);
-				},
-			},	
-			{ field: 'channelName',  label: 'Channel',  headerProps: { style: { height: 20, fontSize: 11, textAlign: 'left' }} },
-		];
-		return (
-			<Table 
-				fields={fields}
-				headerStyle={{
-					padding: 0,
-					height: 24,
-					textAlign: 'left'
-				}} 
-				list={ this.state.futureEpisodes }
-				tableProps={ { 
-					style: { background: 'none', fontSize: 11 },
-					fixedHeader: false,
-					fixedFooter: true,
-					height: this.state.boxHeight - 78,
-					selectable: true ,
-					onRowSelection: this.changeFutureEpisode 
-				} }
-				
-				tableRowColumnProps={{
-					style: { fontSize: 11 },
-				}}
-				footerStyle={{
-						height: 24,
-						textAlign: 'left'
-				}}
-				tableRowProps={ { 
-					style: { cursor: 'pointer', fontSize: 11 },
-					displayBorder: false,
-					selectable: true,
-					
-				} }
-				tableHeaderColumnProps ={ {
-					style: {
-						height: 24,
-					}
-				} }
-				tableHeaderProps ={ {
-					adjustForCheckbox: false,
-				}}
-				tableFooterProps ={ {
-					adjustForCheckbox: false,
-				}}
-				tableFooterRowProps = { {
-					style: {
-						padding: 0,
-						height: 24,
-					}
-				} }
-			 />
-		);
-			
-	}
+	
 	
 	changeProgram ( rowId ) {
-		let programId = this.state.guide[rowId].programId;
-		this.props.goTo({ path: '/tv/channel/' + this.props.renderChannel.channel + '/' + programId, page: 'Program Info' } );
+		let programID = this.state.guide[rowId].id;
+		this.props.goTo({ path: '/tv/channel/' + this.props.renderChannel.channel + '/' + programID, page: 'Program Info' } );
 		window.scrollTo(0, 0);
 	}
 	
@@ -346,9 +242,9 @@ export default class EPGChannel extends PureComponent {
 			let timer = <span />;
 			let series = <span />;
 			let recordings = <span />;
-			const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programId == s.programId  ) ) );
-			const isSeries = isObject( Find( this.props.series, ( v ) => ( v.show == s.title || v.programId == s.programId  ) ) );
-			const isRecorded = isObject( Find( this.props.recordings, [ 'programId', s.programId]  ) );
+			const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programID == s.programID  ) ) );
+			const isSeries = isObject( Find( this.props.series, ( v ) => ( v.show == s.title || v.programID == s.programID  ) ) );
+			const isRecorded = isObject( Find( this.props.recordings, [ 'programID', s.programID]  ) );
 			if ( isTimer ) {
 				timer = (
 					<div style={{ marginTop: 2, width: 12, height: 12, textAlign: 'left'}}>
@@ -394,7 +290,7 @@ export default class EPGChannel extends PureComponent {
 			);
 			
 			const tow = (<div 
-					key={s.programId}
+					key={s.programID}
 					onClick={( ) =>  {  
 						this.changeProgram (k);
 					}} 
@@ -411,123 +307,6 @@ export default class EPGChannel extends PureComponent {
 		return (<div style={style} >{rows}</div>);
 	}
 	
-	renderScheduleTable (  ) {
-		return ( 
-			<Table 
-				day={ moment().format('D') } 
-				list={ this.state.guide }
-				footerStyle={{
-						height: 24,
-						textAlign: 'left'
-				}}
-				tableRowProps={ { 
-					style: { cursor: 'pointer' },
-					displayBorder: false,
-					selectable: true
-				} }
-				tableHeaderColumnProps ={ {
-					style: {
-						height: 24,
-						textAlign: 'left'
-					}
-				} }
-				tableHeaderProps ={ {
-					adjustForCheckbox: false,
-				}}
-				tableFooterProps ={ {
-					adjustForCheckbox: false,
-				}}
-				tableFooterRowProps = { {
-					style: {
-						padding: 0,
-						height: 24,
-						textAlign: 'left'
-					}
-				} }
-				tableProps={ { 
-					style: { background: 'none' },
-					fixedHeader: false,
-					fixedFooter: true,
-					height: this.state.boxHeight - 15,
-					selectable: true ,
-					onRowSelection: this.changeProgram 
-				} }
-				fields={ [
-					{ 
-						field: 'startTime', 
-						style: { fontSize: 11, width: 115  }, 
-						headerProps: {
-							style: { height: 20, fontSize: 11, textAlign: 'left' }
-						},
-						label: 'Time' , 
-						print: (v, props, obj) => { 
-							let div = (<div style={{ position: 'relative', width: '100%', height: 18,  marginTop: -15, marginLeft: -23, padding: '2px 0px 0px 5px'}}>{moment.unix(v).format('ddd MMM Do')}</div>);
-							return <div>{div}{moment.unix(v).format('h:mm a')}</div>
-						} 
-					},
-					{ 
-						field: 'title',  
-						label: 'Program' ,
-						print: (v, props, obj) => { 
-							//debug(obj)
-							let timer = <span />;
-							let series = <span />;
-							let recordings = <span />;
-							const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programId == obj.programId  ) ) );
-							const isSeries = isObject( Find( this.props.series, ( v ) => ( v.show == obj.title || v.programId == obj.programId  ) ) );
-							const isRecorded = isObject( Find( this.props.recordings, [ 'programId', obj.programId]  ) );
-							if ( isTimer ) {
-								timer = (
-									<div style={{ marginTop: 2, width: 12, height: 12, textAlign: 'left'}}>
-										<FontIcon className="material-icons"  color={Styles.Colors.red800} style={{cursor:'pointer', fontSize: 12}}  title="This progrram will be recorded">radio_button_checked</FontIcon>
-									</div>
-								);
-							}
-							if ( isSeries ) {
-								series = (
-									<div style={{  marginTop: 2, width: 12, height: 12, textAlign: 'left'}}>
-										<FontIcon className="material-icons"  color={Styles.Colors.blue500} style={{cursor:'pointer', fontSize: 12}}  title="You have a Series Pass enabled for this program">fiber_dvr</FontIcon>
-									</div>
-								);
-							}
-							if ( isRecorded ) {
-								recordings = (
-									<div style={{ marginTop: 2, width: 12, height: 12, textAlign: 'left'}}>
-										<FontIcon className="material-icons"  color={Styles.Colors.limeA400} style={{cursor:'pointer', fontSize: 12}}  title="This program is recorded">play_circle_filled</FontIcon>
-									</div>
-								);
-							}
-							let icons = <div style={{ float: 'left', width: 5, height: 50 }} />;
-							if ( isRecorded || isSeries || isTimer ) {
-								icons = (
-									<div style={{ marginRight: 5,  float: 'left', width: 15, height: 50, textAlign: 'center'}}>
-										{series} 
-										{timer}
-										{recordings}
-									</div>
-								);
-							}
-							const isNew = (obj.repeat);
-							return (
-								<div style={{ position: 'relative', height: '100%' }}>
-									{ obj.iconPath ? <img src={obj.iconPath}  style={{ maxWidth: 48, float: 'left', margin: '0 5 0 0' }} /> : <span /> }
-									{icons}
-									{v}
-									<br /> 
-									{ obj.episode }  
-									
-								</div> 
-							);
-						},
-						style: { fontSize: 11 }, 
-						headerProps: {
-							style: { height: 20, fontSize: 11, textAlign: 'left' }
-						},
-					},
-				] }
-			/> 
-		);
-	}
 	
 	show ( what ) {
 		this.setState( { show: what } );
@@ -565,23 +344,23 @@ export default class EPGChannel extends PureComponent {
 			return ( <span>waiting for the program information</span> );
 		}
 		
-		const recorded = Find( this.props.recordings,  ( v ) => { return v.programId == program.programId  }  );
+		const recorded = Find( this.props.recordings,  ( v ) => { return v.programID == program.programID  }  );
 		const isRecorded = isObject( recorded );
 		
-		const isTimer = isObject( Find( this.props.timers, ( v ) => { return v.programId == program.programId  } ) );
+		const isTimer = isObject( Find( this.props.timers, ( v ) => { return v.programID == program.programID  } ) );
 		
 		const seriesO = Find( this.props.series, ( v ) => { 
 			let byS = false;
 			if( typeof v.show == 'string' && typeof program.title == 'string' ) {
 				byS = ( v.show.replace(/ *\([^)]*\) */g, "").trim() == program.title.replace(/ *\([^)]*\) */g, "").trim() );
 			}
-			const byP = ( v.programId == program.programId );
+			const byP = ( v.programID == program.programID );
 			
 			return ( byS || byP );
 			  
 		} )
 		const isSeries = isObject( seriesO );
-		
+		debug('################', program, program.startTime, program.endTime, program.endTime < moment().unix(), moment().unix());
 		let timer = (
 			<FlatButton 
 				title={ ( program.endTime < moment().unix() ) ? "Can not record a past program" : isTimer ? "This episode will be recorded.  Click to delete" : "Record This Episode" } 
@@ -631,10 +410,10 @@ export default class EPGChannel extends PureComponent {
 				:
 					list.length > 0 ?  
 						<RenderScheduled fixedHeader={false} fixedFooter={false} height={this.state.boxHeight - 100}  futureEpisodes={this.state.futureEpisodes} program={program} list={list} channels={this.props.channels} onRowSelection={( i ) => {
-								let programId = list[i].programId;
+								let programID = list[i].programID;
 								let channel = Find( this.props.channels, (v) => ( v.channelId == list[i].channelId ));
-								//debug(programId, list[i])
-								if( channel ) this.props.goTo({ path: '/tv/channel/' + channel.channel + '/' + programId, page: 'Program Info' } );
+								//debug(programID, list[i])
+								if( channel ) this.props.goTo({ path: '/tv/channel/' + channel.channel + '/' + programID, page: 'Program Info' } );
 						}} /> 
 					: 
 						<div style={{ padding: 10 }} children="No upcoming episodes are scheduled to be recorded." /> 
@@ -650,10 +429,10 @@ export default class EPGChannel extends PureComponent {
 				:
 					records.length > 0 ? 
 						<RenderScheduled fixedHeader={false} fixedFooter={false} height={this.state.boxHeight - 100} program={program} list={records} channels={this.props.channels} futureEpisodes={this.state.futureEpisodes} onRowSelection={( i ) => {
-				 				let programId = records[i].programId;
+				 				let programID = records[i].programID;
 								let channel = Find( this.props.channels, (v) => ( v.channelId == records[i].channelId )); 
-								//debug(programId, list[i])
-								// if( channel ) this.props.goTo({ path: '/tv/channel/' + channel.channel + '/' + programId, page: 'Program Info' } );
+								//debug(programID, list[i])
+								// if( channel ) this.props.goTo({ path: '/tv/channel/' + channel.channel + '/' + programID, page: 'Program Info' } );
 						}} /> 
 					: 
 						<div  style={{ padding: 10 }}  children="No episodes are  recorded." />
@@ -673,25 +452,25 @@ export default class EPGChannel extends PureComponent {
 	}
 	
 	renderProgram ( ) {
-		debug( 'renderProgram', this.state.program, this.props.recordings, Find( this.props.recordings, [ 'programId', this.state.program.programId]  ));
-		let { programId, program } = this.state;
+		debug( 'renderProgram', this.state.program, this.props.recordings, Find( this.props.recordings, [ 'programID', this.state.program.programID]  ));
+		let { programID, program } = this.state;
 		
-		if ( !programId ) {
+		if ( !programID ) {
 			return ( <span>choose a program from the channel guide</span> );
 		} else if ( !program.title ) {
 			return ( <span>loading the program information</span> );
 		}
 				
-		let recorded = Find( this.props.recordings, [ 'programId', program.programId]  );
+		let recorded = Find( this.props.recordings, [ 'programID', program.programID]  );
 		const isRecorded = isObject( recorded );
-		const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programId == program.programId  ) ) );
+		const isTimer = isObject( Find( this.props.timers, ( v ) => ( v.programID == program.programID  ) ) );
 		
 		const isSeries = isObject( Find( this.props.series, ( v ) => { 
 			let byS = false;
 			if( typeof v.show === 'string' && typeof program.title === 'string' ) {
 				byS = ( v.show.replace(/ *\([^)]*\) */g, "").trim() == program.title.replace(/ *\([^)]*\) */g, "").trim() );
 			}
-			const byP = ( v.programId == program.programId );
+			const byP = ( v.programID == program.programID );
 			return ( byS || byP );
 			  
 		} ) ); 
@@ -706,6 +485,32 @@ export default class EPGChannel extends PureComponent {
 
 		const isNew = (moment.unix(program.firstAired).add(1, 'd').format("dddd M/D/YYYY") == moment.unix(program.startTime).format("dddd M/D/YYYY") || moment.unix(program.firstAired).format("dddd M/D/YYYY") == moment.unix(program.startTime).format("dddd M/D/YYYY"));		
 		
+		let cast = <span />
+		if ( program.cast !== null ) {
+			cast = program.cast.map( c => {
+				return (<div 
+					className="channelProgramCast" 
+					children={ 
+						<div> 
+							{c.role} - <a href={"http://www.imdb.com/find?s=nm&exact=true&q=" + c.name.trim()} target="_blank" >{c.name}</a> {c.characterName ? `(${c.characterName})` : '' }
+						</div> 
+					} 
+				/>);	
+			});
+		}
+		let crew = <span />
+		if ( program.crew !== null ) {
+			crew = program.crew.map( c => {
+				return (<div 
+					className="channelProgramCast" 
+					children={ 
+						<div> 
+							{c.role} - <a href={"http://www.imdb.com/find?s=nm&exact=true&q=" + c.name.trim()} target="_blank" >{c.name}</a>
+						</div> 
+					} 
+				/>);	
+			});
+		}
 		
 		return (<div>
 			
@@ -736,11 +541,9 @@ export default class EPGChannel extends PureComponent {
 				</div>
 				<div className="" style={{  overflow: 'auto', display: this.state.show === 'cast' ? 'block' : 'none' }}>
 					<div className="channelProgramPeopleHeader">Cast</div>
-					<div className="channelProgramCast" children={ !program.cast ? 'no information provided' : program.cast.split(',').map((v) => ( <div children={<a href={"http://www.imdb.com/find?s=nm&exact=true&q=" + v.trim()} target="_blank" >{v}</a>} /> ) ) } />
-					<div className="channelProgramPeopleHeader">Director(s)</div>
-					<div className="channelProgramDirector" children={ !program.director ? 'no information provided' : program.director.split(',').map((v) => ( <div children={<a href={"http://www.imdb.com/find?s=nm&exact=true&q=" + v.trim()} target="_blank" >{v}</a>} /> ) ) } />
-					<div className="channelProgramPeopleHeader">Writer(s)</div>
-					<div className="channelProgramWriter" children={ !program.writer ? 'no information provided' : program.writer.split(',').map((v) => ( <div children={<a href={"http://www.imdb.com/find?s=nm&exact=true&q=" + v.trim()} target="_blank" >{v}</a>} /> ) ) } />
+					{cast}
+					<div className="channelProgramPeopleHeader">Crew</div>
+					{crew}
 				</div>
 				<div className="" style={{  overflow: 'auto', display: this.state.show === 'other' ? 'block' : 'none' }}>					
 					<div style={{ padding: 5, margin: '7 0 0 0', background: Styles.ColorMe(5, this.props.bgcolor).bgcolor, width: '50%' }} >Upcoming Episodes</div>
@@ -763,9 +566,18 @@ export default class EPGChannel extends PureComponent {
 	render ( ) {
 		const channel = this.props.renderChannel;
 		const { program } = this.state;
+		
+		// quit if no program
+		if ( !program || !channel ) {
+			return (<span>No Program/Channel Ingormation Available</span>);
+		}		
+		
 		const bgi = program.iconPath1 ? "url(" + program.iconPath + ") " : 'none';
 		debug('render', this.props.renderChannel, this.state, bgi);
-		const isNew = (moment.unix(program.firstAired).add(1, 'd').format("dddd M/D/YYYY") == moment.unix(program.startTime).format("dddd M/D/YYYY") || moment.unix(program.firstAired).format("dddd M/D/YYYY") == moment.unix(program.startTime).format("dddd M/D/YYYY"));	
+		
+		const isNew = !program.repeat;	
+		
+		// add episode information
 		let episode = <span />;
 		if ( program.episode ) { 
 			episode = (
@@ -855,7 +667,7 @@ export default class EPGChannel extends PureComponent {
 						//marginStart: obj.marginStart || 0, // pre padding in minutes
 						//marginEnd: obj.marginEnd || 0,  // post padding in minutes
 						//isRepeating: obj.isRepeating || 0,  // XBMC bIsRepeating (not used)
-						programId: program.programId,  // ScheduleEntry ID
+						programID: program.programID,  // ScheduleEntry ID
 						//isSeries: 0, 
 						//type: 0, 
 						//anyChannel: program.channelId, 
@@ -886,7 +698,7 @@ export default class EPGChannel extends PureComponent {
 	}
 	
 	deleteTimer (  ) {
-		const timer = Find( this.props.timers, ( v ) => { return v.programId == this.state.program.programId  } )
+		const timer = Find( this.props.timers, ( v ) => { return v.programID == this.state.program.programID  } )
 		Gab.emit('confirm open', {
 			title: 'Scheduled Timer for ' + this.state.program.title + ' ',
 			html: "Do you want to remove the scheduled timer for " + this.state.program.title + "?",
@@ -1055,7 +867,7 @@ export default class EPGChannel extends PureComponent {
 									marginStart: this.state.marginStart, // pre padding in minutes 
 									marginEnd: this.state.marginEnd,  // post padding in minutes
 									isRepeating: 1,  // series bool
-									programId:  program.programId,  // ScheduleEntry ID
+									programID:  program.programID,  // ScheduleEntry ID
 									lifetime: this.state.lifetime,  //lifetime -1 default
 									runType: this.state.runType, // the type of episodes to record (0->all, 1->new, 2->live)
 									anyChannel: this.state.anyChannel, // whether to rec series from ANY channel 0/-1 true / false

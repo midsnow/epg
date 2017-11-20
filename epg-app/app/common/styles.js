@@ -2,16 +2,10 @@ import { colors, themeManager, getMuiTheme } from 'material-ui/styles';
 import darkBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import lightBaseTheme from 'material-ui/styles/baseThemes/lightBaseTheme';
 import { defaultsDeep as deep } from 'lodash';
-//import TinyColor from 'tinycolor';
+import TinyColor from 'tinycolor2';
 
 export let ColorMe = function ColorMe ( value, color ) {
-	
-	var colors = {
-		color: color,
-		bgcolor: 'transparent'
-	}
-	return colors
-	/*
+	 
 	var colors = {
 		color: TinyColor(color).darken(value).toString(),
 		bgcolor: TinyColor(color).lighten(value).toString()
@@ -36,7 +30,7 @@ export let ColorMe = function ColorMe ( value, color ) {
 	} else {	
 		return colors
 	}
-	* */
+	
 }
 
 export let WOOBI  = deep( {

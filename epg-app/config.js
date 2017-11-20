@@ -10,12 +10,12 @@ System.config({
       "es7.classProperties"
     ]
   },
-  baseUrl: '/epg-app',
   paths: {
     "github:*": "jspm_packages/github/*",
     "npm:*": "jspm_packages/npm/*",
-    "dependencies": "bundles/dependencies",
+    "dependencies": "bundles/dependencies"
   },
+  baseUrl: "/epg-app",
   browserConfig: {
     "paths": {
       "npm:": "/epg-app/jspm_packages/npm/",
@@ -49,7 +49,7 @@ System.config({
     "javascript-natural-sort": "npm:javascript-natural-sort@0.7.1",
     "jquery": "github:components/jquery@2.1.4",
     "localforage": "npm:localforage@1.5.3",
-    "lodash": "npm:lodash@3.10.1",
+    "lodash": "npm:lodash@4.17.4",
     "material-ui": "npm:material-ui@0.19.4",
     "moment": "npm:moment@2.11.1",
     "object-property-natural-sort": "npm:object-property-natural-sort@0.0.4",
@@ -73,6 +73,7 @@ System.config({
     "superagent": "npm:superagent@1.6.1",
     "systemjs-hot-reloader": "github:alexisvincent/systemjs-hot-reloader@0.6.0",
     "tinycolor": "github:bgrins/TinyColor@1.4.1",
+    "tinycolor2": "npm:tinycolor2@1.4.1",
     "util": "github:jspm/nodelibs-util@0.1.0",
     "weakee": "github:capaj/weakee@1.0.0",
     "github:jspm/nodelibs-assert@0.1.0": {
@@ -585,9 +586,6 @@ System.config({
     "npm:lodash.throttle@4.1.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
-    "npm:lodash@3.10.1": {
-      "process": "github:jspm/nodelibs-process@0.1.2"
-    },
     "npm:loose-envify@1.3.1": {
       "fs": "github:jspm/nodelibs-fs@0.1.2",
       "js-tokens": "npm:js-tokens@3.0.2",
@@ -1028,6 +1026,9 @@ System.config({
     "npm:through@2.3.8": {
       "process": "github:jspm/nodelibs-process@0.1.2",
       "stream": "github:jspm/nodelibs-stream@0.1.0"
+    },
+    "npm:tinycolor2@1.4.1": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:ua-parser-js@0.7.17": {
       "process": "github:jspm/nodelibs-process@0.1.2",

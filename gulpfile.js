@@ -22,8 +22,8 @@ var less = require('gulp-less');
 // bundle all dependencies
 // see app/app/app.js to use
 gulp.task('bundle',  function (cb) {
-	var builder = new Builder('./app', './app/config.js');
-	builder.bundle('app/app - [app/**/*]', './app/bundles/dependencies.js', { minify: false, sourceMaps: true })
+	var builder = new Builder('./epg-app', './epg-app/config.js');
+	builder.bundle('app/app - [app/**/*]', './epg-app/bundles/dependencies.js', { minify: false, sourceMaps: true })
 	.then(function() {
 		gutil.log('wrote /bundles/dependencies.js');
 		builder.reset()
@@ -35,100 +35,105 @@ gulp.task('bundle',  function (cb) {
 	});
 });
  
-// bundle all dependencies
-// see public/app.js to use
-gulp.task('bundle-dependencies',  function (cb) {
-	var builder = new Builder('./app', './app/config.js');
-	builder.bundle('app/app - [app/**/*]', './app/bundles/dependencies.js', { minify: true, sourceMaps: false })
-	.then(function() {
-		gutil.log('wrote /bundles/dependencies.js');
-		builder.reset()
-		cb()
-	})
-	.catch(function(err) {
-		gutil.log('FAILED dep bundle ',err)
-		cb()
-	});
-});
- 
-// bundle all dependencies
-// see public/app.js to use
-gulp.task('dev-bundle',  function (cb) {
-	var builder = new Builder('./app', './app/config.js');
-	builder.bundle('app/app - [app/**/*]', './app/bundles/dependencies.js', { minify: false, sourceMaps: true })
-	.then(function() {
-		gutil.log('wrote /bundles/dependencies.js');
-		builder.reset()
-		cb()
-	})
-	.catch(function(err) {
-		gutil.log('FAILED dep bundle ',err)
-		cb()
-	});
-});
-
-
-gulp.task('vendor', function() {
+gulp.task('package', function() {
 	
-	var b = browserify();
-	packages.forEach(function(i) { 
-		if(_.isObject(i)) {
-			b.require(i.file,i.opts);
-		} else {
-			b.require(i);
-		}
-	});
-	b = b.bundle().pipe(source('packages.js'));
-	if (process.env.NODE_ENV === 'production') {
-		b.pipe(streamify(uglify()));
-	}
 	gulp.src([
-		'public/js/lib/jquery/jquery-2.1.1.min.js', 
-		'public/js/lib/bootstrap/bootstrap-3.2.0.min.js',
-		'public/js/lib/socket.io/socket.io.js'
+		'epg-app/jspm_packages/system.js',
+		'epg-app/app.js'
     ])
-    .pipe(concat('vendor.js'))
-    .pipe(gulp.dest('public/js'))
-	return b.pipe(gulp.dest('public/js'));
+    .pipe(concat('epg.js'))
+    .pipe(gulp.dest('epg-app/bundles'));
 });
 
-gulp.task('scripts', function(){
-	var b = browserify();
-	packages.forEach(function(i) {
-		if(_.isObject(i)) i = i.opts.expose;
-		if(i) b.exclude(i);
+gulp.task('package-electron', function() {
+	
+	gulp.src([
+		'epg-app/jspm_packages/system.js',
+		'epg-app/electron-app.js'
+    ])
+    .pipe(concat('electron.js'))
+    .pipe(gulp.dest('epg-app/bundles'));
+});
+
+gulp.task('default', [ 'bundle', 'package' ])
+gulp.task('electron-dev', [ 'bundle', 'package-electron' ])
+
+gulp.task('production',  function (cb) {
+	var builder = new Builder('./epg-app', './epg-app/config.js');
+	builder.buildStatic('app/app', './epg-app/bundles/material-system.js', { minify: false, sourceMaps: false })
+	.then(function() {
+		gulp.src([
+			'node_modules/socket.io-client/dist/socket.io.min.js', 
+			'epg-app/bundles/material-system.js',
+			
+		])
+		.pipe(concat('epg.js'))
+		.pipe(gulp.dest('epg-app/bundles'))
+		.on('end', function() {
+			gutil.log('wrote /epg-app/bundles/epg.js');
+			fs.remove('./epg-app/bundles/material-system.js', function (err) {
+				if (err) {
+					return console.error(err)
+				}
+			})
+			cb();
+		});
+	})
+	.catch(function(err) {
+		gutil.log('FAILED dep bundle ',err)
+		cb()
 	});
-	b.transform(reactify); // use the reactify transform
-	b.add('client/app.js');
-	return b.bundle()
-				.pipe(source('client.js'))
-				.pipe(gulp.dest('public/js'));
 });
 
-//see below for some links about programmatic pm2
-gulp.task('pm2', function(cb) {
-  pm2.connect(function() {
-    pm2.restart('test', function() { 
-      return cb()
-    })
-  })
-})
+gulp.task('electron',  function (cb) {
+	var builder = new Builder('./epg-app', './epg-app/config.js');
+	builder.buildStatic('app/electron-app', './epg-app/bundles/material-system.js', { minify: false, sourceMaps: false })
+	.then(function() {
+		gulp.src([
+			'node_modules/socket.io-client/dist/socket.io.min.js', 
+			'epg-app/bundles/material-system.js',
+			
+		])
+		.pipe(concat('electron.js'))
+		.pipe(gulp.dest('epg-app/bundles'))
+		.on('end', function() {
+			gutil.log('wrote /epg-app/bundles/electron.js');
+			fs.remove('./epg-app/bundles/material-system.js', function (err) {
+				if (err) {
+					return console.error(err)
+				}
+			})
+			cb();
+		});
+	})
+	.catch(function(err) {
+		gutil.log('FAILED dep bundle ',err)
+		cb()
+	});
+});
 
 
-gulp.task('less', function () {
-  gulp.src('./epg-app/styles/site.less')
-    .pipe(less({
-      
-    }))
-    .pipe(gulp.dest('/tmp'))
+gulp.task('less', ['less2'], function () {
    return gulp.src([
 		'./epg-app/styles/fixed-data-table.css',
+		'./epg-app/styles/react-virtualized.css',
 		'./epg-app/styles/font-awesome.min.css',
 		'./epg-app/styles/material-icon.css',
 		'/tmp/site.css',
     ])
     .pipe(concat('styles.css'))
     .pipe(gulp.dest('./epg-app/css/'))
+});
+
+gulp.task('less2', function (cb) {
+  
+	gulp.src('./epg-app/styles/site.less')
+	.pipe(less())
+	.pipe(gulp.dest('/tmp'))
+	.on('error', console.error.bind(console))
+	.end(()=>{
+		cb();
+	});
 });
 
 

@@ -14,10 +14,10 @@
     "token": "873294289792374"
   },
   "moduleRoot": "/home/snow/projects/github/ism-epg-sd",
+  "host": "10.2.2.12",
+  "port": 3888,
   "route": [
     "/epg*",
     "/tv*"
-  ],
-  "port": 3888,
-  "host": "10.2.2.12"
+  ]
 }
