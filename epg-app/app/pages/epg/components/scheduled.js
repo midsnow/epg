@@ -3,8 +3,14 @@ import Debug from 'debug';
 import { Styles } from '../../../common/styles';
 import moment from 'moment';
 import Table from '../../../common/components/table';
-import { FlatButton, Divider, FontIcon, IconButton } from 'material-ui';
-import { isObject, find as Find, filter as Filter } from 'lodash';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
+import isObject from 'lodash/isObject';
+import Find from 'lodash/find';
+import Filter from 'lodash/filter';
+
 
 let debug = Debug('epg:app:pages:epg:components:scheduled');
 

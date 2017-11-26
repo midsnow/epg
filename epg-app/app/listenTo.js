@@ -3,10 +3,10 @@ let debug = Debug('epg:app:listenTo');
 
 export default function () {
 	debug('set heartbeat');
-	let Sockets = this.state.Sockets;
+	let Sockets = this.state.sockets;
 	// setup a 15 sec heartbeat for socket connection loss
-	clearInterval(window.heartbeat2);
-	window.heartbeat2 = setInterval(() => {
+	clearInterval(Sockets.heartbeat2);
+	Sockets.heartbeat2 = setInterval(() => {
 		//debug('heartbeat', Sockets.io.connected);
 		if(!Sockets.connected.io && this.state.connected) {
 			debug('io connect-error');
@@ -44,7 +44,7 @@ export default function () {
 	
 	// status report
 	debug('get status');
-	Sockets.status();
+	Sockets.status(); 
 	Sockets.io.on('status', (data) => {
 		debug('got status data', data);
 		if(data.err) {
@@ -57,7 +57,15 @@ export default function () {
 				}
 			});
 		} else {
-			this.setState({ status: data });
+			let status = {
+				lineups: [],
+				account: {
+					maxLineups: 4,
+				},
+				notifications: [],
+				...data
+			}
+			this.setState({ status });
 		}
 		
 	});

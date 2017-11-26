@@ -1,11 +1,27 @@
 import React from 'react';
 import Debug from 'debug';
 import Gab from '../../common/gab';
-import { Card, CardActions, CardHeader, CardText, FontIcon, IconButton, RaisedButton, Table, TableRow, TableHeader, TableHeaderColumn, TableBody, TableRowColumn } from 'material-ui';
-import { Styles } from '../../common/styles';
-import { ColorMe, Random } from '../../common/utils';
-import { map } from 'lodash';
-import { find as Find } from 'lodash';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import Table from 'material-ui/Table/Table'; 
+import TableBody from 'material-ui/Table/TableBody';
+import TableFooter from 'material-ui/Table/TableFooter';
+import TableHeader from 'material-ui/Table/TableHeader';
+import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
+import TableRowColumn from 'material-ui/Table/TableRowColumn';
+import TableRow from 'material-ui/Table/TableRow';
+
+import { Styles, ColorMe } from '../../common/styles';
+import { Random } from '../../common/utils';
+import map from 'lodash/map';
+import {find as Find} from 'lodash/find';
 
 let debug = Debug('epg:app:pages:tvshows:episode');
 

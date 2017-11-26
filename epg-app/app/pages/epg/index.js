@@ -1,4 +1,4 @@
-import Home from './home';
+import Guide from './guide';
 import Series from './series';
 import Timers from './timers';
 import Channels from './channels';
@@ -6,7 +6,7 @@ import Episode from './episode';
 import Recordings from './recordings';
 
 export default {
-	Home,
+	Guide,
 	Series,
 	Timers,
 	Episode,

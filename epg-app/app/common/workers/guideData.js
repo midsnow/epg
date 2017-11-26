@@ -10,8 +10,8 @@ fs.readJson('../../../../conf/epg.json', (err, cfg) => {
 		throw new Error('No Configuration File Found');
 	}
 	Sockets.init({
-		port: cfg.port,
-		host: cfg.host
+		port: cfg.socketPort || cfg.port,
+		host: cfg.socketHost || cfg.host
 	});
 	onmessage = function(e) {
 		guide(e.data);

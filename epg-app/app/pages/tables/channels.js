@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import { DateCell, ImageCell, LinkCell, TextCell, ChannelCheckbox } from '../../common/utils';
-import { sortByOrder } from 'lodash';
+import sortByOrder from 'lodash.sortbyorder';
 import naturalSort from 'object-property-natural-sort'
 
 import Debug from 'debug';
@@ -103,7 +103,7 @@ export default class ChannelsTable extends React.Component {
 					{...this.props}
 				>
 					<Column
-						cell={<ImageCell style={{textAlign:'center'}}  data={channels} col="logo" source="channels" />}
+						cell={<ImageCell style={{textAlign:'center'}}  data={channels} col="stationLogo" source="channels" />}
 						fixed={true}
 						width={50}
 						allowCellsRecycling={true}

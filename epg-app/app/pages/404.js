@@ -3,9 +3,15 @@ import Debug from 'debug'
 import Gab from '../common/gab';
 import Styles from '../common/styles';
 import { pickIcon } from '../common/utils';
-import { Divider, FontIcon, CardText, Card, CardActions, CardHeader, CardMedia, CardTitle } from 'material-ui';
-import { Col } from 'react-bootstrap';
-
+import Divider from 'material-ui/Divider';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import FontIcon from 'material-ui/FontIcon';
+import CardTitle from 'material-ui/Card/CardTitle';
+import Col from 'react-bootstrap/lib/Col';
 let debug = Debug('epg:app:pages:disconnect');
 		
 export default class Disconnect extends React.Component {

@@ -5,12 +5,29 @@ import StationsTable from '../tables/stations';
 import Confirm from '../../common/components/confirm';
 import Gab from '../../common/gab';
 import Routes from '../../routes';
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, Divider, FontIcon, FlatButton, IconButton, IconMenu,  List, ListItem, MenuItem, Tabs, Tab, TextField } from 'material-ui';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import ListItem from 'material-ui/List/ListItem';
+import FontIcon from 'material-ui/FontIcon';
+import Divider from 'material-ui/Divider';
+import List from 'material-ui/List';
+import TextField from 'material-ui/TextField';
+import MenuItem from 'material-ui/MenuItem';
+import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import Tabs from 'material-ui/Tabs/Tabs';
+import Tab from 'material-ui/Tabs/Tab';
+
 import SwipeableViews from 'react-swipeable-views';
-import { Col } from 'react-bootstrap';
+import Col from 'react-bootstrap/lib/Col';
 import { Button, setChannelKey as setKey } from '../../common/utils';
 import Icons from '../../assets/icons';
-import { defaultsDeep } from 'lodash';
+import defaultsDeep from 'lodash/defaultsDeep';
 import Path from 'path';
 import Styles from '../../common/styles';
 
@@ -131,12 +148,11 @@ export default class Lineup extends React.Component {
 	}
 	componentWillUnmount() {
 		debug('remove listener _listenUpdateChannel from Gab');
+		this.state = {};
 		Gab.removeListener('updateChannel', this._listenUpdateChannel);
 	}
 	componentWillReceiveProps(props) {
-		//debug('receiveProps');
-		
-		if(props.lineup !== this.state.parent.lineup) {
+		if ( props.lineup !== this.state.parent.lineup ) {
 			this.setState({
 				parent: props,
 				lineups: {
@@ -408,10 +424,11 @@ export default class Lineup extends React.Component {
 							onChangeIndex={this.handleChange}
 						>
 							<div style={styles.slide} className="no-gutter">
-								<Col xs={12} style={{padding:5}}  >
+								<Col xs={12} style={{paddingLeft:5}}  >
 										<CardTitle 
 											title={<TextField
-												hintText="change the headend name"
+												hintText="change the scdhedule name"
+												title="You can click here and change this name"
 												value={headend.name}
 												style={{width:'100%'}}
 												underlineStyle={{borderColor:'transparent'}}
@@ -423,7 +440,6 @@ export default class Lineup extends React.Component {
 													this.props.assets({});
 												}} 
 											/>}
-											subtitle={"headend information"}
 											titleColor={Styles.Colors.blue400}
 											subtitleColor={Styles.Colors.grey500}
 										/>
@@ -434,12 +450,13 @@ export default class Lineup extends React.Component {
 														headend.name
 													} 
 													disabled={true} 
-													insetChildren={true} 
-												/>
-												<ListItem primaryText={headend.lineup} disabled={true} insetChildren={true} />
-												<ListItem primaryText={headend.location} disabled={true} insetChildren={true}  />
-												<ListItem primaryText={headend.transport}  disabled={true} insetChildren={true} />
-												<ListItem primaryText={headend.uri} disabled={true} insetChildren={true}  />
+													insetChildren={true}
+													secondaryText="Schedule"  
+												/> 
+												<ListItem secondaryText="Identifier" primaryText={headend.lineup} disabled={true} insetChildren={true} />
+												<ListItem secondaryText="Location" primaryText={headend.location} disabled={true} insetChildren={true}  />
+												<ListItem secondaryText="Type" primaryText={headend.transport}  disabled={true} insetChildren={true} />
+												<ListItem secondaryText="Access URI" primaryText={headend.uri} disabled={true} insetChildren={true}  />
 												<ListItem 
 													secondaryText={"confirm and remove " + headend.lineup + " from account"} 
 													primaryText="Delete" 

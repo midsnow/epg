@@ -6,7 +6,9 @@ System
 		System.trace = true;
 		return System.import('systemjs-hot-reloader')
 		.then( HotReloader => {
+			console.log('hot reload');
 			new HotReloader.default('10.2.2.12:3888', path => {
+				console.log(path);
 				return path.replace('/home/snow/projects/github/ism-epg-sd/epg-app/', '');
 			})  // chokidar-socket-emitter port
 		});

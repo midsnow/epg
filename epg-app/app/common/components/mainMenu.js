@@ -1,12 +1,20 @@
 import React from 'react';
 import Debug from 'debug'
-import { Divider, Drawer, IconButton, IconMenu, FontIcon, MenuItem, List, ListItem } from 'material-ui';
 import { Styles } from '../styles';
 import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
 
+import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import FontIcon from 'material-ui/FontIcon';
+import MenuItem from 'material-ui/MenuItem';
+import Menu from 'material-ui/Menu';
+import Divider from 'material-ui/Divider';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+
 let debug = Debug('epg:app:common:components:mainMenu'); 
 
-		
 export default class mainMenu extends React.Component {
 	constructor(props) {
 		super(props)
@@ -43,15 +51,13 @@ export default class mainMenu extends React.Component {
 	toggleDrawer() {
 		
 	}
-	
-	
-	
+
 	render() {
 		debug('## RENDER ## mainMenu render', this.props);
 		
 		let mylineups = this.props.lineups.lineups.map((v) => {
 			return (
-				<ListItem 
+				<MenuItem 
 					key={v.lineup+'1'} 
 					className="fixmenuleft"
 					style={{fontSize:'12px', marginLeft:0}} 
@@ -60,7 +66,8 @@ export default class mainMenu extends React.Component {
 					onClick={(e) => {
 						e.preventDefault(e);
 						this.props.goTo({
-							page: 'lineup',
+							page: 'Schedule',
+							path: '/epg/lineup',
 							lineup: v.lineup,
 							current: v,
 							newalert: {
@@ -75,22 +82,17 @@ export default class mainMenu extends React.Component {
 			);
 		});
 		
-		let menu = 	(<div id="MENU" >
-			<div style={{ height: 25, width: 5 }} />
-			<List>
-				<ListItem
-					primaryText="My Guides"
+		let menu = 	(<div id="MENU" style={{ paddingTop: 20 }}>
+			
+			<Menu >
+				<MenuItem
+					primaryText="My Schedules"
 					primaryTogglesNestedList={true}
 					leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >tv</FontIcon>}
 					initiallyOpen={false}
 					nestedItems={mylineups}
-				/>
-				
-				<ListItem  onTouchTap={()=>{this.props.goTo('settings')}} primaryText="Settings" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >home</FontIcon>} />
-				
-				<ListItem onTouchTap={()=>{this.props.goTo('add-lineup')}} primaryText="Add A Lineup" leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >plus_one</FontIcon>} />
-				
-			</List>
+				/>				
+			</Menu>
 		</div>);
 		
 		let page = this.props.anchor || this.props.page;
@@ -127,7 +129,7 @@ export default class mainMenu extends React.Component {
 							title="Home"
 							onClick={(e)=>{
 								e.preventDefault();
-								this.props.goTo({page: snowUI.name, path: snowUI.homepage});
+								this.props.goTo({page: 'Home', path: '/epg/home'});
 							}} 
 						>
 							<FontIcon 
@@ -140,7 +142,7 @@ export default class mainMenu extends React.Component {
 						</IconButton>
 					</div>
 					<div style={{float:'left',width:'33%', textAlign: 'center'}}>
-						<IconButton title="Status" onClick={(e)=>{e.preventDefault();this.props.goTo('status');}} ><FontIcon className="material-icons" hoverColor={Styles.Colors.limeA400} style={{fontSize:'20px'}}  color={this.props.theme.appBar.buttonColor || 'initial'} >router</FontIcon></IconButton>
+						<IconButton title="Status" onClick={(e)=>{e.preventDefault();this.props.goTo({ page: 'Status', path: '/epg/status' });}} ><FontIcon className="material-icons" hoverColor={Styles.Colors.limeA400} style={{fontSize:'20px'}}  color={this.props.theme.appBar.buttonColor || 'initial'} >router</FontIcon></IconButton>
 					</div>
 					<div style={{float:'left',width:'34%', textAlign: 'center', paddingTop: 12}}>
 						<IconMenu
@@ -153,20 +155,18 @@ export default class mainMenu extends React.Component {
 							useLayerForClickAway={true}
 							menuStyle={{}}
 						>
-						  <MenuItem style={{lineHeight: 2}} primaryText="Default" value="reset" />
-						  <MenuItem style={{lineHeight: 2}} primaryText="Light" value="light" />
+						  <MenuItem style={{lineHeight: 2}} primaryText="Default" value="default" />
+						  <MenuItem style={{lineHeight: 2}} primaryText="Ocean" value="blue"/>
+						  <MenuItem style={{lineHeight: 2}} primaryText="Purple" value="purple"/>
 						  <MenuItem style={{lineHeight: 2}} primaryText="Woobi" value="woobi"/>
+						  <MenuItem style={{lineHeight: 2}} primaryText="Light" value="light" />
 						  <MenuItem style={{lineHeight: 2}} primaryText="Blue" value="nitelite3"/>
 						  <MenuItem style={{lineHeight: 2}} primaryText="Night" value="night"/>
 						  <MenuItem style={{lineHeight: 2}} primaryText="Graphite" value="graphite"/>
 						  <MenuItem style={{lineHeight: 2}} primaryText="Nitelite" value="nitelite"/>
 						  <MenuItem style={{lineHeight: 2}} primaryText="Orange" value="nitelite2"/>
-						   <MenuItem style={{lineHeight: 2}} primaryText="Other" value="nitelite4"/>
-						  <MenuItem style={{lineHeight: 2}} primaryText="Weird" value="blue"/>
-						  <MenuItem style={{lineHeight: 2}} primaryText="Alternate" value="alternate blue"/>
+						  <MenuItem style={{lineHeight: 2}} primaryText="Other" value="nitelite4"/>
 						  <MenuItem style={{lineHeight: 2}} primaryText="Cream" value="cream" />
-						  <MenuItem style={{lineHeight: 2}} primaryText="MUI Dark" value="dark" />
-						  <MenuItem style={{lineHeight: 2}} primaryText="MUI Light" value="default" />
 						</IconMenu>
 					</div>
 				</div>
@@ -174,25 +174,31 @@ export default class mainMenu extends React.Component {
 					height: '100%',
 					width: '100%',
 					overflow: 'hidden',
+					paddingTop: 25,
 					marginTop: 0,
 					borderLeft: '10px solid ' + this.props.theme.baseTheme.palette.canvasColor
 				}} >	
-					{menu}	
-					<Divider />	
-					<MenuItem 
-						primaryText="Guide" 
-						leftIcon={<FontIcon className="material-icons">dvr</FontIcon>} 
-						onClick={(e) => {
-							e.preventDefault(e);
-							this.props.goTo({
-								page: 'Episode Program Guide',
-								path: '/tv/guide',
-							}, {}, () => { this.toggleDrawer(false, false) });
-						}}
-						style={{}}
-						href="/noscript/tv"
+					<div style={{ position: 'absolute', height: 25, width: 25, right: 0, top: 0 }} >
+						<div style={{ float:'right' }} >
+							<IconButton title="Close" onClick={(e)=>{e.preventDefault();this.props.handleLeftNav();}} ><FontIcon className="material-icons" hoverColor={Styles.Colors.limeA400} style={{fontSize:'18px'}}  color={this.props.theme.appBar.buttonColor || 'initial'} >close</FontIcon></IconButton>
+						</div>
+					</div>
+					<Menu desktop={false} >
+					
+					<MenuItem
+						primaryText="My Schedules"
+						leftIcon={<FontIcon className="material-icons"  >tv</FontIcon>}
+						desktop={false} 
+						onTouchTap={()=>{
+							this.props.goTo({ 
+								page: 'My Schedules', 
+								path: '/epg/home' 
+							})
+						}} 
 					/>
+					
 					<MenuItem 
+						desktop={false}
 						primaryText="TV Channels" 
 						leftIcon={<FontIcon className="material-icons">tv</FontIcon>} 
 						onClick={(e) => {
@@ -204,9 +210,25 @@ export default class mainMenu extends React.Component {
 						}}
 						style={{}}
 						href="/noscript/tv/channels"
-					/>		
+					/>	
 					
 					<MenuItem 
+						desktop={false}
+						primaryText="Guide" 
+						leftIcon={<FontIcon className="material-icons">dvr</FontIcon>} 
+						onClick={(e) => {
+							e.preventDefault(e);
+							this.props.goTo({
+								page: 'Episode Program Guide',
+								path: '/tv/guide',
+							}, {}, () => { this.toggleDrawer(false, false) });
+						}}
+						style={{}}
+						href="/noscript/tv/guide"
+					/>
+				
+					<MenuItem 
+						desktop={true}
 						primaryText="Scheduled" 
 						leftIcon={<FontIcon className="material-icons">fiber_dvr</FontIcon>} 
 						onClick={(e) => {
@@ -219,7 +241,9 @@ export default class mainMenu extends React.Component {
 						style={{}}
 						href="/noscript/tv/scheduled"
 					/>
+					
 					<MenuItem 
+						desktop={true}
 						primaryText="Season Passes" 
 						leftIcon={<FontIcon className="material-icons">fiber_dvr</FontIcon>} 
 						onClick={(e) => {
@@ -232,7 +256,9 @@ export default class mainMenu extends React.Component {
 						style={{}}
 						href="/noscript/tv/season-passes"
 					/>
+					
 					<MenuItem 
+						desktop={true}
 						primaryText="Recordings" 
 						leftIcon={<FontIcon className="material-icons">play_circle_filled</FontIcon>} 
 						onClick={(e) => {
@@ -246,6 +272,20 @@ export default class mainMenu extends React.Component {
 						href="/noscript/tv/recordings"
 					/>
 					
+					<MenuItem 
+						desktop={true} 
+						onTouchTap={()=>{
+							this.props.goTo({ 
+								page: 'Configuration', 
+								path:'/epg/configuration' 
+							})
+						}} 
+						primaryText="Configuration" 
+						leftIcon={<FontIcon className="material-icons"  >home</FontIcon>} 
+					/>	
+					
+					
+					</Menu>
 							
 				</div>
 			</Drawer>

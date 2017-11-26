@@ -1,6 +1,12 @@
 import React from 'react';
 import Debug from 'debug'
-import { Drawer, IconButton, IconMenu, FontIcon, MenuItem } from 'material-ui';
+
+import Drawer from 'material-ui/Drawer';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import FontIcon from 'material-ui/FontIcon';
+import MenuItem from 'material-ui/MenuItem';
+
 import { Styles } from '../styles';
 
 let debug = Debug('woobi:app:common:components:menu'); 

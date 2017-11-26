@@ -1,6 +1,5 @@
 import React from 'react';
 import path from 'path';
-import _ from 'lodash';
 import randomNumber from 'hat';
 import Gab from '../common/gab'
 import Promise from 'bluebird';
@@ -23,16 +22,42 @@ function options() {
 	
 	exports.updateConfiguration = function(config, callback) {
 		
+		if ( !this.connected.io ) {
+			if ( config.socketHost ) {
+				this.host = config.socketHost;
+			}
+			if ( config.socketPort ) {
+				this.port = config.socketPort;
+			}
+			Gab.once('connect', (e) => {
+				debug('Connected');
+				this.updateConfiguration( config );
+			});
+			this.connect();
+			if ( typeof callback == 'function' ) {
+				callback( config );
+			}
+			return;
+		}
+		
 		if(callback) {
 			config.iden = this.trap(this.io, callback);
 		} else {
 			config.iden = randomNumber();
 		}
+		if ( !config.server ) {
+			delete config.port;
+			delete config.host;
+		}
+		debug('updateConfig', config);
 		this.io.emit('updateConfig', config);
 		
 	};
 	
 	exports.headends = function(postal, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
 		this.io.emit('headends',{ 
 			postal,
 			iden: this.trap(this.io, callback)
@@ -40,16 +65,27 @@ function options() {
 	};
 	
 	exports.lineupMap = function(headend, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			debug(this.epg.state.status);
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
 		headend.iden = this.trap(this.io, callback);
 		this.io.emit('lineupMap', headend);
 	};
 	
 	exports.grabLineupMap = function(headend, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
 		headend.iden = this.trap(this.io, callback);
 		this.io.emit('grabLineupMap', headend);
 	};
 	
 	exports.updateChannel = function(channel, update, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return; //callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		if(callback) {
 			channel.iden = this.trap(this.io, callback);
 		} else {
@@ -60,6 +96,10 @@ function options() {
 	};
 	
 	exports.updateHeadend = function(headend, update, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return; // callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		if(callback) {
 			headend.iden = this.trap(this.io, callback);
 		} else {
@@ -70,6 +110,10 @@ function options() {
 	};
 	
 	exports.schedules = function(headend, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		headend.iden = this.trap(this.io, callback);
 		this.io.emit('schedules', headend);
 	};
@@ -78,6 +122,10 @@ function options() {
 		if(!callback) {
 			callback = ()=>{}
 		}
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		this.io.emit('lineups',{
 			iden: this.trap(this.io, callback)
 		});
@@ -87,12 +135,19 @@ function options() {
 		if(!callback) {
 			callback = ()=>{}
 		}
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		this.io.emit('guide',Object.assign(guideData, {
 			iden: this.trap(this.io, callback)
 		}));
 	};
 	
 	exports.lineupRemove = function(lineup, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
 		// lineup should be a object and include uri
 		this.io.emit('lineupRemove',{ 
 			...lineup,
@@ -101,11 +156,19 @@ function options() {
 	};
 	
 	exports.lineupAdd = function(lineup, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		lineup.iden = this.trap(this.io, callback);
 		this.io.emit('lineupAdd', lineup);
 	};
 	
 	exports.refreshGuide = function(lineup, callback) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		Gab.reset();
 		lineup.iden = this.trap(this.io, ()=>{});
 		this.io.emit('refreshGuide', lineup);
@@ -117,9 +180,7 @@ function options() {
 				this.io.removeListener('refreshGuide', readData);
 			}
 		}
-		
 		this.io.on('refreshGuide', readData);
-		
 	};
 	
 	exports.status = function(callback) {
@@ -133,6 +194,10 @@ function options() {
 	};
 	
 	exports.addEvent = function(event, emitTo) {
+		if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			return callback({ error: { message: 'Waiting for connections' } } );
+		}
+		
 		debug('add Event', event);
 		this.io.emit('add', Object.assign({ 
 			list: 'Event',
@@ -146,8 +211,11 @@ function options() {
 	
 	exports.grab = function(request, emitTo = 'json') {
 		debug('get ' + request.action, request);
-		var promise = new Promise((resolve, reject) => {
-			
+		return new Promise((resolve, reject) => {
+			//if ( !this.epg.state.status._db || !this.epg.state.status._agent ) {
+			//	resolve({ error: { message: 'Waiting for connections' } } );
+			//	return;
+			//}
 			this.io.emit(request.action, Object.assign({ 
 				iden: this.trap(this.io, talk)
 			}, request));
@@ -162,10 +230,7 @@ function options() {
 				}
 			}
   
-		});
-		
-		return promise;
-		
+		});		
 	}
 	
 	

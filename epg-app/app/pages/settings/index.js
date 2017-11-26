@@ -3,14 +3,29 @@ import Debug from 'debug';
 import Gab from '../../common/gab';
 import { pickIcon } from '../../common/utils';
 import Routes from '../../routes';
-import { CardText, Card, CardActions, CardHeader, CardMedia, CardTitle } from 'material-ui/Card';
-import { FontIcon, Toggle, SelectField, MenuItem, Divider, FlatButton, TextField, GridList, GridTile, List, ListItem } from 'material-ui';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import ListItem from 'material-ui/List/ListItem';
+import Divider from 'material-ui/Divider';
+import List from 'material-ui/List/List';
+import TextField from 'material-ui/TextField';
+import GridTile from 'material-ui/GridList/GridTile';
+import FlatButton from 'material-ui/FlatButton';
+import GridList from 'material-ui/GridList/GridList';
+import MenuItem from 'material-ui/MenuItem';
+import SelectField from 'material-ui/SelectField';
+import Toggle from 'material-ui/Toggle';
+import FontIcon from 'material-ui/FontIcon';
 import { Button } from '../../common/utils';
 import Alert from '../../common/alert';
 import Select from 'react-select';
-import { Col } from 'react-bootstrap';
+import Col from 'react-bootstrap/lib/Col';
 import Icons from '../../assets/icons';
-import { sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
 import Styles from '../../common/styles';
 
 let debug = Debug('epg:app:pages:settings:index');
@@ -79,7 +94,7 @@ export default class Settings extends React.Component {
 				});
 				this.refs.manage.error();		
 			} else {
-				this.refs.manage.success();
+				//this.refs.manage.success();
 				let headendsMap = {};
 				data.forEach(v => headendsMap[v.uri] = v)
 				this.setState({
@@ -167,13 +182,13 @@ export default class Settings extends React.Component {
 				break;
 		}
 		
-		let thebutton = this.state.step === 8 ? <Col xs={4} /> : <Col xs={4} >
+		let thebutton = this.state.step > 1 ? <Col xs={4} /> : <Col xs={4} >
 				<div className="pull-left" ><Button className={" "} ref="manage"  onClick={this.submit} durationSuccess={this.state.durationSuccess} durationError={this.state.durationError} >Search</Button></div>
 			</Col>;
 				
 		let buttons = (<div className="no-gutter" style={{marginTop:20,marginBottom:20}}>
 
-			{this.state.step > 1 ? <span /> : thebutton}
+			{thebutton}
 	
 			<Col xs={8} >
 				<div className="pull-left" >

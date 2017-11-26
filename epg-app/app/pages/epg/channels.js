@@ -1,11 +1,53 @@
 import React from 'react';
+import { render, unmountComponentAtNode } from 'react-dom';
 import moment from 'moment';
-import { sortBy, find as Find, isObject, filter as Filter, debounce } from 'lodash';
+import isObject from 'lodash/isObject';
+import isFunction from 'lodash/isFunction';
+import debounce from 'lodash/debounce';
+import Find from 'lodash/find';
+import Filter from 'lodash/filter';
+import sortBy from 'lodash/sortBy';
 import Debug from 'debug';
 import Gab from '../../common/gab';
 import Table from '../../common/components/table';
-import { Avatar, Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, DropDownMenu, FlatButton, FontIcon, IconButton, IconMenu, LinearProgress, MenuItem, Toggle, Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui';
+import Avatar from 'material-ui/Avatar';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import LinearProgress from 'material-ui/LinearProgress';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+import Toolbar from 'material-ui/Toolbar/Toolbar';
+import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
 import { Styles, ColorMe } from '../../common/styles';
+import hat from 'hat';
+import PropTypes from 'prop-types'; // ES6
+import store from '../../common/localstore';
+
+let channels = new store({
+	name: 'channels',
+	store: 'channels'
+});
+
+let groups = new store({
+	name: 'groups',
+	store: 'groups'
+});
+
+let guide = new store({
+	name: 'guide',
+	store: 'guide'
+});
 
 let debug = Debug('epg:app:pages:epg:channels');
 
@@ -16,26 +58,48 @@ export default class Channels extends React.Component {
 		this.displayName = 'Channels';
 		this.state = {
 			guide: [],
+			groups: {},
 			expanded: false,
 		};
 		
+		this._update = false;
+		
 		this.getGuideData = this.getGuideData.bind(this)
-		this.renderSchedule = this.renderSchedule.bind(this);
-		this.onExpandChange = this.onExpandChange.bind(this)
+		this.onExpandChange = this.onExpandChange.bind(this);
+		this._mountedSched = false;
 	}
 	
 	componentDidMount ( ) {
 		debug('######### componentDidMount  ##  Channels',  this.props);
-		
+		groups.all()
+		.then( chans => {
+			this._update = true;
+			this.setState({
+				groups: chans
+			});
+		}).catch(debug);
 	}
 	
 	componentWillUnmount ( ) {
-		delete this.state;
+		let div = document.getElementById('deleteSched');
+		if ( div ) {
+			debug('unmount')
+			unmountComponentAtNode( div );
+		}
 	}
 	
 	componentWillReceiveProps ( props ) {
 		debug('## componentWillReceiveProps  ## Channels got props', props);
-		this._update = true;
+		groups.all()
+		.then( chans => {
+			this._update = true;
+			this.setState({
+				groups: chans
+			});
+			if ( this.state.expanded ) {
+				this.getGuideData( { stationID: this.state.expanded } );
+			}
+		}).catch(debug);
 	}	
 	
 	shouldComponentUpdate ( ) {
@@ -47,16 +111,24 @@ export default class Channels extends React.Component {
 		return false;
 	}
 	
-	handleExpandChange = ( expanded ) => {
+	handleExpandChange = ( expanded ) => { 
 		this.setState({expanded: expanded});
 	};
 	
-	onExpandChange( ex, id ) {
-		debug('expand', ex, id);
+	onExpandChange( ex, obj ) {
+		debug('expand', ex, obj);
 		this._update = true;
-		if ( ex ) {
-			this.setState({ guide: [], expanded: id }, () => {
-				this.getGuideData( id );
+		let div = document.getElementById('deleteSched');
+		if ( div ) {
+			debug('unmount')
+			unmountComponentAtNode( div );
+		}
+		if ( ex ) {			
+			this.setState({ guide: [], expanded: obj.stationID }, () => {
+				setTimeout(() => { 
+					render(<Sched { ...this.props } entry={ obj } guide={ [] } />, document.getElementById('deleteSched'))
+					this.getGuideData( obj, true );
+				}, 50);
 			});
 		} else {
 			this.setState({ guide: [], expanded: false });
@@ -65,16 +137,28 @@ export default class Channels extends React.Component {
 	
 	render ( ) { 
 		debug('## render  ##  Channels  render', this.props, this.state);
-		let ret = <div style={{ padding: 50 }}><span style={{ color: 'white' }} children="Preparing Channel List" /><br /><LinearProgress mode="indeterminate" /></div>;
+		
+		// placeholder
+		let ret = ( <div style={{ padding: 50 }}>
+			<span 
+				style={{ color: Styles.Colors.limeA400 }} 
+				children="Preparing Channel List" 
+			/>
+			<br />
+			<LinearProgress mode="indeterminate" />
+		</div>);
+		
 		let group = this.props.params.group || 'All Channels';
+		
 		let sort = this.props.location.query.sortChannelsBy || 'channel';
-		if ( Object.keys(this.props.groups).length > 0 ) {
- 			// ret =  Object.keys(this.props.channels).map((keyName, i) => {
-			ret =  sortBy( this.props.groups[group], [ sort ] ).map( ( c, i ) => {
-				return (<div className="col-sm-12 col-md-6" style={{ marginBottom: 5 }}  key={c.channel}>
+		debug('try keys');
+		if ( Object.keys(this.state.groups).length > 0 ) {
+ 			
+			ret =  sortBy( this.state.groups[group], [ sort ] ).map( ( c, i ) => {
+				return (<div className="col-sm-12 col-md-6" style={{ marginBottom: 5 }} key={i}>
 					<Card  
-						onExpandChange={debounce((e)=> this.onExpandChange(e, c.stationID), 150)}
-						expanded={ this.state.expanded === c.stationID }
+						onExpandChange={debounce((e)=> this.onExpandChange(e, c), 150)}
+						expanded={ this.state.expanded && this.state.expanded === c.stationID }
 					>
 						<CardHeader
 							subtitle={c.channel}
@@ -84,18 +168,14 @@ export default class Channels extends React.Component {
 							showExpandableButton={true}
 							
 						/>						
-						<CardText 
-							expandable={true}
-							
-						>
-							<div style={{ height: 400 }} > {this.renderSchedule( )} </div>
+						<CardText expandable={true} >
+							<div style={{ height: 350 }} id="deleteSched" >  </div>
 						</CardText>
 					</Card>
 				</div>);
 			});
 			
 		}
-		//return <div>{ret}</div>;
 		return (<div style={{ padding: '0 0px' }}>
 			<div style={{ padding: '10px 15px' }}>
 				<Toolbar>
@@ -115,51 +195,95 @@ export default class Channels extends React.Component {
 		</div>);
 	}
 	
-	getGuideData ( id ) {
-		debug( 'getGuideData', id );
-		
-			this.props.Request({
-				action: 'getGuideData',
-				id
-			})
-			.then(data => {
-				debug('### got getGuideData ###', data);
-				this._update = true;
-				this.setState({
-					guide: Filter( data.entries.groups[id], v => ( Number(v.startTime) > moment().subtract(1, 'h').unix() ) ),
+	getGuideData ( channel, refresh = false ) {
+		debug( 'getGuideData', channel );
+	
+		// load the cache and if new information comes it it will be added.
+		guide.getItem( channel.stationID )
+		.then( data => {
+			debug('### got getGuideData ###', data);
+			render(<Sched 
+				{ ...this.props } 
+				entry={ channel } 
+				changeProgram={ this.changeProgram.bind( this ) } 
+				guide={ Filter( data, v => ( Number(v.startTime) > moment().subtract(4, 'h').unix() ) ) 
+				
+				}   />, document.getElementById('deleteSched'))
+			if ( refresh ) {	
+				// tell the worker to refresh the full information
+				snowUI.Worker.port.postMessage({ 
+					action: 'getGuideData',
+					data: {
+						id: channel.stationID,
+						update: true
+					}
+					
 				});
-			})
-			.catch(error => {
-				debug('ERROR from getGuideData', error)
-			});
-		
-			
+			}
+		});
+		return;
 	}
 	
-	changeProgram ( station ) {
-		let p = this.props.entries[station];
-		let q = ( Array.isArray(p) && typeof p[0] === 'object' ) ? p[0].channel : false;
-		if ( q === false ) {
-			debug(' no channel', p, q );
+	changeProgram ( channel, program ) {
+		debug('ChangeProgram', channel, program);
+		if ( !channel && !program ) {
+			debug(' no channel', channel, program );
 			return false;
 		}
-		this.props.goTo({ path: '/tv/channel/' + p.channel + '/' + station, page: 'Program Info' } );
-		window.scrollTo(0, 0);
+		this.props.goTo({ path: '/tv/channel/' + channel + '/' + program, page: 'Program Info' } );
+		window.scrollTo(0, 0); 
 	}
 	
-	renderSchedule ( id ) {
-		if ( this.state.guide.length === 0 ) {
+	groups() {
+		return (<DropDownMenu value={this.props.params.group || 'All Channels' } onChange={( event, index, value ) => { this.props.goTo({ path: '/tv/channels/'+value, page: value}); } }> 
+			{
+				Object.keys( this.state.groups ).map( ( keyName, i ) => {
+					return (<MenuItem key={keyName} value={keyName} primaryText={keyName}  />)
+				})
+			} 
+		</DropDownMenu>)	
+			
+	}	
+}
+
+Channels.defaultProps = {
+	groups: {
+		'All channels': [],
+		'Most viewed': []
+	},	
+}
+
+Channels.getInitialData = function(params) {
+	
+	let ret = {}
+	console.log('### RUN getInitialData Channels ###',  params);
+	return {}
+}
+
+class Sched extends React.Component {
+	constructor(props) {
+		super(props)
+	}
+	
+	getChildContext() {
+		return {
+			muiTheme: this.props.theme,
+		};
+	}
+	
+	render ( ) {
+		debug('render schedule');
+		if ( this.props.guide.length === 0 ) {
 			return (
 				<div><br />
-				<LinearProgress mode="indeterminate" />
 				<span style={{ color: Styles.Colors.limeA400 }} children='Getting Programs'  /> 
 				<br /></div>
 			);
 		}
-		 
+		
 		let rows = [];
 		let lastday = ''
-		let g = this.state.guide;
+		let g = this.props.guide;
 		if ( !g ) {
 			return <span />
 		} else {
@@ -168,9 +292,9 @@ export default class Channels extends React.Component {
 				if ( day != lastday ) {
 					lastday = day;
 					if ( rows.length === 0 ) {
-						rows.push(<div style={{ zIndex: 1300, padding: 2, position: 'sticky', width: '100%', marginTop: 40,  top: 0, left: 0, backgroundColor: ColorMe(10, this.props.theme.baseTheme.palette.canvasColor).bgcolor, height: 25, fontSize: 14, fontWeight: 700, margin: '0 0 10 0' }} >{lastday}</div>);
+						rows.push(<div key={s.id+'er'} style={{ zIndex: 1300, padding: 5, position: 'sticky', width: '100%', marginTop: 40,  top: 0, left: 0, backgroundColor: ColorMe(10, this.props.theme.baseTheme.palette.canvasColor).bgcolor, height: 30, fontSize: 16, fontWeight: 400, margin: '0 0 10 0' }} >{lastday}</div>);
 					} else {
-						rows.push(<div style={{ zIndex: 1300, padding: 2, position: 'sticky', width: '100%', marginTop: 40,  top: 0, left: 0, backgroundColor: ColorMe(10, this.props.theme.baseTheme.palette.canvasColor).bgcolor, height: 25, fontSize: 14, fontWeight: 700, margin: '30 0 20 0' }} >{lastday}</div>);
+						rows.push(<div key={s.id+'er'}  style={{ zIndex: 1300, padding: 5, position: 'sticky', width: '100%', marginTop: 40,  top: 0, left: 0, backgroundColor: ColorMe(10, this.props.theme.baseTheme.palette.canvasColor).bgcolor, height: 30, fontSize: 16, fontWeight: 400, margin: '30 0 20 0' }} >{lastday}</div>);
 					}
 				}
 				
@@ -194,7 +318,7 @@ export default class Channels extends React.Component {
 						</div>
 					);
 				}
-				if ( isRecorded ) {
+				if ( isRecorded ) { 
 					recordings = (
 						<div style={{ marginTop: 2, width: 12, height: 12, textAlign: 'left'}}>
 							<FontIcon className="material-icons"  color={Styles.Colors.limeA400} style={{cursor:'pointer', fontSize: 12}}  title="This program is recorded">play_circle_filled</FontIcon>
@@ -216,20 +340,24 @@ export default class Channels extends React.Component {
 					<div style={{ position: 'relative', clear: 'both' }}>
 						<span style={{ fontWeight: 700, fontSize: 14 }}>{moment.unix(s.startTime).format("LT")}</span> - <span style={{ fontWeight: 700, fontSize: 14 }}>{s.title}</span> 
 						<div style={{ marginTop: 5, clear: 'both' }} >
-							{ s.iconPath ? <img src={s.iconPath}  style={{ maxWidth: 48, float: 'left', margin: '0 5 0 0' }} /> : <span /> }
+							{ s.iconPath ? <img src={s.iconPath.search('http') > -1 ? s.iconPath : 'https://json.schedulesdirect.org/20141201/image/' + s.iconPath}  style={{ maxWidth: 48, float: 'left', margin: '0 5 0 0' }} /> : <span /> }
 							{icons} 
-							{s.plot}
-						</div>
+							{s.plotOutline}
+						</div> 
 						<div className="clearfix" />
-					</div> 
+					</div>
 				);
 				
+				let now = moment().unix();
+				let end = moment.unix(s.startTime).add(s.duration, 's').unix();
+				let bg = ( now > s.startTime && now < end ) ? ColorMe(-15, this.props.theme.paper.backgroundColor).bgcolor : 'none';
+				
 				const tow = (<div 
-						key={s.programID}
+						key={s.id+ 'qq'}
 						onClick={( ) =>  {  
-							this.changeProgram (k);
+							this.props.changeProgram ( this.props.entry.channel, s.id );
 						}} 
-						style={{ cursor: 'pointer', marginBottom: 5, padding: 5 }} 
+						style={{ cursor: 'pointer', marginBottom: 5, padding: 5, backgroundColor: bg }} 
 					>
 						{ row }
 					</div>)
@@ -237,37 +365,12 @@ export default class Channels extends React.Component {
 				rows.push(tow);
 			});
 			
-			let style = { height: 400, overflow: 'auto' } ;
+			let style = { height: 350, overflow: 'auto' } ;
 			
-			return (<div style={style} >{rows}</div>);
+			return (<div ref={ ref => {this._mountedSched = ref} } style={style} >{rows}</div>);
 		}
 	}
-	
-	groups() {
-		return (<DropDownMenu value={this.props.params.group || 'All Channels' } onChange={( event, index, value ) => { this.props.goTo({ path: '/tv/channels/'+value, page: value}); } }> 
-			{
-				Object.keys( this.props.groups ).map( ( keyName, i ) => {
-					return (<MenuItem key={keyName} value={keyName} primaryText={keyName}  />)
-				})
-			} 
-		</DropDownMenu>)	
-			
-	}
-	
-	
-	
 }
-
-Channels.defaultProps = {
-	groups: {
-		'All channels': [],
-		'Most viewed': []
-	},	
-}
-
-Channels.getInitialData = function(params) {
-	
-	let ret = {}
-	console.log('### RUN getInitialData Channels ###',  params);
-	return {}
-}
+Sched.childContextTypes = {
+    muiTheme: PropTypes.object
+};

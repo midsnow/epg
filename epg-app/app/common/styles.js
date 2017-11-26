@@ -62,8 +62,9 @@ export let WOOBI  = deep( {
 		secondaryTextColor: '#ffffff',
 	},
 	appBar: {
-		buttonColor: colors.indigoA200,
-		textColor: colors.indigo100,
+		buttonColor: '#F47314',
+		//textColor: '#00152B',
+		backgroundColor: '#26282D',
 	},
 	searchBar: {
 		//large: 'initial',
@@ -183,6 +184,7 @@ export let CREAM  = deep( {
 		textColor: '#222',
 		
 	},
+	appBar: {},
 	searchBar: {
 		//large: 'initial',
 		mini: '#E8EAF6',
@@ -217,7 +219,7 @@ export let GRAPHITE  = deep( {
 	}
 }, darkBaseTheme);
 
-export let NIGHT  = deep( {
+export let NIGHT4  = deep( {
 	palette: {
 		//bodyColor: 'initial',
 		//contentColor: 'initial',
@@ -260,38 +262,33 @@ export let NIGHT  = deep( {
 	}
 }, darkBaseTheme);
 
-export let ALTERNATEBLUE  = deep( {
+export let PURPLE  = deep( {
 	palette: {
-		//bodyColor: 'initial',
-		contentColor: '#ffffff',
-		primary1Color: '#1A237E',
-		primary2Color: '#448AFF',
-		primary3Color: '#4CAF50',
-		canvasColor: '#FFFFFF',
-		textColor: '#1A237E',
-		accent1Color: colors.blue100,
-		accent2Color: colors.blue200,
-		accent3Color: "#5C6BC0",
-		alternateTextColor: '#0C87C1',
+		primary1Color: colors.deepPurple400,
+		primary2Color: colors.pink700,
+		primary3Color: colors.purple500,
+		canvasColor: colors.purple900,
+		textColor: colors.grey100,
+		accent1Color: colors.deepPurple300,
+		accent2Color: colors.deepPurpleA700,
+		accent3Color: colors.purpleA700,
+		alternateTextColor: colors.pink600,
 	},
 	snackbar: {
-		textColor: '#222',
+		textColor: colors.grey900,
 	},
 	appBar: {
-		textColor: colors.orangeA700,
-		buttonColor: colors.orangeA700
+		textColor: colors.deepPurple50,
+		buttonColor: colors.cyan600,
+		backgroundColor: colors.purple900,
 	},
 	flatButton: {
 		textColor: '#303030',
 	},
 	menuItem: {
 		textColor: '#303030',
-	},
-	searchBar: {
-		//large: 'initial',
-		mini: '#E8EAF6',
 	}
-}, lightBaseTheme);
+}, darkBaseTheme);
 
 
 export let BLUE  = deep( {
@@ -311,9 +308,9 @@ export let BLUE  = deep( {
 		
 	},
 	appBar: {
-		textColor: '#fff',
-		buttonColor: '#bbb',
-		background: 'none',
+		textColor: '#D2DCEA',
+		buttonColor: '#334651',
+		backgroundColor: '#0170B3',
 	},
 	flatButton: {
 		textColor: '#fff',
@@ -334,28 +331,94 @@ export let BLUE  = deep( {
 	}
 }, darkBaseTheme);
 
-export let DEFAULT  = deep( {
+export let DEFAULT = deep( {
 	palette: {
 		//bodyColor: 'initial',
-		//contentColor: 'initial'
+		canvasColor: '#2A2C31',
+		primary1Color: colors.indigo800,
+		primary2Color: '#015485',
+		accent1Color: colors.blue100,
+		accent2Color: "#737474",
+		accent3Color: "#D4258D",
+		textColor: "#E4E4E7",
+		alternateTextColor: colors.blue800,
 	},
 	snackbar: {
 		textColor: '#222',
 		
 	},
+	appBar: {
+		//textColor: '#D2DCEA',
+		//buttonColor: '#334651',
+		//backgroundColor: '#0170B3',
+	},
+	flatButton: {
+		//textColor: '#fff',
+	},
+	tabs: {
+		textColor: colors.blue100,
+		selectedTextColor: colors.orangeA700,
+		backgroundColor: '#0170B3',
+	},
+	raisedButton: {
+		textColor: '#222',
+	},
+	menuItem: {
+		//textColor: '#fff',
+	},
 	searchBar: {
 		//large: 'initial',
-		//largeColor: 'initial',
-		mini: '#E8EAF6',
-		//miniColor: 'initial',
+		//mini: '#E8EAF6',
 	}
-}, lightBaseTheme);
+}, darkBaseTheme);
+
+export let NIGHT = deep( {
+	palette: {
+		//bodyColor: 'initial',
+		canvasColor: '#0170B3',
+		primary1Color: colors.indigo800,
+		primary2Color: '#015485',
+		accent1Color: colors.blue100,
+		accent2Color: "#737474",
+		accent3Color: "#D4258D",
+		textColor: "#E4E4E7",
+		alternateTextColor: colors.blue800,
+	},
+	snackbar: {
+		textColor: '#222',
+		
+	},
+	appBar: {
+		//textColor: '#D2DCEA',
+		//buttonColor: '#334651',
+		//backgroundColor: '#0170B3',
+	},
+	flatButton: {
+		//textColor: '#fff',
+	},
+	tabs: {
+		textColor: colors.blue100,
+		selectedTextColor: colors.orangeA700,
+		backgroundColor: '#0170B3',
+	},
+	raisedButton: {
+		textColor: '#222',
+	},
+	menuItem: {
+		//textColor: '#fff',
+	},
+	searchBar: {
+		//large: 'initial',
+		//mini: '#E8EAF6',
+	}
+}, darkBaseTheme);
 
 export let DARK  = deep( {
 	palette: {
 		//bodyColor: 'initial',
 		//contentColor: 'initial'
 	},
+	appBar: {},
 	searchBar: {
 		//large: 'initial',
 		mini: '#E8EAF6',
@@ -376,7 +439,7 @@ export let Styles = {
 	LIGHT,
 	NIGHT,
 	CREAM,
-	ALTERNATEBLUE,
+	PURPLE,
 	WOOBI,
 	NITELITE,
 	NITELITE2

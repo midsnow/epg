@@ -1,12 +1,31 @@
 import React from 'react';
 import moment from 'moment';
 import Debug from 'debug';
-import { uniq, sortBy, find } from 'lodash';
+import uniq from 'lodash/uniq';
+import sortBy from 'lodash/sortBy';
+import find from 'lodash/find';
 import Gab from '../../common/gab';
 import Table from '../../common/components/table';
-import { Card, CardActions, CardHeader, CardMedia, CardTitle, CardText, DropDownMenu, FlatButton, FontIcon, IconButton, IconMenu, LinearProgress, MenuItem, Toggle, Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui';
-import { Styles } from '../../common/styles';
-import { ColorMe } from '../../common/utils';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import LinearProgress from 'material-ui/LinearProgress';
+import FlatButton from 'material-ui/FlatButton';
+import Toggle from 'material-ui/Toggle';
+import Toolbar from 'material-ui/Toolbar/Toolbar';
+import ToolbarGroup from 'material-ui/Toolbar/ToolbarGroup';
+import ToolbarSeparator from 'material-ui/Toolbar/ToolbarSeparator';
+import ToolbarTitle from 'material-ui/Toolbar/ToolbarTitle';
+
+import { Styles, ColorMe } from '../../common/styles';
 
 let debug = Debug('epg:app:pages:epg:scheduled');
 
@@ -72,7 +91,7 @@ export default class Timers extends React.Component {
 					}} 
 					style={{ background: ( this.state.selected.indexOf(k) < 0 ) ? 'none' : ColorMe( 15, this.props.theme.baseTheme.palette.canvasColor ).bgcolor, cursor: 'pointer', marginBottom: 5, padding: 5, borderBottom: '1px solid ' + ColorMe( 5, this.props.theme.baseTheme.palette.canvasColor ).bgcolor }} 
 				>
-					{moment.unix(r.startTime).format("LT")} - <strong>{r.name}</strong> - {find(this.props.channels, ['channelId', r.channelId]).channelName} <br /> {r.info}
+					{moment.unix(r.startTime).format("LT")} - <strong>{r.name}</strong> - {r.channel} <br /> {r.info}
 				</div>)
 			
 			rows.push(tow);

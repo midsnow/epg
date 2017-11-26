@@ -1,17 +1,17 @@
 import React from 'react';
-import { isObject, isArray } from 'lodash';
+import isObject from 'lodash/isObject';
+import isArray from 'lodash/isArray';
 import Debug from 'debug';
 import Gab from './common/gab';
 import { Request } from './common/utils';
-import Sockets from './lib/sockets';
+import Socket from './lib/sockets';
 import listenTo from './listenTo';
 import Path from 'path';
 import { withRouter } from 'react-router';
 
 let debug = Debug('epg:app:listen');
-
-console.log('listen');
-export default (Component, snowUI) => {
+let Sockets;  
+export default (Component, snowUI) => { 
 	snowUI = { ...snowUI,
 		breaks: {
 			xs: {
@@ -62,44 +62,52 @@ export default (Component, snowUI) => {
 			
 			debug('LOADING Listeners', snowUI.serverRendered, props.noscript);
 			
-			
-			var w=window;
+			var w=window || {};
 			var d=document;
 			var e=d.documentElement;
 			var g=d.getElementsByTagName('body')[0];
 			var x=w.innerWidth || e.clientWidth || g.clientWidth;
 			var y=w.innerHeight || e.clientHeight || g.clientHeight;
 			var desktop = x <= snowUI.breaks.xs.width ? 'xs' : x < snowUI.breaks.sm.width ? 'sm' : 'md';
-			var idesktop = x <= snowUI.breaks.xs.width ? 0 : x < snowUI.breaks.sm.width ? 1 : 2;
-			var contentWidth =  x * (!desktop ? 1 : desktop == 'md' ? 0.80 : 0.80);
-		
+			var idesktop = x <= snowUI.breaks.xs.width ? 0 : x < snowUI.breaks.sm.width ? 1 : 2; 
+			
+			Sockets = Socket( this );
+			 
 			this.state = Object.assign({ 
-				connected: false,
-				contentWidth,
 				desktop,
-				idesktop,
-				mounted: false,
-				path: page,
-				page: page,
-				Request: Request.bind(this),
-				sockets: Sockets,
-				Sockets,
-				window: { width: x, height: y },	
-				movieImages: false,
-				tvImages: true,
-				tvBanners: true,
-				tvPosters: false,
-				moviePosters: true,
-				query: {},
-				params: {},
 				guideRefresh: {
 					download: false,
 					who: []
-				}
+				},
+				idesktop,
+				movieImages: false,
+				moviePosters: true,
+				mounted: false,
+				page,
+				path: pastState.path || loc.pathname,
+				params: {},
+				Request: Request.bind(this),
+				sockets: Sockets,
+				Sockets,
+				status: {
+					_agent: false,
+					_db: false,
+					account: { 
+						messages: [], 
+						maxLineups: 4 
+					},
+					lineups: [],
+					notifications: [],
+					systemStatus: [],
+				},
+				tvImages: true,
+				tvBanners: true,
+				tvPosters: false, 
+				query: {},
+				window: { width: x, height: y }				
 			}, props);
 			
 			debug('new state:', this.state);
-			
 			
 			this._update = false;
 			this._limiters = {};
@@ -173,6 +181,24 @@ export default (Component, snowUI) => {
 				});
 			});
 			
+			// reload the page
+			Gab.on('__reload', () => {
+				debug('gab got __reload request ');
+				thisComponent.forceUpdate();
+			});
+			
+			// getLineups
+			Gab.on('getLineups', () => {
+				debug('gab getLineups request ');
+				this.getLineups.call( thisComponent )
+			});
+			
+			// socktes conected
+			Gab.on('__socket-connect', () => {
+				debug('gab got __socket-connect request ');
+				listenTo.call( thisComponent )
+			});
+			
 			// receive page from request
 			Gab.on('request', (data) => {
 				debug('gab got page request data', data);
@@ -189,7 +215,7 @@ export default (Component, snowUI) => {
 			});
 			
 			// start socket client and add listeners and talkers
-			Sockets.init( listenTo.bind( thisComponent ) );
+			Sockets.init(  );
 			
 			// window resize emitter
 			let _resizing = (force = false) => {
@@ -284,14 +310,15 @@ export default (Component, snowUI) => {
 			}
 		}
 		lineupListener(data) {
-			debug('got lineups data', data.lineups);
+			debug('got lineups data', data);
 			let headends = {};
-			if(data.error) {
+			if( !data.lineups || data.error ) {
 				this.setState({
 					newalert: {
-						style: 'danger',
-						html: data.error.message,
-						show: true
+						style: 'caution', 
+						html: data ? data.error.message : 'Unknown Error with socket',
+						show: true,
+						duration: 500
 					}
 				});
 			} else {
@@ -304,13 +331,15 @@ export default (Component, snowUI) => {
 						headends,
 						lineups: data
 					});
+					
 				} else if(data.lineups.length === 0) {
 					debug('no lineups data', data);
 					this.setState({
 						newalert: {
-							style: 'danger',
+							style: 'info',
 							component: <div>You do not have any lineups... <a href="#" onClick={(e)=>{e.preventDefault();this.goTo('add')}}> Add One</a></div>,
-							show: true
+							show: true,
+							duration: 10000
 						},
 						lineups: {
 							lineups: []
@@ -321,16 +350,17 @@ export default (Component, snowUI) => {
 					debug('failed lineups data', data);
 					this.setState({
 						newalert: {
-							style: 'danger',
+							style: 'warning',
 							component: <div>Failed to get lineups... <a href="#" onClick={this.getLineups}> Retry</a></div>,
-							show: true
+							show: true,
+							duration: 500
 						}
 					});
 				}
 			}
 			
 		}
-		
+				
 		getLineups(e) {
 			if(e && typeof e.preventDefault === 'function') {
 				e.preventDefault();

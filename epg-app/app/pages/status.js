@@ -2,8 +2,18 @@ import React from 'react';
 import Debug from 'debug'
 import Gab from '../common/gab'
 import { pickIcon, Button } from '../common/utils';
-import { List, ListItem, Divider, FontIcon, CardText, Card, CardActions, CardHeader, CardMedia, CardTitle, IconButton } from 'material-ui';
-import { Col } from 'react-bootstrap';
+import IconButton from 'material-ui/IconButton';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import Divider from 'material-ui/Divider';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import CardTitle from 'material-ui/Card/CardTitle';
+import FontIcon from 'material-ui/FontIcon';
+import Col from 'react-bootstrap/lib/Col';
 import Styles from '../common/styles';
 
 let debug = Debug('epg:app:pages:status');
@@ -55,17 +65,39 @@ export default class Status extends React.Component {
 					/>
 					<CardText style={{padding:25}} >
 						<List>
-							<ListItem 
-								leftIcon={<FontIcon style={{fontSize:'32px'}} className="material-icons" color={Styles.Colors.red600} hoverColor={Styles.Colors.amber500} >cloud_off</FontIcon>}
-								primaryText={this.props.status.error ? this.props.status.error.message : 'Checking Status'} 
-								disabled={true} 
-							/>
-							
 							
 							<ListItem 
 								primaryText={this.props.status.username} 
 								disabled={true} 
 								insetChildren={true}
+								secondaryText="Account Username"
+								leftIcon={<FontIcon style={{fontSize:'32px'}} className="material-icons" color={this.props.status.error ? Styles.Colors.amber400 : Styles.Colors.green600} hoverColor={Styles.Colors.amber500} >person</FontIcon>}
+							/>
+							
+							<ListItem 
+								leftIcon={<FontIcon style={{fontSize:'32px'}} className="material-icons" color={this.props.status.error ? Styles.Colors.amber400 : Styles.Colors.green600} hoverColor={Styles.Colors.amber500} >cloud_off</FontIcon>}
+								primaryText={this.props.status.error ? this.props.status.error.message : 'Checking Status'} 
+								disabled={true} 
+							/>
+							
+							<ListItem 
+								leftIcon={<FontIcon 
+											className="material-icons" 
+											color={this.props.status._db ? Styles.Colors.green600 : Styles.Colors.red600} 
+											style={{fontSize:'32px'}}
+										>
+											save
+										</FontIcon>
+								}
+								onClick={(e)=>{
+									e.preventDefault();
+									this.props.goTo({ 
+										path: '/epg/configuration',
+										page: 'Set Database',
+									});
+								}} 
+								primaryText={this.props.status._db ?  'Database Connected' : 'Database Disconnected'} 
+								disabled={this.props.status._db} 
 							/>
 							
 							<Col xs={12} sm={6} >
@@ -144,8 +176,48 @@ export default class Status extends React.Component {
 
 							<ListItem 
 								leftIcon={connected}
-								primaryText={this.props.sockets.io.connected ? this.props.guideRefresh.download ? 'Guide data is being refreshed for ' + this.props.guideRefresh.who.join(', ') : 'Connected' : 'Disconnected'} 
+								primaryText={this.props.sockets.io.connected ? this.props.guideRefresh.download ? 'Guide data is being refreshed for ' + this.props.guideRefresh.who.join(', ') : 'Socket Connected' : 'Socket Disconnected'} 
 								disabled={true} 
+							/>
+							
+							<ListItem 
+								leftIcon={<FontIcon 
+											className="material-icons" 
+											color={this.props.status._db === true ? Styles.Colors.green600 : Styles.Colors.red600} 
+											style={{fontSize:'32px'}}
+										>
+											save
+										</FontIcon>
+								}
+								onClick={(e)=>{
+									e.preventDefault();
+									this.props.goTo({ 
+										path: '/epg/configuration',
+										page: 'Set Database',
+									});
+								}} 
+								primaryText={this.props.status._db === true ?  'Database Connected' : 'Database Disconnected'} 
+								disabled={this.props.status._db === true} 
+							/>
+							
+							<ListItem 
+								leftIcon={<FontIcon 
+										className="material-icons" 
+										color={this.props.status._agent === true ? Styles.Colors.green600 : Styles.Colors.red600} 
+										style={{fontSize:'32px'}}
+									>
+										dvr
+									</FontIcon>
+								}
+								onClick={(e)=>{
+									e.preventDefault();
+									this.props.goTo({
+										path: '/epg/configuration',
+										page: 'Set Account',
+									});
+								}} 
+								primaryText={this.props.status._agent === true ?  'Account Connected' : 'Account Disconnected'} 
+								disabled={this.props.status._agent === true} 
 							/>
 							
 							<ListItem style={{maxHeight:350}} primaryText={this.props.status.username} disabled={true} insetChildren={true} secondaryText="Agent Username"  />

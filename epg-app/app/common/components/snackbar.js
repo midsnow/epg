@@ -1,10 +1,11 @@
 import React from 'react';
 import Snackbar from 'material-ui/Snackbar';
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
 import debugging from 'debug';
-let	debug = debugging('epg:app:common:components:snackbar');
-import PropTypes from 'prop-types'; // ES6
+import Gab from '../gab';
+import { Styles, ColorMe  } from '../styles';
+import PropTypes from 'prop-types';
+
+let	debug = debugging('woobi:app:common:components:snackbar');
 
 class SnackbarExampleSimple extends React.Component {
 
@@ -16,10 +17,32 @@ class SnackbarExampleSimple extends React.Component {
 			  open: false,
 		};
 		
-		// binders
-		this.handleChangeDuration = this.handleChangeDuration.bind(this);
-		this.handleRequestClose = this.handleRequestClose.bind(this);
+		// cache
+		this.cache = [];
 		
+		// binders
+		this.handleRequestClose = this.handleRequestClose.bind(this);
+		this.onRequestClose = this.onRequestClose.bind(this);
+ 		this.setProps = this.setProps.bind(this);
+ 		
+		Gab.removeListener('snackbar', this.setProps);
+		
+		Gab.on('snackbar', this.setProps);
+		
+	}
+	
+	setProps( data ) {
+		debug('snackbar got emitted',  this.state.open, data, this.cache);
+		if ( this.props.open ) {
+			this.cache = [ ...this.cache, data ];
+		} else {
+			this.props = Object.assign(this.props, data);
+			this.forceUpdate();
+		}
+	}
+	
+	componentWillUnmount() {
+		Gab.removeListener('snackbar', this.setProps);
 	}
 	
 	handleTouchTap()  {
@@ -28,21 +51,22 @@ class SnackbarExampleSimple extends React.Component {
 		});
 	}
 
-	handleActionTouchTap() {
-		alert('We removed the event from your calendar.');
-	}
-
-	handleChangeDuration(event)  {
-		const value = event.target.value;
-		this.setState({
-			autoHideDuration: value.length > 0 ? parseInt(value) : 0,
-		});
-	}
-
+	
 	handleRequestClose() {
-		this.setState({
-			open: false,
-		});
+		this.setProps({ open: false });
+	}
+	
+	onRequestClose( how ) {
+		debug( 'snackbar closed', 'check for cache', this.cache.length, how, this.cache);
+		this.props.open = false; ;
+		if ( this.cache.length > 0 ) {
+			this.setProps( this.cache.shift() );
+		} else {
+			this.forceUpdate();
+		}
+		if (typeof this.props.onRequestClose === 'function') {
+			this.props.onRequestClose();
+		}
 	}
 	
 	renderError(data) {
@@ -60,8 +84,8 @@ class SnackbarExampleSimple extends React.Component {
 		return data;
 	}
 	
-	renderHTML() {
-		debug(this.props);
+	renderHTML(bodyStyle) {
+		//debug(this.props);
 		if(this.props.data) {
 			if(this.props.data.error) {
 				return this.renderError(this.props.data);
@@ -70,29 +94,47 @@ class SnackbarExampleSimple extends React.Component {
 		} else if(this.props.component) {
 			return this.props.component;
 		} else {
-			return <div dangerouslySetInnerHTML={{__html:this.props.html}} />
+			return <div dangerouslySetInnerHTML={{__html: '<div style="color:' +bodyStyle.color+ '">' + this.props.html + '</div>'}} />
 		}
 	}
 	
 	render() {
-		
-		let message = this.renderHTML();
-		
+		let bodyStyle = {};
+		if(this.props.style) {
+			const colors = {
+				danger: {
+					bg: Styles.Colors.deepOrangeA700,
+					color: '#fff'
+				},
+				warning: {
+					bg: Styles.Colors.amber800,
+					color: '#000'
+				},
+				info: {
+					bg: Styles.Colors.blue800,
+					color: '#fff'
+				},
+				success: {
+					bg: Styles.Colors.lightGreen500,
+					color: Styles.Colors.grey900
+				}
+			};
+			bodyStyle =  {
+				backgroundColor: colors[this.props.style] ? colors[this.props.style].bg : colors.info.bg,
+				color: colors[this.props.style] ? colors[this.props.style].color : colors.info.color
+			};
+		}
+		//debug('props', this.props, bodyStyle)
+		let message = this.renderHTML(bodyStyle);
 		return (<div>
 				<Snackbar
-					bodyStyle={this.props.bodyStyle || {}}
+					bodyStyle={this.props.bodyStyle || bodyStyle}
 					open={this.props.open}
 					message={message}
 					action={this.props.action}
 					autoHideDuration={this.props.autoHideDuration}
-					onActionTouchTap={()=>{alert('touchtap');}}
-					onRequestClose={() => {
-						this.props.setParentState({
-							newalert: {
-								show: false
-							}
-						});
-					}}
+					onActionTouchTap={this.props.onActionTouchTap || this.handleRequestClose}
+					onRequestClose={this.onRequestClose}
 				/>
 		</div>);
 	}
@@ -102,13 +144,15 @@ SnackbarExampleSimple.propTypes = {
 	open: PropTypes.bool,
 	action: PropTypes.string,
 	autoHideDuration: PropTypes.number,
-	setParentState: PropTypes.func
+	setParentState: PropTypes.func,
+	onActionTouchTap: PropTypes.func
 };
 SnackbarExampleSimple.defaultProps = {
 	open: false,
 	html: 'Hi!',
-	action: 'undo',
+	action: 'x',
 	autoHideDuration: 0,
+	style: 'info'
 };
 
 export default SnackbarExampleSimple;

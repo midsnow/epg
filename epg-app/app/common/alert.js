@@ -1,6 +1,5 @@
 import React from 'react';
 import { Alert, Button } from 'react-bootstrap';
-import _ from 'lodash';
 
 import debugging from 'debug';
 let	debug = debugging('epg:client:common:alert');
@@ -85,7 +84,7 @@ class Alerts extends React.Component {
 
 	handleAlertDismiss() {
 		this.setState({alertVisible: false});
-		if(_.isFunction(this.props.dismiss)) {
+		if ( typeof this.props.dismiss === 'function' ) {
 			this.props.dismiss();
 		}
 	}

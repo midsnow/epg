@@ -1,8 +1,9 @@
 import React from 'react';
 import Debug from 'debug'
-import { IconButton, IconMenu, FontIcon } from 'material-ui';
-import { Styles } from '../styles';
-import { ColorMe } from '../utils';
+import IconMenu from 'material-ui/IconMenu';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import { Styles, ColorMe } from '../styles';
 import Gab from '../gab';
 import PropTypes from 'prop-types'; // ES6
 

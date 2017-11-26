@@ -1,7 +1,20 @@
 import React from 'react';
-import { Avatar, FontIcon, IconButton, Table as TTable, TableBody, TableFooter, TableHeader, TableHeaderColumn, TableRow, TableRowColumn } from 'material-ui';
+import Avatar from 'material-ui/Avatar';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import TTable from 'material-ui/Table/Table'; 
+import TableBody from 'material-ui/Table/TableBody';
+import TableFooter from 'material-ui/Table/TableFooter';
+import TableHeader from 'material-ui/Table/TableHeader';
+import TableHeaderColumn from 'material-ui/Table/TableHeaderColumn';
+import TableRowColumn from 'material-ui/Table/TableRowColumn';
+import TableRow from 'material-ui/Table/TableRow';
+
+import isObject from 'lodash/isObject';
+import isFunction from 'lodash/isFunction';
+import isString from 'lodash/isString';
+
 import { Styles } from '../styles';
-import { isObject, isFunction, isString } from 'lodash';
 import moment from 'moment';
 import AutoSizer from 'react-virtualized/dist/commonjs/AutoSizer';
 

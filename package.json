@@ -4,8 +4,10 @@
   "description": "schedules direct epg data management",
   "main": "lib/epg.js",
   "scripts": {
-    "bootstrap": "electron boot-electron.js",
-    "electron": "DEBUG=epg* electron electron.js"
+    "electron": "electron electron.js",
+    "electron-dev": "DEBUG=epg* electron electron.js",
+    "server": "node run.js",
+    "server-dev": "DEBUG=epg* node run.js"
   },
   "repository": "https://github.com/woobi/ism-epg-sd",
   "keywords": [
@@ -69,6 +71,7 @@
     "gulp-streamify": "^1.0.2",
     "gulp-uglify": "^1.1.0",
     "gulp-util": "^3.0.4",
+    "less": "^2.7.3",
     "literalify": "^0.4.0",
     "pm2": "^0.15.10",
     "reactify": "^1.1.0",
@@ -94,8 +97,10 @@
       "history": "npm:history@^1.17.0",
       "javascript-natural-sort": "npm:javascript-natural-sort@^0.7.1",
       "jquery": "github:components/jquery@^2.1.4",
+      "jsonfile": "npm:jsonfile@^4.0.0",
       "localforage": "npm:localforage@^1.5.3",
       "lodash": "npm:lodash@^4.17.4",
+      "lodash.sortbyorder": "npm:lodash.sortbyorder@^3.4.4",
       "material-ui": "npm:material-ui@^0.19.4",
       "moment": "npm:moment@^2.11.1",
       "object-property-natural-sort": "npm:object-property-natural-sort@^0.0.4",

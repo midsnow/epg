@@ -9,8 +9,11 @@ let	debug = debugging('epg:client:common:utils');
 import Visibility from 'material-ui/svg-icons/action/visibility';
 import VisibilityOff from 'material-ui/svg-icons/action/visibility-off';
 
-export let Request = function ( props, emitTo, list = 'woobi' ) {
+var ALLOWED = ['status', ]
+
+export let Request = function ( props, emitTo, list = 'epg' ) { 
 	debug('Send request ', list, props, this.state);
+	
 	return this.state.Sockets.grab(Object.assign({ 
 		list,
 		action: 'find',
@@ -82,6 +85,11 @@ export const ImageCell = ({rowIndex, data, col, ...props}) => {
 	let val = data[rowIndex][col];
 	let logo = <FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.greenA200} >tv</FontIcon>;
 	if(val) {
+		if ( val[1] && val[1].URL ) {
+			val = val[1];
+		} else {
+			val = val[0];
+		}
 		logo = <div style={{width:'100%',height:'100%',backgroundSize:'contain',backgroundImage:'url('+val.URL+')',backgroundRepeat:'no-repeat',backgroundPosition:'center'}} />
 	}
 	return (logo);

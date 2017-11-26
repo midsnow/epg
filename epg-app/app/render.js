@@ -12,11 +12,20 @@ import Snackbar from './common/components/snackbar';
 import Confirm from './common/components/confirm';
 import Any from './pages/component/any';
 import routes from './routes';
-import {FontIcon, IconButton, AppBar, RaisedButton, LeftNav, MenuItem, Divider, List, ListItem} from 'material-ui';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import FontIcon from 'material-ui/FontIcon';
+import AppBar from 'material-ui/AppBar';
+import MenuItem from 'material-ui/MenuItem';
+import Divider from 'material-ui/Divider';
+import List from 'material-ui/List';
+import ListItem from 'material-ui/List/ListItem';
+import RaisedButton from 'material-ui/RaisedButton';
+import IconButton from 'material-ui/IconButton';
+import { Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle } from 'material-ui/Toolbar';
 import Alert from './common/alert';
 import PropTypes from 'prop-types'; // ES6
-import { defaultsDeep as deep, every as Every, isFunction } from 'lodash';
+import deep from 'lodash/defaultsDeep';
+import Every from 'lodash/every';
+import isFunction from 'lodash/isFunction';
 
 let debug = Debug('epg:app:render');
 
@@ -26,7 +35,7 @@ let styles = {
 	'night': Styles.getMuiTheme(deep(Styles.NIGHT,  {})),
 	'light': Styles.getMuiTheme(deep(Styles.LIGHT,  {})),
 	'cream': Styles.getMuiTheme(deep(Styles.CREAM,  {})),
-	'alternate blue': Styles.getMuiTheme(deep(Styles.ALTERNATEBLUE,  {})),
+	'purple': Styles.getMuiTheme(deep(Styles.PURPLE,  {})), 
 	'blue': Styles.getMuiTheme(deep(Styles.BLUE,  {})),
 	'dark': Styles.getMuiTheme(deep(Styles.DARK, {})),
 	'default': Styles.getMuiTheme(deep(Styles.DEFAULT, {} )),
@@ -44,7 +53,7 @@ class Main extends Component {
 		
 		this.state = Object.assign({
 			leftNav: false,
-			theme: styles.woobi,
+			theme: styles['default'],
 			styles,
 			query: location.search,
 			location: { ...location },
@@ -80,12 +89,50 @@ class Main extends Component {
 		this.showAlert = this.showAlert.bind(this);
 		this.appState = this.setState.bind(this);
 		this.switchTheme = this.switchTheme.bind(this);
+		
+		this.switchTheme();
+		
 	}
 	
 	componentWillReceiveProps(props) { 
 		// update from listener
 		debug('listener props', props);
-		this.setState(props);	
+		if ( props.status.clean && props.path != '/epg/configuration' ) {
+			// new install so goto the config
+			this.goTo({
+				path: '/epg/configuration',
+				page: 'Set Up The App',
+			})
+			return;
+		}
+		
+		if ( ( !props.status._db || !props.status._agent ) && ( props.path != '/epg/configuration' && props.path != '/epg/status' ) ) {
+			// wrong
+			//this.goTo({
+			//	path: '/epg/status',
+			//	page: 'Check Status',
+			//})
+			//return;
+		}
+		
+		if ( props.path.search('index.html') > -1 ) {
+			// electron first load
+			//this.goTo({
+			//	path: 'home',
+			//	page: 'Welcome Back',
+			//})
+			//return;
+		}
+		
+		let p = { newAlert: {}, ...props }
+		if ( !props.params.station ) {
+			p.lineup = '';
+		}
+		this.setState(p);
+		if ( !this.state.status._db ) {
+			//this.showAlert('danger', 'You do not have a correctly configured database!');
+		}
+		return;	
 	}
 	
 	showAlert(style, message, type = 'html') {
@@ -124,10 +171,10 @@ class Main extends Component {
 		this.setState({ leftNav: false });
 	}
 	
-	switchTheme(theme = 'rommie', update = true, callback, userSelect = false) {
+	switchTheme(theme = 'default', update = true, callback, userSelect = false) {
 		let style = this.state.styles[theme];
 		if(!style) {
-			style = this.state.styles.rommie;
+			style = this.state.styles['default'];
 		} 
 		if( theme == 'dark' ) {
 			setTheme('dark-theme');
@@ -145,12 +192,14 @@ class Main extends Component {
 			setTheme('dark-theme default');
 		} else if( theme == 'nitelite3' || theme == 'nitelite4' ) {
 			setTheme('nitelite');
-		} else if( theme == 'alternate blue' ) {
-			setTheme('light-theme bluealt');
+		} else if( theme == 'purple' ) {
+			setTheme('dark-theme default purple');
 		} else if( theme == 'blue' ) {
 			setTheme('light-theme blue');
 		} else if( theme == 'woobi' ) {
 			setTheme('night default');
+		} else if( theme == 'night' ) {
+			setTheme('dark-theme');
 		} else {
 			setTheme('dark-theme default');
 		}
@@ -192,6 +241,9 @@ class Main extends Component {
 				mode: 'cors',
 				leftNav: false,
 				currentTheme: this.state.currentTheme,
+				newalert: {
+					show: false,
+				}
 			}, route);
 			
 			if(!send.path && send.page) {
@@ -372,30 +424,10 @@ class Main extends Component {
 	}
 	
 	render() {
-		debug('render state', this.state);
-		
-		if ( !this.state.sockets.connected.io && ( this.state.path !== '/epg/configuration' && this.state.path !== '/epg/disconnected' ) ) {
-			
-			debug('just wait for sockets'); 
-			//this.goTo({
-			//	path: '/epg/disconnected',
-			//	page: 'SOS',
-			//}); 
-			//return <span />;
-			
-		}
-		
-		if ( this.state.status.clean && this.state.path != '/epg/configuration' ) {
-			// new install so goto the config
-			this.goTo({
-				path: '/epg/configuration',
-				page: 'Set Up The App',
-			})
-			return <span />;
-		}
-		
+		debug('render state', this.state, 'isTV', this.state.path.search('tv') > -1);
+	
         return (<div id="Render" key="Render">
-			{this.appbar()}
+			{this.state.path.search('guide/') > -1 || this.state.path.search('channel/') > -1 ? '' : this.appbar()}
 			{this.menu()}
 			<div className="clearfix" />
 			<div className="epg-container" >
@@ -427,31 +459,101 @@ class Main extends Component {
 			title = this.state.headends[this.state.lineup].name;
 			document.title = title;
 		}
-		let isConnected = this.state.sockets.io.connected !== false && !this.state.status.error  ? 
-			this.state.guideRefresh.download ?
-				<IconButton onClick={(e)=>{this.goTo('status');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.deepPurple200} hoverColor={Styles.Colors.deepPurple200} title={"Downloading guide data for " + this.state.guideRefresh.who.join(', ')}>cloud_download</FontIcon></IconButton>
+		
+		let GUI = this.state.guideRefresh.download ?
+				<IconButton title={"Downloading guide data for " + this.state.guideRefresh.who.join(', ')} onClick={(e)=>{this.goTo({ page: 'Status', path:'/epg/status' });}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.deepPurple200} hoverColor={Styles.Colors.deepPurple200} title={"Downloading guide data for " + this.state.guideRefresh.who.join(', ')}>cloud_download</FontIcon></IconButton>
 			:	
-				
-				<IconButton onClick={(e)=>{this.goTo('status');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.green600} hoverColor={Styles.Colors.lightBlue300} title="Connection established. View status">cloud_done</FontIcon></IconButton>
+				<IconButton title="Connection established. View status" onClick={(e)=>{this.goTo({ page: 'Status', path:'/epg/status' });}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.green600} hoverColor={Styles.Colors.lightBlue300} title="Connection established. View status">cloud_done</FontIcon></IconButton>
+		
+		let isConnected = this.state.sockets.io.connected !== false && !this.state.status.error  ? 
+			<IconButton title="Connection established. View status" onClick={(e)=>{this.goTo({ page: 'Status', path:'/epg/status' });}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.green600} hoverColor={Styles.Colors.lightBlue300} title="Connection established. View status">info</FontIcon></IconButton>
 		:
-			this.state.status.error  ?
-				<span><IconButton onClick={(e)=>{this.goTo('status');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.amber100} hoverColor={Styles.Colors.red900} title="Connection to server lost">cloud_off</FontIcon></IconButton> <span style={{color:Styles.Colors.amber100,fontSize:'20px'}}>{this.state.status.error.message}</span></span>
-			:
-				<span><IconButton onClick={(e)=>{this.goTo('disconnected');}} ><FontIcon className="material-icons" style={{fontSize:'20px'}} color={Styles.Colors.amber100} hoverColor={Styles.Colors.red900} title="Connection to server lost">cloud_off</FontIcon></IconButton> <span style={{color:Styles.Colors.amber100,fontSize:'20px'}}>Connection Lost </span></span>
+			(<span>
+				<IconButton 
+					onClick={(e)=>{
+						this.goTo({ page: 'Status', path:'/epg/status' });
+					}} 
+					>
+						<FontIcon 
+							className="material-icons" 
+							style={{fontSize:'20px'}} 
+							color={Styles.Colors.amber100} 
+							hoverColor={Styles.Colors.red900} 
+							title="Connection to server lost"
+						>
+							info
+						</FontIcon>
+				</IconButton> 
+				<span style={{color:Styles.Colors.amber100,fontSize:'20px'}}>
+					
+				</span>
+			</span>);
+			
+		
+		let isDB = (
+			<IconButton 
+				onClick={(e)=>{
+					this.goTo({ page: 'Configuration', path:'/epg/configuration' });
+				}} 
+				title="DB Connection"
+			>
+				<FontIcon 
+					className="material-icons" 
+					style={{fontSize:'20px'}} 
+					color={this.state.status._db ? Styles.Colors.green600 : Styles.Colors.red900} 
+					title={!this.state.status._db ? "Lost Database Connection" : "Database Connected" } 
+				>
+					{ this.state.status._db ? "save" : "save" }
+				</FontIcon>
+			</IconButton>
+		);
+		
+		let isAgent = (
+			<IconButton 
+				onClick={(e)=>{
+					this.goTo({ page: 'Configuration', path:'/epg/configuration' });
+				}} 
+				title="Agent Connection"
+			>
+				<FontIcon 
+					className="material-icons" 
+					style={{fontSize:'20px'}} 
+					color={this.state.status._agent === true ? Styles.Colors.green600 : Styles.Colors.red900} 
+					title={this.state.status._agent === true ? "Agent Connected" : "Lost Agent Connection"}
+				>
+					{this.state.status._agent === true ? 'dvr' : 'dvr'}
+				</FontIcon>
+			</IconButton>
+		);
 		
 		let eRight = (<ToolbarGroup firstChild={true}>
-			<IconButton onClick={this.handleLeftNav} ><FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >menu</FontIcon></IconButton>
-			<IconButton onClick={(e)=>{this.goTo('home');}} ><FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >home</FontIcon></IconButton>
-			<IconButton onClick={(e)=>{this.goTo('add-lineup');}} ><FontIcon className="material-icons" color={Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >add_to_queue</FontIcon></IconButton>
-			<IconButton onClick={(e)=>{this.goTo('configuration');}} ><FontIcon className="material-icons" color={Styles.Colors.lightBlue500} hoverColor={Styles.Colors.greenA200} >settings_applications</FontIcon></IconButton>
+			<IconButton onClick={this.handleLeftNav} ><FontIcon className="material-icons" color={this.state.theme.appBar.buttonColor || Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >menu</FontIcon></IconButton>
+			<IconButton onClick={(e)=>{this.goTo({ page: 'Home', path: '/epg/home' });}} ><FontIcon className="material-icons" color={this.state.theme.appBar.buttonColor || Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >home</FontIcon></IconButton>
+			<IconButton onClick={(e)=>{this.goTo({ page: 'Add Lineup', path: '/epg/add-lineup' });}} ><FontIcon className="material-icons" color={this.state.theme.appBar.buttonColor || Styles.Colors.lightBlue600} hoverColor={Styles.Colors.lightBlue300} >add_to_queue</FontIcon></IconButton>
+			<IconButton onClick={(e)=>{this.goTo({ page: 'Configuration', path: '/epg/configuration' });}} ><FontIcon className="material-icons" color={this.state.theme.appBar.buttonColor || Styles.Colors.lightBlue500} hoverColor={Styles.Colors.greenA200} >settings_applications</FontIcon></IconButton>
 		</ToolbarGroup>);
 		
 		let appbar = this.state.page === 'guide' ? <span /> : ( <div><div >
-			<Toolbar style={ { zIndex: 999, boxShadow: 'none',position: 'fixed',background: this.state.sockets.io.connected && !this.state.status.error ? '#26282D' : '#FF6F00', height:65, width:'100%' } } >
+			<Toolbar 
+				style={ { 
+					zIndex: 999, 
+					boxShadow: 'none',
+					position: 'fixed',
+					background: this.state.sockets.io.connected && !this.state.status.error ? this.state.theme.appBar.backgroundColor : '#FF6F00', 
+					height:65, 
+					width:'100%', 
+					color: this.state.theme.appBar.textColor || this.state.theme.baseTheme.palette.textColor  
+				} } 
+			>
 				{ eRight }
 				<ToolbarGroup>
-					<ToolbarTitle text={ title } />
-					{isConnected}
+					<ToolbarTitle 
+						style={{ 
+							color: this.state.theme.appBar.textColor || this.state.theme.baseTheme.palette.textColor 
+						}} 
+						text={ title } 
+					/>
+					{isConnected} {isDB} {isAgent}
 				</ToolbarGroup>	
 			</Toolbar>
 		</div><div style={{height:65,width:'100%'}} />
@@ -461,6 +563,10 @@ class Main extends Component {
 	}
 	
 	alerts() {
+		let skip = false;
+		if ( this.state.html = 'Waiting for connections' ) {
+			skip = true;
+		}
 		const colors = {
 			danger: {
 				bg: Styles.Colors.deepOrangeA700,
@@ -469,6 +575,10 @@ class Main extends Component {
 			warning: {
 				bg: Styles.Colors.amber800,
 				color: Styles.Colors.grey50
+			},
+			caution: {
+				bg: Styles.Colors.amber400,
+				color: Styles.Colors.grey900
 			},
 			info: {
 				bg: Styles.Colors.blue800,
@@ -480,8 +590,8 @@ class Main extends Component {
 			}
 		};
         const bodyStyle =  {
-			//backgroundColor: colors[this.state.newalert.style] ? colors[this.state.newalert.style].bg : colors.info.bg,
-			//color: colors[this.state.newalert.style] ? colors[this.state.newalert.style].color : colors.info.color,
+			backgroundColor: colors[this.state.newalert.style] ? colors[this.state.newalert.style].bg : colors.info.bg,
+			color: colors[this.state.newalert.style] ? colors[this.state.newalert.style].color : colors.info.color,
 		};
 		return (<div id="ALERTS" >
 			<Confirm 
@@ -492,7 +602,7 @@ class Main extends Component {
 				yesText={this.state.newconfirm.yesText}
 				noText={this.state.newconfirm.noText}
 			/>
-			{this.state.newalert.show ? 
+			{!skip &&this.state.newalert.show ? 
 				<Snackbar 
 					bodyStyle={bodyStyle}
 					setParentState={this.setAsset}

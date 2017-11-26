@@ -13,15 +13,48 @@ var _ = require('lodash');
 var pm2 = require('pm2');
 var Builder = require('systemjs-builder');
 var gutil = require('gulp-util');
-var less = require('gulp-less');
+var less = require('less');
+var fs = require('fs-extra');
 
 /**
  * Build Tasks
  */
 
+gulp.task('default', [ 'package' ])
+gulp.task('electron-dev', [ 'package-electron' ])
+
 // bundle all dependencies
 // see app/app/app.js to use
 gulp.task('bundle',  function (cb) {
+	var builder = new Builder('./epg-app', './epg-app/config.js');
+	builder.bundle('app/app - [app/**/*]', './epg-app/bundles/dependencies.js', { minify: false, sourceMaps: false, lowResSourceMaps: false, mangle: false })
+	.then(function( out ) {
+		gutil.log('wrote /bundles/dependencies.js');
+		gutil.log(out.modules);
+		builder.reset()
+		cb()
+	})
+	.catch(function(err) {
+		gutil.log('FAILED dep bundle ',err)
+		cb()
+	});
+});
+ 
+gulp.task('package', ['bundle'], function() {
+	
+	gulp.src([
+		'epg-app/jspm_packages/system.js',
+		'epg-app/app.js'
+    ])
+    .pipe(concat('epg.js'))
+    .pipe(gulp.dest('epg-app/bundles'))
+    .on('end', function() {
+		gutil.log('wrote /epg-app/bundles/epg.js');
+	});
+});
+
+
+gulp.task('bundle-electron',  function (cb) {
 	var builder = new Builder('./epg-app', './epg-app/config.js');
 	builder.bundle('app/app - [app/**/*]', './epg-app/bundles/dependencies.js', { minify: false, sourceMaps: true })
 	.then(function() {
@@ -34,34 +67,55 @@ gulp.task('bundle',  function (cb) {
 		cb()
 	});
 });
- 
-gulp.task('package', function() {
-	
-	gulp.src([
-		'epg-app/jspm_packages/system.js',
-		'epg-app/app.js'
-    ])
-    .pipe(concat('epg.js'))
-    .pipe(gulp.dest('epg-app/bundles'));
-});
 
-gulp.task('package-electron', function() {
+gulp.task('package-electron', ['bundle-electron'], function() {
 	
 	gulp.src([
 		'epg-app/jspm_packages/system.js',
+		'epg-app/bundles/dependencies.js',
 		'epg-app/electron-app.js'
     ])
     .pipe(concat('electron.js'))
-    .pipe(gulp.dest('epg-app/bundles'));
+    .pipe(gulp.dest('epg-app/bundles'))
+    .on('end', function() {
+		gutil.log('wrote /epg-app/bundles/electron.js');
+		
+	});
 });
 
-gulp.task('default', [ 'bundle', 'package' ])
-gulp.task('electron-dev', [ 'bundle', 'package-electron' ])
+
+gulp.task('worker',  function (cb) {
+	var builder = new Builder('./epg-app', './epg-app/config.js');
+	builder.buildStatic('app/common/workers/app', './epg-app/bundles/worker-temp.js', { minify: false, mange:false, sourceMaps: false })
+	.then(function( out ) {
+		gutil.log(out.modules);
+		gulp.src([
+			'node_modules/socket.io-client/dist/socket.io.min.js', 
+			'epg-app/bundles/worker-temp.js',
+		])
+		.pipe(concat('worker.js'))
+		.pipe(gulp.dest('epg-app/bundles'))
+		.on('end', function() {
+			gutil.log('wrote /epg-app/bundles/worker.js');
+			fs.remove('./epg-app/bundles/worker-temp.js', function (err) {
+				if (err) {
+					return console.error(err)
+				}
+			})
+			cb();
+		});
+	})
+	.catch(function(err) {
+		gutil.log('FAILED dep bundle ',err)
+		cb()
+	});
+});
 
 gulp.task('production',  function (cb) {
 	var builder = new Builder('./epg-app', './epg-app/config.js');
-	builder.buildStatic('app/app', './epg-app/bundles/material-system.js', { minify: false, sourceMaps: false })
-	.then(function() {
+	builder.buildStatic('app/app', './epg-app/bundles/material-system.js', { minify: true, mange:false, sourceMaps: false })
+	.then(function( out ) {
+		gutil.log(out.modules);
 		gulp.src([
 			'node_modules/socket.io-client/dist/socket.io.min.js', 
 			'epg-app/bundles/material-system.js',
@@ -87,7 +141,7 @@ gulp.task('production',  function (cb) {
 
 gulp.task('electron',  function (cb) {
 	var builder = new Builder('./epg-app', './epg-app/config.js');
-	builder.buildStatic('app/electron-app', './epg-app/bundles/material-system.js', { minify: false, sourceMaps: false })
+	builder.buildStatic('app/app', './epg-app/bundles/material-system.js', { minify: false, sourceMaps: false })
 	.then(function() {
 		gulp.src([
 			'node_modules/socket.io-client/dist/socket.io.min.js', 
@@ -126,21 +180,34 @@ gulp.task('less', ['less2'], function () {
 });
 
 gulp.task('less2', function (cb) {
-  
-	gulp.src('./epg-app/styles/site.less')
-	.pipe(less())
-	.pipe(gulp.dest('/tmp'))
-	.on('error', console.error.bind(console))
-	.end(()=>{
-		cb();
-	});
+	fs.readFile('./epg-app/styles/site.less', 'utf8', ( err, file ) => {
+		if ( file ) {
+			//console.log(file)
+			less.render(file, {
+				paths: ['./epg-app/styles/']
+			})
+			.then( out => {
+				fs.writeFile('/tmp/site.css', out.css, err => {
+					if ( err ) {
+						gutil.log('Err in writeFile', err);
+						return cb(err)
+					}
+					cb()
+				});
+			}, err => {
+				gutil.log('Error in Less', err);
+				cb(err);
+			});
+			
+		} else {
+			cb(err)
+		}
+	});	
 });
 
 
 // Watch
 gulp.task('watch', function() {
-  gulp.watch('client/**', ['scripts'])
-  gulp.watch(['snowstreams.js', 'lib/**/*.js', 'routes/**/*.js', 'models/**/*.js'], ['pm2'])
+  gulp.watch('./epg-app/app/common/workers/**', ['worker'])
 })
 
-gulp.task('default', [ 'bundle-dependencies'])

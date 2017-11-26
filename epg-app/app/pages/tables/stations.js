@@ -1,8 +1,9 @@
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import { DateCell, ImageCell, LinkCell, TextCell } from '../../common/utils';
-import { Checkbox, FontIcon } from 'material-ui';
-import { sortByOrder } from 'lodash';
+import Checkbox from 'material-ui/Checkbox';
+import FontIcon from 'material-ui/FontIcon';
+import sortByOrder from 'lodash.sortbyorder';
 import naturalSort from 'object-property-natural-sort'
 import Styles from '../../common/styles';
 import Debug from 'debug';
@@ -104,7 +105,7 @@ export default class StationsTable extends React.Component {
 					{...this.props}
 				>
 					<Column
-						cell={<ImageCell data={stations} col="logo" source="channels" />}
+						cell={<ImageCell data={stations} col="stationLogo" source="channels" />}
 						fixed={true}
 						width={50}
 						allowCellsRecycling={true}

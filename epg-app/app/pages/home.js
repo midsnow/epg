@@ -7,12 +7,15 @@ import CardActions from 'material-ui/Card/CardActions';
 import CardHeader from 'material-ui/Card/CardHeader';
 import CardMedia from 'material-ui/Card/CardMedia';
 import CardTitle from 'material-ui/Card/CardTitle';
-import { List, ListItem, FlatButton, FontIcon } from 'material-ui';
+import List from 'material-ui/List/List';
+import ListItem from 'material-ui/List/ListItem';
+import FlatButton from 'material-ui/FlatButton';
+import FontIcon from 'material-ui/FontIcon';
 import Menu from 'material-ui/Menu/Menu';
 import MenuItem from 'material-ui/MenuItem/MenuItem';
 import Divider from 'material-ui/Divider';
 import CardText from 'material-ui/Card/CardText';
-import { Col } from 'react-bootstrap';
+import Col from 'react-bootstrap/lib/Col';
 import Icons from '../assets/icons';
 import Styles from '../common/styles';
 
@@ -29,7 +32,11 @@ export default class Home extends React.Component {
 	}
 	
 	componentWillReceiveProps(props) {
-		debug('receiveProps');
+		debug('receiveProps getLineups', props.lineups.lineups.length);
+		if ( props.lineups.lineups.length === 0 && props.status.lineups.length > 0 ) {
+			debug('receiveProps getLineups');
+			Gab.emit('getLineups');
+		}
 		this._update = true;
 	}
 	componentDidUpdate() {
@@ -37,10 +44,17 @@ export default class Home extends React.Component {
 	}
 	componentDidMount() {
 		debug('did mount');
-		
+		if ( this.props.lineups.lineups.length === 0 ) {
+			debug('receiveProps getLineups');
+			Gab.emit('getLineups');
+		}
 	}
 	render() {
 		debug('home render', this.state, this.props);
+		
+		let status = this.props.status || {};	
+		
+		status.account = this.props.status.account || {};	
 		
 		let mylineups = this.props.lineups.lineups.map((v) => {
 			return (
@@ -54,7 +68,8 @@ export default class Home extends React.Component {
 						e.preventDefault(e);
 						this.props.goTo({
 							current: v,
-							page: 'lineup',
+							page: v.name,
+							path: 'lineup',
 							child: '',
 							lineup: v.lineup,
 							newalert: {
@@ -86,10 +101,11 @@ export default class Home extends React.Component {
 				{mylineups}
 			</List>
 			<List>
-				<ListItem  primaryText="Add Lineup" secondaryText={this.props.status.account.maxLineups - this.props.status.lineups.length + " of " + this.props.status.account.maxLineups + " lineups available."} leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue500} hoverColor={Styles.Colors.greenA200} >{"plus_one"}</FontIcon>} onTouchTap={(e) => {
+				<ListItem  primaryText="Add Lineup" secondaryText={status.account.maxLineups - status.lineups.length + " of " + status.account.maxLineups + " lineups available."} leftIcon={<FontIcon className="material-icons" color={Styles.Colors.lightBlue500} hoverColor={Styles.Colors.greenA200} >{"plus_one"}</FontIcon>} onTouchTap={(e) => {
 					e.preventDefault(e);
 					this.props.goTo({
-						page: 'add-lineup',
+						page: 'Add Lineup',
+						path: 'add-lineup',
 						child: ''
 					
 					});

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Table, Column, Cell } from 'fixed-data-table';
 import { clickButton, iButton, DateCell, ImageCell, LinkCell, TextCell } from '../../common/utils';
-import { Checkbox, FontIcon, Styles } from 'material-ui';
-import { sortByOrder } from 'lodash';
+import Checkbox from 'material-ui/Checkbox';
+import FontIcon from 'material-ui/FontIcon';
+import Styles from '../../common/utils';
+import sortByOrder from 'lodash.sortbyorder';
 import naturalSort from 'object-property-natural-sort'
 
 import Debug from 'debug';

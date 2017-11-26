@@ -3,59 +3,50 @@ import Debug from 'debug';
 
 let debug = Debug('epg:app:common:localstore');
 
-var store = function() {
-
+var Store = function( opts ) {
+	this.store = localforage.createInstance({
+		driver      : opts.driver || localforage.INDEXEDDB, // Force WebSQL; same as using setDriver()
+		name        : opts.name || 'EPG',
+		version     : opts.version || 1.0,
+		size        : opts.size || 4980736, // Size of database, in bytes. WebSQL-only for now.
+		storeName   : opts.store || 'epg', // Should be alphanumeric, with underscores.
+		description : opts.desc || 'MAin store'
+	});
 }
 
-store.prototype.setItem = function(key, value, callback) {
-	let cb = isCallback(callback);
-	localforage.setItem(String(key), value, function(err, value) {
-		debug('set', key, '=', value);
-		cb(err, value);
+Store.prototype.setItem = function( key, value ) {
+	return this.store.setItem( String( key ), value, ( err, value ) => {
+		//debug('set', key, '=', value);
 	}); 
 }
 
-store.prototype.getItem = function(key, callback) {
-	let cb = isCallback(callback);
-	localforage.getItem(String(key), cb);
+Store.prototype.getItem = function( key ) {
+	return this.store.getItem( String( key ) );
 }
 
-store.prototype.removeItem = function(key, callback) {
-	let cb = isCallback(callback);
-	localStorage.removeItem(String(key), cb); 
+Store.prototype.removeItem = function( key ) {
+	return this.store.removeItem( String( key ) ); 
 }
 
-store.prototype.getStation = function(id, callback) {
-	let cb = isCallback(callback);
-	this.getItem(id, cb);
-}
-
-store.prototype.getStations = function(stations, callback){
+Store.prototype.all = function( ){
 
     var archive = {};
 
-    localforage.iterate(function(value, key, iterationNumber) {
-		if(stations.indexOf(key)) {
-			archive[key] = value;
-		}
-	}, function(err) {
-		callback(err, archive);
-	});
-}
-
-store.prototype.allStorage = function(callback){
-
-    var archive = {};
-
-    localforage.iterate(function(value, key, iterationNumber) {
+    return this.store.iterate(( value, key, iterationNumber ) => {
 		archive[key] = value;
-	}, function(err) {
-		callback(err, archive);
+	})
+	.then(() => {
+		debug('done with all');
+		return archive;
+	})
+	.catch( ( err ) => {
+		debug( err );
+		return {};
 	});
 }
 
 
-export default new store();
+export default Store;
 
 function haveProgram(program) {
 	if(program === Object(program)) {

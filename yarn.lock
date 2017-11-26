@@ -4853,7 +4853,7 @@ lcid@^1.0.0:
   dependencies:
     invert-kv "^1.0.0"
 
-"less@2.6.x || ^2.7.1", less@>=2.0.0, less@^2.7.1:
+"less@2.6.x || ^2.7.1", less@>=2.0.0, less@^2.7.1, less@^2.7.3:
   version "2.7.3"
   resolved "https://registry.yarnpkg.com/less/-/less-2.7.3.tgz#cc1260f51c900a9ec0d91fb6998139e02507b63b"
   optionalDependencies:
@@ -5175,10 +5175,6 @@ lodash.values@~2.4.1:
   resolved "https://registry.yarnpkg.com/lodash.values/-/lodash.values-2.4.1.tgz#abf514436b3cb705001627978cbcf30b1280eea4"
   dependencies:
     lodash.keys "~2.4.1"
-
-lodash@^3.10.0:
-  version "3.10.1"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
 
 lodash@^4.1.0, lodash@^4.14.0, lodash@^4.17.4, lodash@^4.2.0:
   version "4.17.4"

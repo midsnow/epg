@@ -1,12 +1,16 @@
 import React from 'react';
 import moment from 'moment';
 import Debug from 'debug';
-import { uniq, sortBy } from 'lodash';
+import sortBy from 'lodash/sortBy';
+import uniq from 'lodash/uniq';
 import Gab from '../../common/gab';
 import Table from '../../common/components/table';
-import { DropDownMenu, FlatButton, FontIcon, IconButton, IconMenu } from 'material-ui';
-import Styles from '../../common/styles';
-import { ColorMe } from '../../common/utils';
+import FontIcon from 'material-ui/FontIcon';
+import IconButton from 'material-ui/IconButton';
+import IconMenu from 'material-ui/IconMenu';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import FlatButton from 'material-ui/FlatButton';
+import { Styles, ColorMe } from '../../common/styles';
 
 let debug = Debug('epg:app:pages:epg:recordings');
 
@@ -110,7 +114,7 @@ export default class Recordings extends React.Component {
 				/>)
 		let h = ( this.state.selected.length > 0 ) ? 85 : 65
 		return (<div style={{ padding: '0 0px',  maxHeight: this.props.window.height-65, overflow: 'hidden'  }}>
-			<div style={{ position: 'absolute', top: 15, right: 0, width: 150, height: 50, zIndex: 1400 }}>
+			<div style={{ position: 'absolute', top: 45, right: 0, width: 150, height: 50, zIndex: 1400 }}>
 					<FontIcon className="material-icons" title="Sort by Name" hoverColor={Styles.Colors.limeA400} color={sort === 'show' ? Styles.Colors.limeA400 : 'white' }  style={{cursor:'pointer'}} onClick={ () => { this.props.goTo({ path: '/tv/recordings/', query: {sortRecordingsBy: 'show', sortRecordingsDown: up === 'asc' ? 'desc' : 'asc' }, page: 'Recordings by name'}); } }>sort_by_alpha</FontIcon>
 					<span> &nbsp; </span>
 					<FontIcon className="material-icons" title="Sort by Recently Aired"  hoverColor={Styles.Colors.limeA400} color={sort === 'recordingTime' ? Styles.Colors.limeA400 : 'white' } style={{cursor:'pointer'}}  onClick={ () => { this.props.goTo({ path: '/tv/recordings/', query: {sortRecordingsBy: 'lastToAir', sortRecordingsDown: up === 'asc' ? 'desc' : 'asc' }, page: 'Recordings by recently aired'}); } } >access_time</FontIcon>

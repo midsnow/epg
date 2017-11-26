@@ -48,8 +48,10 @@ System.config({
     "history": "npm:history@1.17.0",
     "javascript-natural-sort": "npm:javascript-natural-sort@0.7.1",
     "jquery": "github:components/jquery@2.1.4",
+    "jsonfile": "npm:jsonfile@4.0.0",
     "localforage": "npm:localforage@1.5.3",
     "lodash": "npm:lodash@4.17.4",
+    "lodash.sortbyorder": "npm:lodash.sortbyorder@3.4.4",
     "material-ui": "npm:material-ui@0.19.4",
     "moment": "npm:moment@2.11.1",
     "object-property-natural-sort": "npm:object-property-natural-sort@0.0.4",
@@ -579,9 +581,47 @@ System.config({
       "path": "github:jspm/nodelibs-path@0.1.0",
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:lodash._basecallback@3.3.1": {
+      "lodash._baseisequal": "npm:lodash._baseisequal@3.0.7",
+      "lodash._bindcallback": "npm:lodash._bindcallback@3.0.1",
+      "lodash.isarray": "npm:lodash.isarray@3.0.4",
+      "lodash.pairs": "npm:lodash.pairs@3.0.1",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash._baseeach@3.0.4": {
+      "lodash.keys": "npm:lodash.keys@3.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash._baseisequal@3.0.7": {
+      "lodash.isarray": "npm:lodash.isarray@3.0.4",
+      "lodash.istypedarray": "npm:lodash.istypedarray@3.0.6",
+      "lodash.keys": "npm:lodash.keys@3.1.2"
+    },
+    "npm:lodash._basesortbyorder@3.5.3": {
+      "lodash._arraymap": "npm:lodash._arraymap@3.0.0",
+      "lodash._basecallback": "npm:lodash._basecallback@3.3.1",
+      "lodash._basecompareascending": "npm:lodash._basecompareascending@3.0.2",
+      "lodash._baseeach": "npm:lodash._baseeach@3.0.4",
+      "lodash._basesortby": "npm:lodash._basesortby@3.0.0"
+    },
+    "npm:lodash.keys@3.1.2": {
+      "lodash._getnative": "npm:lodash._getnative@3.9.1",
+      "lodash.isarguments": "npm:lodash.isarguments@3.1.0",
+      "lodash.isarray": "npm:lodash.isarray@3.0.4"
+    },
     "npm:lodash.merge@4.6.0": {
       "buffer": "github:jspm/nodelibs-buffer@0.1.1",
       "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.pairs@3.0.1": {
+      "lodash.keys": "npm:lodash.keys@3.1.2",
+      "process": "github:jspm/nodelibs-process@0.1.2"
+    },
+    "npm:lodash.sortbyorder@3.4.4": {
+      "lodash._baseeach": "npm:lodash._baseeach@3.0.4",
+      "lodash._basesortbyorder": "npm:lodash._basesortbyorder@3.5.3",
+      "lodash._isiterateecall": "npm:lodash._isiterateecall@3.0.9",
+      "lodash.isarray": "npm:lodash.isarray@3.0.4"
     },
     "npm:lodash.throttle@4.1.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"

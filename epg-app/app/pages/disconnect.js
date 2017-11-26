@@ -2,7 +2,15 @@ import React from 'react';
 import Debug from 'debug'
 import Gab from '../common/gab'
 import { pickIcon } from '../common/utils';
-import { Divider, FontIcon, CardText, Card, CardActions, CardHeader, CardMedia, CardTitle } from 'material-ui';
+import Divider from 'material-ui/Divider';
+import Card from 'material-ui/Card/Card';
+import CardText from 'material-ui/Card/CardText';
+import CardActions from 'material-ui/Card/CardActions';
+import CardHeader from 'material-ui/Card/CardHeader';
+import CardMedia from 'material-ui/Card/CardMedia';
+import FontIcon from 'material-ui/FontIcon';
+import CardTitle from 'material-ui/Card/CardTitle';
+
 import { Col } from 'react-bootstrap';
 import Styles from '../common/styles';
 
@@ -64,6 +72,7 @@ export default class Disconnect extends React.Component {
 						<p>The main server is not responding to connection requests. <br /> The App Bar will return to normal when the issue is resolved.</p>
 						<p><a href="#" onClick={(e)=>{e.preventDefault();window.history.back();}}>Previous Page</a></p>
 						<p><a href="#" onClick={(e)=>{e.preventDefault();this.props.sockets.connect();}}>Reconnect</a></p>
+						<p><a href="#" onClick={(e)=>{e.preventDefault();this.props.goTo({ page: 'Set Up', path: '/epg/configuration'});}}>Configuration</a></p>
 					</CardText>
 				</Col>);
 		}
