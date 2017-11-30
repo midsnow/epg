@@ -9,6 +9,7 @@ import MainMenu from './common/components/mainMenu';
 import Styles from './common/styles';
 import { pickIcon } from './common/utils';
 import Snackbar from './common/components/snackbar';
+import Dialog from './common/components/dialog';
 import Confirm from './common/components/confirm';
 import Any from './pages/component/any';
 import routes from './routes';
@@ -62,6 +63,9 @@ class Main extends Component {
 			newconfirm: {
 				open: false
 			},
+			dialog: {
+				open: false
+			},
 			status: {
 				lineups: [],
 				account: {
@@ -93,10 +97,10 @@ class Main extends Component {
 		this.switchTheme();
 		
 	}
-	
+	 
 	componentWillReceiveProps(props) { 
 		// update from listener
-		debug('listener props', props);
+		debug('render props', props, snowUI);
 		if ( props.status.clean && props.path != '/epg/configuration' ) {
 			// new install so goto the config
 			this.goTo({
@@ -434,6 +438,7 @@ class Main extends Component {
 				{this.contents()}
 			</div>
 			{this.alerts()}
+			<div id="CHANNELPAGE" />
         </div>);
 	}
 	
@@ -594,6 +599,7 @@ class Main extends Component {
 			color: colors[this.state.newalert.style] ? colors[this.state.newalert.style].color : colors.info.color,
 		};
 		return (<div id="ALERTS" >
+			{this.dialogBox()}
 			<Confirm 
 				html={this.state.newconfirm.html}
 				title={this.state.newconfirm.title}
@@ -601,6 +607,7 @@ class Main extends Component {
 				open={this.state.newconfirm.open}
 				yesText={this.state.newconfirm.yesText}
 				noText={this.state.newconfirm.noText}
+				theme={this.state.theme}
 			/>
 			{!skip &&this.state.newalert.show ? 
 				<Snackbar 
@@ -619,7 +626,57 @@ class Main extends Component {
 		</div>);
 	}
 	
+	dialogBox() {
+		return (<div>
+			<Dialog 
+				component={this.state.dialog.component}
+				html={this.state.dialog.html}
+				title={this.state.dialog.title}
+				answer={this.answerDialog}
+				open={this.state.dialog.open}
+				closeText={this.state.dialog.closeText}
+				theme={this.state.theme}
+			/>
+			<Dialog 
+				name="2"
+				open={false}
+				theme={this.state.theme}
+			/>
+			<Dialog 
+				name="3"
+				open={false}
+				theme={this.state.theme}
+			/>
+			<Dialog 
+				name="4"
+				open={false}
+				theme={this.state.theme}
+			/>
+		</div>);
+	}
 	
+	dismissDialog() {
+		this.appState({ 
+			newconfirm: {
+				show: false
+			}
+		});
+	}
+	
+	answerDialog(success) {
+		if(success) {
+			if(typeof this.state.dialog.answer === 'function') {
+				this.state.dialog.answer();
+			} else if(typeof this[this.state.answerMethod] === 'function') {
+				this[this.state.answerMethod]();
+			}
+		}
+		this.appState({
+			dialog: {
+				open: false,
+			},
+		});
+	}
 }
 
 Main.childContextTypes = {

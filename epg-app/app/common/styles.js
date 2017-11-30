@@ -334,11 +334,11 @@ export let BLUE  = deep( {
 export let DEFAULT = deep( {
 	palette: {
 		//bodyColor: 'initial',
-		canvasColor: '#2A2C31',
+		canvasColor: '#26282e',
 		primary1Color: colors.indigo800,
 		primary2Color: '#015485',
 		accent1Color: colors.blue100,
-		accent2Color: "#737474",
+		accent2Color: "#3B3E45",
 		accent3Color: "#D4258D",
 		textColor: "#E4E4E7",
 		alternateTextColor: colors.blue800,
@@ -347,10 +347,13 @@ export let DEFAULT = deep( {
 		textColor: '#222',
 		
 	},
+	toolbar: {
+		backgroundColor: "#3B3E45",
+	},
 	appBar: {
 		//textColor: '#D2DCEA',
 		//buttonColor: '#334651',
-		//backgroundColor: '#0170B3',
+		backgroundColor: '#26282e',
 	},
 	flatButton: {
 		//textColor: '#fff',

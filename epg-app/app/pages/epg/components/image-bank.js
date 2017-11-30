@@ -31,3 +31,7 @@ export default class ImageBank extends PureComponent {
 		});
 	}
 }
+
+ImageBank.defaultProps = {
+	images: [],
+};
